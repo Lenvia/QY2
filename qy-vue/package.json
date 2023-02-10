@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "element-plus": "^2.2.29",
+    "element-theme-chalk": "^2.15.12",
     "element-ui": "^2.15.12",
     "install": "^0.13.0",
     "vue": "^2.6.14",
