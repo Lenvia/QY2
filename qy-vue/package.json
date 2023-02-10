@@ -12,7 +12,8 @@
     "element-plus": "^2.2.29",
     "element-ui": "^2.15.12",
     "install": "^0.13.0",
-    "vue": "^2.6.14"
+    "vue": "^2.6.14",
+    "vue-router": "^3.6.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
