@@ -1,15 +1,18 @@
 <template>
   <div style="height: 100%; width: 100%">
     <el-row type="flex" class="row-box" justify="space-around">
+      <!--左侧视图-->
       <el-col :span="5" class="col-window" style="background-color: aquamarine">
         <el-card class="box-card">
           <div slot="header">
             <span>LeftWindow</span>
           </div>
-          <div style="height: 85vh">
+          <div :style="{height: cardContentHeight + 'vh'}">
             <el-row ref="container" style="background-color: blueviolet; height: 35vh">
-              <div  style="margin-bottom: 20px; background-color: cadetblue; display: flex; justify-content: center; align-items: center;">
-                <OceanMap id="OceanMap" ref="OceanMap" :style="{width: oceanMapWidth + 'px', height: oceanMapHeight + 'px'}"/>
+              <div
+                  class="content_center" style="margin-bottom: 20px; background-color: cadetblue;">
+                <OceanMap id="OceanMap" ref="OceanMap"
+                          :style="{width: oceanMapWidth + 'px', height: oceanMapHeight + 'px'}"/>
               </div>
             </el-row>
             <el-row style=" background-color: gold ">
@@ -28,22 +31,24 @@
             <span>MiddleWindow</span>
           </div>
 
-          <el-row>
-            <div style="background-color: brown; height: 350px; margin-bottom: 20px;">
-              <middle-one/>
-            </div>
-          </el-row>
-          <el-row>
-            <div style="background-color: brown; height: 100px; margin-bottom: 20px;">
+          <div :style="{height: cardContentHeight + 'vh'}">
+            <el-row>
+              <div :style="{backgroundColor: 'brown', height: middleOneHeight + 'vh', marginBottom: 20 +'px'}">
+                <middle-one/>
+              </div>
+            </el-row>
+            <el-row>
+              <div :style="{backgroundColor: 'brown', height: middleTwoHeight + 'vh', marginBottom: 20 +'px'}">
 
-            </div>
+              </div>
 
-          </el-row>
-          <el-row>
-            <div style="background-color: brown; height: 300px;">
-
-            </div>
-          </el-row>
+            </el-row>
+            <el-row>
+              <div :style="{backgroundColor: 'brown', height: middleThreeHeight + 'vh'}">
+                <middle-three/>
+              </div>
+            </el-row>
+          </div>
         </el-card>
       </el-col>
 
@@ -71,15 +76,17 @@
 import OceanMap from "@/components/OceanMap.vue";
 import OceanRecord from "@/components/OceanRecord.vue";
 import MiddleOne from "@/components/MiddleOne.vue";
+import MiddleThree from "@/components/MiddleThree.vue";
 
 export default {
   name: "MainWindow.vue",
-  components: {MiddleOne, OceanRecord, OceanMap},
+  components: {MiddleThree, MiddleOne, OceanRecord, OceanMap},
 
-  data(){
-    return{
+  data() {
+    return {
       oceanMapWidth: 400,  // 初始化
       oceanMapHeight: 400,
+      cardContentHeight: 85,  // 单位vh
     }
   },
   mounted() {
@@ -93,6 +100,18 @@ export default {
     // OceanMap的实际宽度高度可以通过clientWidth、clientHeight获取
     // console.log(this.$refs.OceanMap.$el.clientWidth, this.$refs.OceanMap.$el.clientHeight);
   },
+
+  computed: {
+    middleOneHeight() {
+      return this.cardContentHeight * 7 / 16;
+    },
+    middleTwoHeight() {
+      return this.cardContentHeight * 2 / 16;
+    },
+    middleThreeHeight() {
+      return this.cardContentHeight * 6.5 / 16;
+    },
+  }
 }
 
 </script>
@@ -104,12 +123,17 @@ export default {
   flex-direction: column
 }
 
+.flex_row {
+  display: flex;
+  flex-direction: row;
+}
+
 .height_adjust_equal {
   flex-grow: 1;
 }
 
 /* 内容居中 */
-.content_center{
+.content_center {
   display: flex;
   justify-content: center;
   align-items: center;

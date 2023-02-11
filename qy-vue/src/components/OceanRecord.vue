@@ -1,6 +1,6 @@
 <template>
   <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 100%">
-    <el-row style="display:flex; background-color: #42b983">
+    <el-row class="flex_row" style="background-color: #42b983">
       <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
         <el-radio-group v-model="form.resource">
           <el-row class="ratio-content-left">
@@ -78,8 +78,8 @@
       </el-row>
     </el-row>
 
-    <el-row style="flex-grow: 3">
-
+    <el-row class="content_center" style="flex-grow: 3">
+      <div style="background-color: blueviolet; height: 90%; width: 95%">123</div>
     </el-row>
 
   </el-form>
