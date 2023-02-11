@@ -5,12 +5,12 @@
     </el-col>
     <el-col class="flex_column" :span="11" style="flex-grow:1;">
       <el-row class="flex_column" style="flex-grow:1; background-color: blueviolet;">
-        <el-row class="height_adjust_equal el_content_center">
+        <el-row class="height_adjust_equal content_center">
           <el-radio v-model="form2.date" label="1">Year</el-radio>
           <el-radio v-model="form2.date" label="2">Month</el-radio>
           <el-radio v-model="form2.date" label="3">Day</el-radio>
         </el-row>
-        <el-row class="height_adjust_equal el_content_center">
+        <el-row class="height_adjust_equal content_center">
           <el-col :span="8">
             <el-input v-model="form2.date1" style="width: 100%;"></el-input>
           </el-col>
@@ -21,7 +21,7 @@
         </el-row>
       </el-row>
       <el-row class="flex_column" style="flex-grow:2;">
-        <el-row class="height_adjust_equal el_content_center" v-for="count in 4 " :key="count" >
+        <el-row class="height_adjust_equal content_center" v-for="count in 4 " :key="count" >
           <el-col :span="8">
           <label>Threshold{{count}}</label>
           </el-col>
@@ -67,11 +67,5 @@ export default {
 
 
 
-/* el内容居中 */
-.el_content_center{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 </style>
