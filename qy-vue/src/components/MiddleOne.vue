@@ -5,12 +5,12 @@
     </el-col>
     <el-col class="flex_column" :span="11" style="flex-grow:1;">
       <el-row class="flex_column" style="flex-grow:1; background-color: blueviolet;">
-        <el-row class="height_adjust_equal" style="align-items: center;" type="flex" justify="center">
+        <el-row class="height_adjust_equal el_content_center">
           <el-radio v-model="form2.date" label="1">Year</el-radio>
           <el-radio v-model="form2.date" label="2">Month</el-radio>
           <el-radio v-model="form2.date" label="3">Day</el-radio>
         </el-row>
-        <el-row class="height_adjust_equal" style="align-items: center;" type="flex" justify="center">
+        <el-row class="height_adjust_equal el_content_center">
           <el-col :span="8">
             <el-input v-model="form2.date1" style="width: 100%;"></el-input>
           </el-col>
@@ -20,23 +20,18 @@
           </el-col>
         </el-row>
       </el-row>
-      <el-row class="flex_column" style="flex-grow:3;">
-        <el-row class="height_adjust_equal" style="background-color: cadetblue">
-
+      <el-row class="flex_column" style="flex-grow:2;">
+        <el-row class="height_adjust_equal el_content_center" v-for="count in 4 " :key="count" >
+          <el-col :span="8">
+          <label>Threshold{{count}}</label>
+          </el-col>
+          <el-col :span="8">
+            <label>_____________</label>
+          </el-col>
         </el-row>
-        <el-row class="height_adjust_equal">
-
+        <el-row style="display: flex; justify-content: end; flex-grow:0.6">
+          <el-button style="height: 50%; margin-top: 15px; margin-right: 10px">Enter</el-button>
         </el-row>
-        <el-row class="height_adjust_equal" style="background-color: cadetblue">
-
-        </el-row>
-        <el-row class="height_adjust_equal">
-
-        </el-row>
-        <el-row class="height_adjust_equal" style="background-color: cadetblue">
-
-        </el-row>
-
       </el-row>
 
     </el-col>
@@ -70,19 +65,13 @@ export default {
   height: 30px;
 }
 
-/* 父类标签如此设置，子标签可以通过 flex-grow 进行 高度划分*/
-.flex_column{
-  display:flex;
-  flex-direction:column
-}
 
-.height_adjust_equal{
-  flex-grow:1;
-}
 
-/* 内容居中 */
-.content_center{
-
+/* el内容居中 */
+.el_content_center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 </style>

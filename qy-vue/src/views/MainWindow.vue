@@ -7,7 +7,7 @@
             <div slot="header">
               <span>LeftWindow</span>
             </div>
-            <el-row >
+            <el-row>
               <div style="margin-bottom: 20px; background-color: cadetblue ">
                 <OceanMap id="OceanMap"/>
               </div>
@@ -22,7 +22,7 @@
         </div>
 
       </el-col>
-
+      <!--中间视图-->
       <el-col :span="12" class="col-box" style="background-color: darkkhaki">
         <div class="window">
           <el-card class="box-card">
@@ -83,6 +83,18 @@ export default {
 }
 
 </script>
+
+<style>
+/* 父类标签如此设置，子标签可以通过 flex-grow 进行 高度划分*/
+.flex_column {
+  display: flex;
+  flex-direction: column
+}
+
+.height_adjust_equal {
+  flex-grow: 1;
+}
+</style>
 
 <style scoped>
 .row-box {
