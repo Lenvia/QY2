@@ -158,8 +158,8 @@ export default {
 
 /*已在钩子函数中自适应*/
 /*#OceanMap {*/
-/*  width: 350px;*/
-/*  height: 350px;*/
+/*  width: 0;*/
+/*  height: 0;*/
 /*}*/
 
 </style>
