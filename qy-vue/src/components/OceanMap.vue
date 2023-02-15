@@ -13,6 +13,8 @@ export default {
 
   data() {
     return {
+      container_w: 0,
+      container_h: 0,
       originImage: require('@/assets/bg-30.png'),
       croppedImageUrl: '', // 裁剪后图片的路径
       imageWidth: 0, // 原始图片的宽度
@@ -45,6 +47,8 @@ export default {
   },
 
   mounted() {
+    [this.container_w, this.container_h] = [this.$refs.ocean_map.clientWidth, this.$refs.ocean_map.clientHeight]
+
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
@@ -56,8 +60,8 @@ export default {
       this.imageHeight = img.height;
 
       this.ratio = this.imageWidth / this.imageHeight;
-      this.canvasWidth = this.croppedWidth;
-      this.canvasHeight = this.croppedHeight;
+      this.canvasWidth = this.croppedWidth = this.container_w;
+      this.canvasHeight = this.croppedHeight = this.container_h;
       canvas.width = this.canvasWidth;
       canvas.height = this.canvasHeight;
       this.$nextTick(this.draw(canvas, ctx));
@@ -65,42 +69,43 @@ export default {
 
 
     this.$nextTick(function () {
-      let [container_w, container_h] = [this.$refs.ocean_map.clientWidth, this.$refs.ocean_map.clientHeight]
       const svg = d3.select(this.$refs.ocean_map).append('svg')
-          .attr('width', container_w)
-          .attr('height', container_h);
+          .attr('width', this.container_w)
+          .attr('height', this.container_h);
 
       axios.get('/geneFlowNode.json')
           .then(response => {
-            var json_data = response.data;
-            // console.log(json_data)
-            var nodes = json_data["nodes"];
+            const json_data = response.data;
+            const nodes = json_data["nodes"];
             for (let i = 0; i < nodes.length; i++) {
 
               let color = nodes[i]["color"];
               let display_name = nodes[i]["display name"];
-              let id = 'node'+nodes[i]["id"];
+              let id = 'node' + nodes[i]["id"];
               let lat = nodes[i]["latitude"];
               let lon = nodes[i]["longitude"];
               let name = nodes[i]["name"];
               let radian = nodes[i]["radian"];
               let shape = nodes[i]["shape"];
 
-              let [x, y] = lonlat2imgxy(lon, lat, this.imageWidth, this.imageHeight) ;
+              let [x, y] = lonlat2imgxy(lon, lat, this.imageWidth, this.imageHeight);
+              x = x - this.startX;
+              y = y - this.startY;
 
               // 显示图形
               svg.append(shape)
                   .attr('cx', x)
                   .attr('cy', y)
-                  .attr('r', radian / 3)
+                  .attr('r', radian)
                   .attr('id', id)
                   .style('fill', color)
+                  .style('opacity', 0.3)
               // 显示文字
               svg.append("text")
                   .attr("x", x)
-                  .attr("y", y + radian / 6)
+                  .attr("y", y + radian / 3)
                   .attr("text-anchor", "middle")
-                  .attr('font-size', '10px')
+                  .attr('font-size', '14px')
                   .style('fill', 'white')
                   .text(display_name);
             }

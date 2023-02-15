@@ -84,8 +84,8 @@ export default {
 
   data() {
     return {
-      oceanMapWidth: 500,  // 初始化
-      oceanMapHeight: 500,
+      oceanMapWidth: 351,  // 初始化
+      oceanMapHeight: 351,
       cardContentHeight: 85,  // 单位vh
     }
   },
