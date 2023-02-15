@@ -1,5 +1,5 @@
 <template>
-  <div ref="ocean_map" class="background-image-module" :style="{ backgroundImage: `url(${originImage})`}"></div>
+  <div ref="ocean_map" class="background-image-module" :style="{ backgroundImage: `url(${croppedImageUrl})`}"></div>
 
 </template>
 
@@ -13,16 +13,16 @@ export default {
 
   data() {
     return {
-      originImage: require('@/assets/bg2154-3504.png'),
+      originImage: require('@/assets/bg-30.png'),
       croppedImageUrl: '', // 裁剪后图片的路径
       imageWidth: 0, // 原始图片的宽度
       imageHeight: 0, // 原始图片的高度
       canvasWidth: 0, // canvas的宽度
       canvasHeight: 0, // canvas的高度
-      croppedWidth: 1600, // 裁剪后的宽度
-      croppedHeight: 1600, // 裁剪后的高度
-      startX: 1000,  // 裁剪区域左上角 x 坐标
-      startY: 350,  // 裁剪区域左上角 y 坐标
+      croppedWidth: 351, // 裁剪后的宽度
+      croppedHeight: 351, // 裁剪后的高度
+      startX: 400,  // 裁剪区域左上角 x 坐标
+      startY: 200,  // 裁剪区域左上角 y 坐标
       ratio: 0, // 原始图片宽高比例
     };
   },
@@ -35,7 +35,7 @@ export default {
       img.onload = () => {
 
         // ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-        ctx.drawImage(img, 1000, 350, this.croppedWidth, this.croppedHeight, 0, 0, this.canvasWidth, this.canvasHeight);
+        ctx.drawImage(img, this.startX, this.startY, this.croppedWidth, this.croppedHeight, 0, 0, this.canvasWidth, this.canvasHeight);
         // ctx.drawImage(img, this.startX, this.startY, this.croppedWidth, this.croppedHeight, 0, 0, this.canvasWidth, this.canvasHeight);
         this.croppedImageUrl = canvas.toDataURL();
       };
@@ -86,7 +86,7 @@ export default {
               let radian = nodes[i]["radian"];
               let shape = nodes[i]["shape"];
 
-              let [x, y] = lonlat2imgxy(lon, lat, container_w, container_h);
+              let [x, y] = lonlat2imgxy(lon, lat, this.imageWidth, this.imageHeight) ;
 
               // 显示图形
               svg.append(shape)
@@ -116,8 +116,7 @@ export default {
             let node2 = links[i]["node-2"];
             let value = links[i]["value"];
 
-            // console.log('#node'+node1)
-            // console.log(d3.select("#node" + node1))
+
             const arrowPath = `M${d3.select("#node" + node1).attr('cx')},${d3.select("#node" + node1).attr('cy')} L${d3.select("#node" + node2).attr('cx')},${d3.select("#node" + node2).attr('cy')}`;
 
             // 在 SVG 中添加箭头
