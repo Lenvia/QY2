@@ -84,12 +84,13 @@ export default {
 
   data() {
     return {
-      oceanMapWidth: 400,  // 初始化
-      oceanMapHeight: 400,
+      oceanMapWidth: 500,  // 初始化
+      oceanMapHeight: 500,
       cardContentHeight: 85,  // 单位vh
     }
   },
   mounted() {
+    console.log("容器")
     // 动态挂载
     let containerWidth = this.$refs.container.$el.offsetWidth;
     let containerHeight = this.$refs.container.$el.offsetHeight;
