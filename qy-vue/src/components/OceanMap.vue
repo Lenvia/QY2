@@ -1,5 +1,5 @@
 <template>
-  <div ref="ocean_map" class="background-image-module" :style="{ backgroundImage: `url(${croppedImageUrl})`}"></div>
+  <div ref="ocean_map" class="background-image-module" :style="{ backgroundImage: `url(${originImage})`}"></div>
 
 </template>
 
@@ -13,7 +13,7 @@ export default {
 
   data() {
     return {
-      backgroundImage: require('@/assets/bg2154-3504.png'),
+      originImage: require('@/assets/bg2154-3504.png'),
       croppedImageUrl: '', // 裁剪后图片的路径
       imageWidth: 0, // 原始图片的宽度
       imageHeight: 0, // 原始图片的高度
@@ -21,6 +21,8 @@ export default {
       canvasHeight: 0, // canvas的高度
       croppedWidth: 1600, // 裁剪后的宽度
       croppedHeight: 1600, // 裁剪后的高度
+      startX: 1000,  // 裁剪区域左上角 x 坐标
+      startY: 350,  // 裁剪区域左上角 y 坐标
       ratio: 0, // 原始图片宽高比例
     };
   },
@@ -29,10 +31,12 @@ export default {
     // 绘制裁剪后的图片到canvas上
     draw(canvas, ctx) {
       const img = new Image();
-      img.src = this.backgroundImage;
+      img.src = this.originImage;
       img.onload = () => {
-        console.log('-------')
+
+        // ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
         ctx.drawImage(img, 1000, 350, this.croppedWidth, this.croppedHeight, 0, 0, this.canvasWidth, this.canvasHeight);
+        // ctx.drawImage(img, this.startX, this.startY, this.croppedWidth, this.croppedHeight, 0, 0, this.canvasWidth, this.canvasHeight);
         this.croppedImageUrl = canvas.toDataURL();
       };
     },
@@ -46,7 +50,7 @@ export default {
 
     // 图片加载完成后初始化canvas
     const img = new Image();
-    img.src = this.backgroundImage;
+    img.src = this.originImage;
     img.onload = () => {
       this.imageWidth = img.width;
       this.imageHeight = img.height;
@@ -60,46 +64,93 @@ export default {
     };
 
 
-    this.$nextTick(function (){
+    this.$nextTick(function () {
       let [container_w, container_h] = [this.$refs.ocean_map.clientWidth, this.$refs.ocean_map.clientHeight]
-      const ocean_map = d3.select(this.$refs.ocean_map).append('svg')
+      const svg = d3.select(this.$refs.ocean_map).append('svg')
           .attr('width', container_w)
           .attr('height', container_h);
 
       axios.get('/geneFlowNode.json')
           .then(response => {
             var json_data = response.data;
-            console.log(json_data)
-            var gene_nodes = json_data["nodes"];
-            for (let i = 0; i < gene_nodes.length; i++) {
+            // console.log(json_data)
+            var nodes = json_data["nodes"];
+            for (let i = 0; i < nodes.length; i++) {
 
-              let color = gene_nodes[i]["color"];
-              let display_name = gene_nodes[i]["display_name"];
-              let id = gene_nodes[i]["id"];
-              let lat = gene_nodes[i]["latitude"];
-              let lon = gene_nodes[i]["longitude"];
-              let name = gene_nodes[i]["name"];
-              let radian = gene_nodes[i]["radian"];
-              let shape = gene_nodes[i]["shape"];
+              let color = nodes[i]["color"];
+              let display_name = nodes[i]["display name"];
+              let id = 'node'+nodes[i]["id"];
+              let lat = nodes[i]["latitude"];
+              let lon = nodes[i]["longitude"];
+              let name = nodes[i]["name"];
+              let radian = nodes[i]["radian"];
+              let shape = nodes[i]["shape"];
 
               let [x, y] = lonlat2imgxy(lon, lat, container_w, container_h);
 
-              ocean_map.append(shape)
+              // 显示图形
+              svg.append(shape)
                   .attr('cx', x)
                   .attr('cy', y)
-                  .attr('r', radian/3 )
+                  .attr('r', radian / 3)
+                  .attr('id', id)
                   .style('fill', color)
+              // 显示文字
+              svg.append("text")
+                  .attr("x", x)
+                  .attr("y", y + radian / 6)
+                  .attr("text-anchor", "middle")
+                  .attr('font-size', '10px')
+                  .style('fill', 'white')
+                  .text(display_name);
             }
           })
           .catch(error => {
             console.log(error);
-          });
+          }).then(() => {
+        axios.get('/geneFlowLink.json').then(response => {
+          var json_data = response.data;
+          var links = json_data["links"];
+          for (let i = 0; i < links.length; i++) {
+            let node1 = links[i]["node-1"];
+            let node2 = links[i]["node-2"];
+            let value = links[i]["value"];
+
+            // console.log('#node'+node1)
+            // console.log(d3.select("#node" + node1))
+            const arrowPath = `M${d3.select("#node" + node1).attr('cx')},${d3.select("#node" + node1).attr('cy')} L${d3.select("#node" + node2).attr('cx')},${d3.select("#node" + node2).attr('cy')}`;
+
+            // 在 SVG 中添加箭头
+            svg.append('path')
+                .attr('d', arrowPath)
+                .attr('marker-end', 'url(#arrow)')
+                .attr('stroke', 'cyan')
+            ;
+
+            // 在 SVG 中添加箭头定义
+            svg.append('defs')
+                .append('marker')
+                .attr('id', 'arrow')
+                .attr('viewBox', '0 0 10 10')
+                .attr('refX', 8)
+                .attr('refY', 5)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto-start-reverse')
+                .append('path')
+                .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+                .style('fill', 'white');
+          }
+
+        }).catch(error => {
+          console.log(error);
+        })
+      })
+      ;
 
     })
 
   }
-
-
 }
 </script>
 

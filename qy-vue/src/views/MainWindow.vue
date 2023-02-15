@@ -90,7 +90,7 @@ export default {
     }
   },
   mounted() {
-    console.log("容器")
+    // console.log("容器")
     // 动态挂载
     let containerWidth = this.$refs.container.$el.offsetWidth;
     let containerHeight = this.$refs.container.$el.offsetHeight;
