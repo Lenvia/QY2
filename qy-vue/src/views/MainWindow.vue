@@ -11,7 +11,7 @@
             <el-row ref="container" style="background-color: blueviolet; height: 35vh">
               <div
                   class="content_center" style="margin-bottom: 20px; background-color: cadetblue;">
-                <OceanMap id="OceanMap" ref="OceanMap"
+                <OceanMap id="OceanMap"
                           :style="{width: oceanMapWidth + 'px', height: oceanMapHeight + 'px'}"/>
               </div>
             </el-row>
@@ -84,8 +84,8 @@ export default {
 
   data() {
     return {
-      oceanMapWidth: 351,  // 初始化
-      oceanMapHeight: 351,
+      oceanMapWidth: 500,  // 初始化
+      oceanMapHeight: 500,
       cardContentHeight: 85,  // 单位vh
     }
   },

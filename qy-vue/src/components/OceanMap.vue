@@ -47,7 +47,8 @@ export default {
   },
 
   mounted() {
-    [this.container_w, this.container_h] = [this.$refs.ocean_map.clientWidth, this.$refs.ocean_map.clientHeight]
+    // [this.container_w, this.container_h] = [this.$refs.ocean_map.clientWidth, this.$refs.ocean_map.clientHeight]
+    [this.container_w, this.container_h] = [this.$parent.$el.offsetWidth, this.$parent.$el.offsetHeight]
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -58,8 +59,8 @@ export default {
     img.onload = () => {
       this.imageWidth = img.width;
       this.imageHeight = img.height;
-
       this.ratio = this.imageWidth / this.imageHeight;
+      // 实际尺寸
       this.canvasWidth = this.croppedWidth = this.container_w;
       this.canvasHeight = this.croppedHeight = this.container_h;
       canvas.width = this.canvasWidth;
@@ -88,6 +89,7 @@ export default {
               let radian = nodes[i]["radian"];
               let shape = nodes[i]["shape"];
 
+              // 映射 + 偏移修正
               let [x, y] = lonlat2imgxy(lon, lat, this.imageWidth, this.imageHeight);
               x = x - this.startX;
               y = y - this.startY;
