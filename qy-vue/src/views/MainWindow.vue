@@ -33,12 +33,12 @@
 
           <div :style="{height: cardContentHeight + 'vh'}">
             <el-row>
-              <div :style="{backgroundColor: 'brown', height: middleOneHeight + 'vh', marginBottom: 20 +'px'}">
+              <div :style="{backgroundColor: 'brown', height: middleOneHeight + 'vh', marginBottom: 10 +'px'}">
                 <middle-one/>
               </div>
             </el-row>
             <el-row>
-              <div :style="{backgroundColor: 'brown', height: middleTwoHeight + 'vh', marginBottom: 20 +'px'}">
+              <div :style="{backgroundColor: 'brown', height: middleTwoHeight + 'vh', marginBottom: 10 +'px'}">
 
               </div>
 

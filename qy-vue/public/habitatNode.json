@@ -1,0 +1,459 @@
+{
+    "nodes": [
+        {
+            "id": 1,
+            "display name": "H1",
+            "name": "taiwan-east",
+            "longitude": 129.6,
+            "latitude": 28.5,
+            "color": [
+                32,97,203
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2088 - 2170"
+        },
+        {
+            "id": 2,
+            "display name": "H2",
+            "name": "taiwan-east",
+            "longitude": 126.4,
+            "latitude": 25.4,
+            "color": [
+                29,64,181
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2503 - 2585"
+        },
+        {
+            "id": 3,
+            "display name": "H3",
+            "name": "taiwan-east",
+            "longitude": 126.4,
+            "latitude": 24.4,
+            "color": [
+                114,179,232
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "844 - 926"
+        },
+        {
+            "id": 4,
+            "display name": "H4",
+            "name": "taiwan-east, Philippine coast, Malaysia, Indonesia",
+            "longitude": 122.2,
+            "latitude": 24.4,
+            "color": [
+                29,64,180
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2503 - 2585"
+        },
+        {
+            "id": 5,
+            "display name": "H5",
+            "name": "taiwan-east",
+            "longitude": 127,
+            "latitude": 23.8,
+            "color": [
+                175,231,240
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "197 - 179"
+        },
+        {
+            "id": 6,
+            "display name": "H6",
+            "name": "Philippine coast",
+            "longitude": 121.5,
+            "latitude": 18.9,
+            "color": [
+                20,33,153
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2918 - 3000"
+        },
+        {
+            "id": 7,
+            "display name": "H7",
+            "name": "Philippine coast",
+            "longitude": 121.8,
+            "latitude": 15.4,
+            "color": [
+                255,0,48
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3167 - 3249"
+        },
+        {
+            "id": 8,
+            "display name": "H8",
+            "name": "Philippine coast",
+            "longitude": 124.5,
+            "latitude": 14.1,
+            "color": [
+                255,0,48
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3167 - 3249"
+        },
+        {
+            "id": 9,
+            "display name": "H9",
+            "name": "Philippine coast",
+            "longitude": 126.5,
+            "latitude": 9.8,
+            "color": [
+                255,0,48
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3167 - 3249"
+        },
+        {
+            "id": 10,
+            "display name": "H10",
+            "name": "Philippine coast",
+            "longitude": 126,
+            "latitude": 5.8,
+            "color": [
+                255,0,48
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3167 - 3249"
+        },
+        {
+            "id": 11,
+            "display name": "H11",
+            "name": "Philippine coast",
+            "longitude": 123.7,
+            "latitude": 7.45,
+            "color": [
+                255,0,48
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3167 - 3249"
+        },
+        {
+            "id": 12,
+            "display name": "H12",
+            "name": "Philippine coast",
+            "longitude": 120.6,
+            "latitude": 12.8,
+            "color": [
+                255,0,48
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3167 - 3249"
+        },
+        {
+            "id": 13,
+            "display name": "H13",
+            "name": "Philippine coast",
+            "longitude": 119.8,
+            "latitude": 16.8,
+            "color": [
+                238,124,143
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3084 - 3166"
+        },
+        {
+            "id": 14,
+            "display name": "H14",
+            "name": "Philippine coast",
+            "longitude": 118.5,
+            "latitude": 16.5,
+            "color": [
+                33,102,207
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "1922 - 2004"
+        },
+        {
+            "id": 15,
+            "display name": "H15",
+            "name": "Philippine coast",
+            "longitude": 118.5,
+            "latitude": 10.5,
+            "color": [
+                249,188,211
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3001 - 3083"
+        },
+        {
+            "id": 16,
+            "display name": "H16",
+            "name": "Malaysia",
+            "longitude": 100.4,
+            "latitude": 9.4,
+            "color": [
+                50,138,227
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "1508 - 1590"
+        },
+        {
+            "id": 17,
+            "display name": "H17",
+            "name": "Malaysia",
+            "longitude": 103.7,
+            "latitude": 5.6,
+            "color": [
+                32,114,214
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "1839 - 1921"
+        },
+        {
+            "id": 18,
+            "display name": "H18",
+            "name": "Malaysia",
+            "longitude": 104.7,
+            "latitude": 2.1,
+            "color": [
+                34,89,199
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2171 - 2253"
+        },
+        {
+            "id": 19,
+            "display name": "H19",
+            "name": "Malaysia",
+            "longitude": 110.1,
+            "latitude": 2.9,
+            "color": [
+                33,86,196
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2254 - 2336"
+        },
+        {
+            "id": 20,
+            "display name": "H20",
+            "name": "Malaysia",
+            "longitude": 113.7,
+            "latitude": 5.1,
+            "color": [
+                33,84,194
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2254 - 2336"
+        },
+        {
+            "id": 21,
+            "display name": "H21",
+            "name": "Malaysia",
+            "longitude": 116.9,
+            "latitude": 7.3,
+            "color": [
+                22,39,165
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2835 - 2917"
+        },
+        {
+            "id": 22,
+            "display name": "H22",
+            "name": "Malaysia",
+            "longitude": 118.7,
+            "latitude": 6.4,
+            "color": [
+                21,35,161
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2918 - 3000"
+        },
+        {
+            "id": 23,
+            "display name": "H23",
+            "name": "Malaysia",
+            "longitude": 119.6,
+            "latitude": 4.5,
+            "color": [
+                30,49,169
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2669 - 2751"
+        },
+        {
+            "id": 24,
+            "display name": "H24",
+            "name": "Indonesia",
+            "longitude": 125.6,
+            "latitude": 3.7,
+            "color": [
+                252,189,214
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3001 - 3083"
+        },
+        {
+            "id": 25,
+            "display name": "H25",
+            "name": "Indonesia",
+            "longitude": 124,
+            "latitude": 1.4,
+            "color": [
+                250,122,148
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3084 - 3166"
+        },
+        {
+            "id": 26,
+            "display name": "H26",
+            "name": "Indonesia",
+            "longitude": 111,
+            "latitude": 3.3,
+            "color": [
+                252,189,214
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3001 - 3083"
+        },
+        {
+            "id": 27,
+            "display name": "H27",
+            "name": "Indonesia",
+            "longitude": 124.8,
+            "latitude": 0.1,
+            "color": [
+                252,189,214
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3001 - 3083"
+        },
+        {
+            "id": 28,
+            "display name": "H28",
+            "name": "Indonesia",
+            "longitude": 126.7,
+            "latitude": 1.1,
+            "color": [
+                252,189,214
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3001 - 3083"
+        },
+        {
+            "id": 29,
+            "display name": "H29",
+            "name": "Indonesia",
+            "longitude": 121,
+            "latitude":-5.1,
+            "color": [
+                252,189,214
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3001 - 3083"
+        },
+        {
+            "id": 30,
+            "display name": "H30",
+            "name": "Indonesia",
+            "longitude": 127.5,
+            "latitude": -2.6,
+            "color": [
+                249,122,147
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "3084 - 3166"
+        },
+        {
+            "id": 31,
+            "display name": "H31",
+            "name": "Indonesia",
+            "longitude": 133.6,
+            "latitude": -5.1,
+            "color": [
+                22,38,164
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "2835 - 2917"
+        },
+        {
+            "id": 32,
+            "display name": "H32",
+            "name": "Indonesia",
+            "longitude": 123.1,
+            "latitude": -12.8,
+            "color": [
+                32,119,217
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "1757 - 1838"
+        },
+        {
+            "id": 33,
+            "display name": "H33",
+            "name": "Indonesia",
+            "longitude": 138.2,
+            "latitude": -1.1,
+            "color": [
+                28,52,173
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": ""
+        },
+        {
+            "id": 34,
+            "display name": "H34",
+            "name": "Indonesia",
+            "longitude": 140.8,
+            "latitude": -10.8,
+            "color": [
+                68,148,227
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "1342 - 1424"
+        },
+        {
+            "id": 35,
+            "display name": "H35",
+            "name": "Indonesia",
+            "longitude": 160.8,
+            "latitude": 0.18,
+            "color": [
+                175,231,240
+            ],
+            "shape": "circle",
+            "radian": 2,
+            "remark": "197 - 179"
+        }
+    ]
+}

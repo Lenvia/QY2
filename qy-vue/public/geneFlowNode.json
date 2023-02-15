@@ -1,0 +1,64 @@
+{
+    "nodes": [
+        {
+            "id": 1,
+            "display name": "L1",
+            "name": "northwest Pacific Ocean",
+            "longitude": 122,
+            "latitude": 23.37,
+            "color": "blue",
+            "shape": "circle",
+            "radian": 15
+        },
+        {
+            "id": 2,
+            "display name": "L2",
+            "name": "the South China Sea",
+            "longitude": 110.372,
+            "latitude": 18.42,
+            "color": "blue",
+            "shape": "circle",
+            "radian": 15
+        },
+        {
+            "id": 3,
+            "display name": "L3",
+            "name": "the Gulf of Thailand",
+            "longitude": 102.8,
+            "latitude": 8.06,
+            "color": "blue",
+            "shape": "circle",
+            "radian": 15
+        },
+        {
+            "id": 4,
+            "display name": "L4",
+            "name": "the Andaman Sea",
+            "longitude": 97.1,
+            "latitude": 8.14,
+            "color": "blue",
+            "shape": "circle",
+            "radian": 15
+        },
+        {
+            "id": 5,
+            "display name": "L5",
+            "name": "the Strait of Malacca",
+            "longitude": 105.7,
+            "latitude": -0.08,
+            "color": "blue",
+            "shape": "circle",
+            "radian": 15
+        },
+        {
+            "id": 6,
+            "display name": "L6",
+            "name": " the Java Sea",
+            "longitude": 117.12,
+            "latitude": -6.395,
+            "color": "blue",
+            "shape": "circle",
+            "radian": 15
+        }
+    ]
+}
