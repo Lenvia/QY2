@@ -4,6 +4,11 @@
       <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
         <el-radio-group v-model="form.resource">
           <el-row class="ratio-content-left">
+            <el-form-item id="case_label" class="custom-form-item" :label="`${case_label}`" ></el-form-item>
+          </el-row>
+          <el-divider class="bold-divider"></el-divider>
+
+          <el-row class="ratio-content-left">
             <el-radio label="Start Region"></el-radio>
           </el-row>
 
@@ -91,8 +96,9 @@ export default {
 
   data() {
     return {
+      case_label: " ",  // 默认一个空格
       form: {
-        // name: '',
+        name: '',
         // region: '',
         // date1: '',
         // date2: '',
@@ -112,12 +118,23 @@ export default {
     onSubmit() {
       console.log('submit!');
     }
-  }
+  },
+
+  mounted() {
+    this.$nextTick(function () {
+      this.case_label = "123";
+    });
+  },
+
 }
 </script>
 
 
 <style scoped>
+.el-form-item{
+  margin-bottom: 0;
+}
+
 /deep/ .el-input__inner {
   height: 30px;
 }
@@ -125,6 +142,15 @@ export default {
 /deep/ .el-form-item__label {
   white-space: nowrap
 }
+
+/deep/ .custom-form-item .el-form-item__label {
+  height: 25px;
+  margin-bottom: 0;
+  margin-top: 0;
+  text-align: left;
+  font-size: 18px;
+}
+
 
 
 .input-box {
@@ -158,7 +184,11 @@ export default {
   margin: 8px 0;
   background: 0 0;
   border-top: 1px solid #d2d2d2;
+}
 
+.bold-divider{
+  border-top-width: 3px;
+  border-top-color: black;
 }
 
 </style>
