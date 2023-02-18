@@ -23,7 +23,7 @@
             </el-form-item>
           </el-row>
           <el-row class="input-content-right">
-            <el-form-item class="custom-form" label="depth">
+            <el-form-item class="custom-form" style="margin-bottom: 10px" label="depth">
               <input class="input-box" v-model="form.depth"/>
             </el-form-item>
           </el-row>
@@ -70,7 +70,7 @@
                             v-model="form.timeRange1" style="width: 100%;"></el-date-picker>
           </el-col>
 
-          <el-col class="line" :span="2">-</el-col>
+          <el-col class="line" :span="2" style="display:flex; justify-content: center;">-</el-col>
 
           <el-col :span="11" class="content_center">
             <el-date-picker class="date-picker" type="date" icon="none" value-format="yyyy-MM-dd"
@@ -137,6 +137,8 @@ export default {
 
 /deep/ .el-input__inner {
   height: 30px;
+  line-height: 30px;
+  font-size: 10px;
 }
 
 /deep/ .el-form-item__label {
@@ -170,7 +172,8 @@ export default {
 }
 
 .custom-form {
-  margin-bottom: 0;
+  height: 25px;
+  margin-bottom: 5px;
 }
 
 .date-picker {

@@ -145,7 +145,6 @@ export default {
 
 
               const arrowPath = `M${p1_x},${p1_y} L${p2_x},${p2_y}`;
-              console.log(arrowPath)
 
               // 在 SVG 中添加箭头
               svg.append('path')
