@@ -7,7 +7,7 @@
 import * as d3 from 'd3';
 import axios from 'axios';
 import {lonlat2imgxy, imgxy2lonlat} from '@/utils/utils';
-
+import { eventBus } from '@/plugin/event-bus'
 export default {
   name: "OceanMap",
 
@@ -43,6 +43,14 @@ export default {
         this.croppedImageUrl = canvas.toDataURL();
       };
     },
+
+    handleClick(){
+      const target = d3.select(event.target);
+      this.selectNode(target.attr("name"));
+    },
+    selectNode(nodeName){  // 发送到 Record界面显示
+      eventBus.$emit('nodeSelected', nodeName);
+    }
 
 
   },
@@ -105,8 +113,12 @@ export default {
                     .attr('cy', y)
                     .attr('r', radian)
                     .attr('id', id)
+                    .attr('name', name)
                     .style('fill', color)
                     .style('opacity', 0.3)
+                    .style('cursor', 'pointer')
+                    .on('click', this.handleClick.bind(this))
+
                 // 显示文字
                 svg.append("text")
                     .attr("x", x)
@@ -114,6 +126,7 @@ export default {
                     .attr("text-anchor", "middle")
                     .attr('font-size', '14px')
                     .style('fill', 'white')
+                    .style('pointer-events','none')
                     .text(display_name);
               }
             })
@@ -206,8 +219,10 @@ export default {
                     .attr('cy', y)
                     .attr('r', radian)
                     .attr('id', id)
+                    .attr('name', name)
                     .style('fill', color)
                     .style('opacity', 1)
+                    .on('click', this.handleClick.bind(this))
               }
             })
             .catch(error => {

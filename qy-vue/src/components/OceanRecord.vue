@@ -2,7 +2,7 @@
   <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 100%">
     <el-row class="flex_row" style="background-color: #42b983">
       <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
-        <el-radio-group v-model="form.resource">
+        <el-radio-group v-model="form.operation_type">
           <el-row class="ratio-content-left">
             <el-form-item id="case_label" class="custom-form-item" :label="`${case_label}`" ></el-form-item>
           </el-row>
@@ -91,6 +91,7 @@
 </template>
 
 <script>
+import { eventBus } from '@/plugin/event-bus'
 export default {
   name: "OceanRecord",
 
@@ -99,6 +100,7 @@ export default {
       case_label: " ",  // 默认一个空格
       form: {
         name: '',
+        operation_type: '',
         // region: '',
         // date1: '',
         // date2: '',
@@ -114,6 +116,13 @@ export default {
       }
     }
   },
+
+  created() {
+    eventBus.$on('nodeSelected', (nodeName) => {
+      this.case_label = nodeName
+    })
+  },
+
   methods: {
     onSubmit() {
       console.log('submit!');
