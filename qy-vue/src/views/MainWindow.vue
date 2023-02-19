@@ -90,16 +90,12 @@ export default {
     }
   },
   mounted() {
-    // console.log("容器")
     // 动态挂载
     let containerWidth = this.$refs.container.$el.offsetWidth;
     let containerHeight = this.$refs.container.$el.offsetHeight;
     let minSize = Math.min(containerWidth, containerHeight);
     this.oceanMapWidth = minSize;
     this.oceanMapHeight = minSize;
-
-    // OceanMap的实际宽度高度可以通过clientWidth、clientHeight获取
-    // console.log(this.$refs.OceanMap.$el.clientWidth, this.$refs.OceanMap.$el.clientHeight);
   },
 
   computed: {

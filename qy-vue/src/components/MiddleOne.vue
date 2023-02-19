@@ -43,7 +43,7 @@ export default {
   name: "MiddleOne",
   data() {
     return {
-      backgroundImage: require('@/assets/bg2.png'),
+      backgroundImage: require('@/assets/bg2.jpg'),
       form3: {
         dateType: '',
         date1: '',
