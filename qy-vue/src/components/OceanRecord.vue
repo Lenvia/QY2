@@ -130,10 +130,17 @@ export default {
   methods: {
     onRecord() {
       console.log(this.form);
-      console.log('submit!');
+      this.$message({
+        message: JSON.stringify(this.form),
+        type: 'success'
+      });
     },
     onCreateTask(){
       console.log(this.form2);
+      this.$message({
+        message: JSON.stringify(this.form2),
+        type: 'success'
+      });
     }
   },
 
@@ -157,11 +164,7 @@ export default {
   margin-bottom: 0;
 }
 
-/deep/ .el-input__inner {
-  height: 30px;
-  line-height: 30px;
-  font-size: 10px;
-}
+
 
 /deep/ .el-form-item__label {
   white-space: nowrap

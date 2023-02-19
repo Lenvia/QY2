@@ -104,13 +104,13 @@ export default {
 
   computed: {
     middleOneHeight() {
-      return this.cardContentHeight * 7 / 16;
+      return this.cardContentHeight * 8 / 16;
     },
     middleTwoHeight() {
-      return this.cardContentHeight * 2 / 16;
+      return this.cardContentHeight * 1.5 / 16;
     },
     middleThreeHeight() {
-      return this.cardContentHeight * 6.5 / 16;
+      return this.cardContentHeight * 6 / 16;
     },
   }
 }
@@ -122,6 +122,12 @@ export default {
 /** {*/
 /*  background-color: transparent !important;*/
 /*}*/
+
+.el-input__inner {
+  height: 30px;
+  line-height: 30px;
+  font-size: 10px;
+}
 
 /* 父类标签如此设置，子标签可以通过 flex-grow 进行 高度划分*/
 .flex_column {

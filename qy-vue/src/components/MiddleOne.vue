@@ -1,22 +1,22 @@
 <template>
-  <el-form style="height: 100%; background-color: #42b983;display:flex;" :model="form2">
-    <el-col :span="13" style="flex-grow:1">
+  <el-form style="height: 100%; background-color: #42b983;display:flex;" :model="form3">
+    <el-col :span="15" style="flex-grow:1">
       <div class="background-image-module" :style="{ backgroundImage: `url(${backgroundImage})`}"></div>
     </el-col>
-    <el-col class="flex_column" :span="11" style="flex-grow:1;">
+    <el-col class="flex_column" :span="9" style="flex-grow:1;height: 100%">
       <el-row class="flex_column" style="flex-grow:1; background-color: blueviolet;">
         <el-row class="height_adjust_equal content_center">
-          <el-radio v-model="form2.date" label="1">Year</el-radio>
-          <el-radio v-model="form2.date" label="2">Month</el-radio>
-          <el-radio v-model="form2.date" label="3">Day</el-radio>
+          <el-radio v-model="form3.dateType" label="Year">Year</el-radio>
+          <el-radio v-model="form3.dateType" label="Month">Month</el-radio>
+          <el-radio v-model="form3.dateType" label="Day">Day</el-radio>
         </el-row>
         <el-row class="height_adjust_equal content_center">
           <el-col :span="8">
-            <el-input v-model="form2.date1" style="width: 100%;"></el-input>
+            <el-input v-model="form3.date1" style="width: 100%;"></el-input>
           </el-col>
           <el-col class="line" :span="2"></el-col>
           <el-col :span="8">
-            <el-input v-model="form2.date2" style="width: 100%;"></el-input>
+            <el-input v-model="form3.date2" style="width: 100%;"></el-input>
           </el-col>
         </el-row>
       </el-row>
@@ -26,11 +26,11 @@
           <label>Threshold{{count}}</label>
           </el-col>
           <el-col :span="8">
-            <label>_____________</label>
+            <el-input v-model="form3.thresholds[count-1]" class="underline-input" ></el-input>
           </el-col>
         </el-row>
-        <el-row style="display: flex; justify-content: end; flex-grow:0.6">
-          <el-button style="height: 50%; margin-top: 15px; margin-right: 10px">Enter</el-button>
+        <el-row style="display: flex; justify-content: end;align-items: center; flex-grow:0.5">
+          <el-button style="height: 60%; margin-right: 10px" @click="onEnter">Enter</el-button>
         </el-row>
       </el-row>
 
@@ -44,10 +44,22 @@ export default {
   data() {
     return {
       backgroundImage: require('@/assets/bg2.png'),
-      form2: {
-        date: '',
+      form3: {
+        dateType: '',
+        date1: '',
+        date2: '',
+        thresholds: [],
       }
     };
+  },
+
+  methods:{
+    onEnter(){
+      this.$message({
+        message: JSON.stringify(this.form3),
+        type: 'success'
+      });
+    }
   }
 }
 </script>
@@ -61,11 +73,18 @@ export default {
   background-size: cover;
 }
 
-/deep/ .el-input__inner {
-  height: 30px;
+/deep/ .underline-input{
+  border: none;
+  box-shadow: none !important;
 }
 
-
-
+/deep/ .underline-input .el-input__inner {
+  border: none;
+  border-bottom: 1px solid #000000;
+  border-radius: 0;
+  /*padding-left: 0;*/
+  font-size: 14px;
+  background-color: transparent;
+}
 
 </style>
