@@ -118,6 +118,11 @@ export default {
 </script>
 
 <style>
+/*去除开发中所有的颜色背景*/
+/** {*/
+/*  background-color: transparent !important;*/
+/*}*/
+
 /* 父类标签如此设置，子标签可以通过 flex-grow 进行 高度划分*/
 .flex_column {
   display: flex;

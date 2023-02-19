@@ -1,11 +1,11 @@
 <template>
   <el-row class="flex_column" style="height: 100%">
-    <el-form class="flex_column" ref="form" :model="form" label-width="80px">
+    <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 45%">
       <el-row class="flex_row" style="background-color: #42b983">
         <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
           <el-radio-group v-model="form.operation_type">
-            <el-row class="ratio-content-left">
-              <el-form-item id="case_label" class="custom-form-item" :label="`${case_label}`"></el-form-item>
+            <el-row class="content_center">
+              <el-form-item id="case_label" class="custom-form-item content_center" :label="`${case_label}`" style="width:100%"></el-form-item>
             </el-row>
             <el-divider class="bold-divider"></el-divider>
 
@@ -50,13 +50,15 @@
             <div style="background-color: blueviolet; height: 90%; width: 80%">123</div>
           </el-row>
           <el-row class="content_center" style="flex-grow: 1">
-            <el-button class="content_center" @click="onSubmit" style="height: 50%; width: 80%">Record</el-button>
+            <el-button class="content_center" @click="onRecord" style="height: 50%; width: 80%">Record</el-button>
           </el-row>
         </el-col>
       </el-row>
+
     </el-form>
-    <el-form class="flex_column" ref="form2" :model="form2" label-width="80px">
-      <el-divider></el-divider>
+    <el-divider></el-divider>
+    <el-form class="flex_column" ref="form2" :model="form2" label-width="80px" style="height: 50%">
+
       <el-row style="background-color: darkkhaki">
         <el-row class="">
           <el-form-item class="custom-form" label="Task Name">
@@ -68,19 +70,19 @@
           <el-form-item class="custom-form" label="Time Range">
             <el-col :span="11" class="content_center">
               <el-date-picker class="date-picker" type="date" icon="none" value-format="yyyy-MM-dd"
-                              v-model="form2.timeRange1" style="width: 100%;"></el-date-picker>
+                              v-model="form2.timeStart" style="width: 100%;"></el-date-picker>
             </el-col>
 
             <el-col class="line" :span="2" style="display:flex; justify-content: center;">-</el-col>
 
             <el-col :span="11" class="content_center">
               <el-date-picker class="date-picker" type="date" icon="none" value-format="yyyy-MM-dd"
-                              v-model="form.timeRange2" style="width: 100%;"></el-date-picker>
+                              v-model="form2.timeEnd" style="width: 100%;"></el-date-picker>
             </el-col>
           </el-form-item>
         </el-row>
         <el-row class="input-content-right">
-          <el-button class="content_center" style="height: 30px; width: 40%; margin-bottom: 10px">Create Task
+          <el-button class="content_center" style="height: 30px; width: 40%; margin-bottom: 10px" @click="onCreateTask">Create Task
           </el-button>
         </el-row>
       </el-row>
@@ -105,18 +107,17 @@ export default {
       form: {
         name: '',
         operation_type: '',
-        // region: '',
-        // date1: '',
-        // date2: '',
-        // delivery: false,
-        // type: [],
         lifetime: '',
         number: '',
         depth: '',
         necessary: '',
         stay: ''
       },
-      form2: {}
+      form2: {
+        taskName:'',
+        timeStart:'',
+        timeEnd:'',
+      }
     }
   },
 
@@ -127,9 +128,12 @@ export default {
   },
 
   methods: {
-    onSubmit() {
-      console.log(this.form)
+    onRecord() {
+      console.log(this.form);
       console.log('submit!');
+    },
+    onCreateTask(){
+      console.log(this.form2);
     }
   },
 
@@ -146,7 +150,7 @@ export default {
 <style scoped>
 /deep/ .el-form{
   margin-bottom: 0;
-  height: 100%;
+  /*height: 100%;*/
 }
 
 .el-form-item {
@@ -168,7 +172,7 @@ export default {
   margin-bottom: 0;
   margin-top: 0;
   text-align: left;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 
@@ -200,7 +204,9 @@ export default {
   font-size: 10px !important;
 }
 
+/*分割线*/
 .el-divider--horizontal {
+  /*默认 width:100%*/
   margin: 8px 0;
   background: 0 0;
   border-top: 1px solid #d2d2d2;
@@ -209,6 +215,8 @@ export default {
 .bold-divider {
   border-top-width: 3px;
   border-top-color: black;
+  width:80%;
+  margin-left: 10%;
 }
 
 </style>
