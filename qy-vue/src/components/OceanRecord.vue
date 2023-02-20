@@ -5,7 +5,7 @@
         <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
           <el-radio-group v-model="form.operationType">
             <el-row class="content_center">
-              <el-form-item id="case_label" class="custom-form-item content_center" :label="`${case_label}`" style="width:100%"></el-form-item>
+              <el-form-item id="case_label" class="custom-form-item" :label="`${case_label}`" style="width:95%; margin-left:5% ;display: flex;align-items: center;"></el-form-item>
             </el-row>
             <el-divider class="bold-divider"></el-divider>
 
@@ -82,7 +82,8 @@
           </el-form-item>
         </el-row>
         <el-row class="input-content-right">
-          <el-button class="content_center" style="height: 30px; width: 40%; margin-bottom: 10px" @click="onCreateTask">Create Task
+          <el-button class="content_center" style="height: 30px; width: 40%; margin-bottom: 10px" @click="onCreateTask">
+            Create Task
           </el-button>
         </el-row>
       </el-row>
@@ -114,17 +115,21 @@ export default {
         stay: ''
       },
       form2: {
-        taskName:'',
-        timeStart:'',
-        timeEnd:'',
+        taskName: '',
+        timeStart: '',
+        timeEnd: '',
       }
     }
   },
 
   created() {
-    eventBus.$on('nodeSelected', (nodeName) => {
-      this.case_label = nodeName
-    })
+    // eventBus.$on('nodeSelected', (nodeName) => {
+    //   this.case_label = nodeName
+    // })
+    let digit = 2;
+    eventBus.$on('rectCreated', ({lon1, lat1, lon2, lat2}) => {
+      this.case_label = `(${lon1.toFixed(digit)}, ${lat1.toFixed(digit)}) -> (${lon2.toFixed(digit)}, ${lat2.toFixed(digit)})`
+    });
   },
 
   methods: {
@@ -135,7 +140,7 @@ export default {
         type: 'success'
       });
     },
-    onCreateTask(){
+    onCreateTask() {
       console.log(this.form2);
       this.$message({
         message: JSON.stringify(this.form2),
@@ -155,7 +160,7 @@ export default {
 
 
 <style scoped>
-/deep/ .el-form{
+/deep/ .el-form {
   margin-bottom: 0;
   /*height: 100%;*/
 }
@@ -163,7 +168,6 @@ export default {
 .el-form-item {
   margin-bottom: 0;
 }
-
 
 
 /deep/ .el-form-item__label {
@@ -175,7 +179,7 @@ export default {
   margin-bottom: 0;
   margin-top: 0;
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 
@@ -218,8 +222,8 @@ export default {
 .bold-divider {
   border-top-width: 3px;
   border-top-color: black;
-  width:80%;
-  margin-left: 10%;
+  width: 90%;
+  margin-left: 5%;
 }
 
 </style>

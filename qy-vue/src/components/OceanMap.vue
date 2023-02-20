@@ -15,7 +15,7 @@ export default {
     return {
       container_w: 0,
       container_h: 0,
-      originImage: require('@/assets/bg-blackwhite-1051.png'),
+      originImage: require('@/assets/bg1-30.png'),
       croppedImageUrl: '', // 裁剪后图片的路径
       imageWidth: 0, // 原始图片的宽度
       imageHeight: 0, // 原始图片的高度
@@ -26,7 +26,8 @@ export default {
       startX: 400,  // 裁剪区域左上角 x 坐标
       startY: 200,  // 裁剪区域左上角 y 坐标
       ratio: 0, // 原始图片宽高比例
-      case: 1,
+      case: 0,
+      // rect: null,
     };
   },
 
@@ -44,14 +45,13 @@ export default {
       };
     },
 
-    handleClick(){
-      const target = d3.select(event.target);
-      this.selectNode(target.attr("name"));
-    },
-    selectNode(nodeName){  // 发送到 Record界面显示
-      eventBus.$emit('nodeSelected', nodeName);
-    }
-
+    // handleClick(){
+    //   const target = d3.select(event.target);
+    //   this.selectNode(target.attr("name"));
+    // },
+    // selectNode(nodeName){  // 发送到 Record界面显示
+    //   eventBus.$emit('nodeSelected', nodeName);
+    // },
 
   },
 
@@ -101,7 +101,7 @@ export default {
 
                   // 映射 + 偏移修正
                   let [x, y] = lonlat2imgxy(lon, lat, this.imageWidth, this.imageHeight);
-                  x = x - this.startX + 5;
+                  x = x - this.startX;
                   y = y - this.startY;
 
                   // 显示图形
@@ -113,8 +113,8 @@ export default {
                       .attr('name', name)
                       .style('fill', color)
                       .style('opacity', 0.5)
-                      .style('cursor', 'pointer')
-                      .on('click', this.handleClick.bind(this))
+                      // .style('cursor', 'pointer')
+                      // .on('click', this.handleClick.bind(this))
 
                   // 显示文字
                   svg.append("text")
@@ -207,7 +207,7 @@ export default {
 
                   // 映射 + 偏移修正
                   let [x, y] = lonlat2imgxy(lon, lat, this.imageWidth, this.imageHeight);
-                  x = x - this.startX + 10;
+                  x = x - this.startX;
                   y = y - this.startY;
 
 
@@ -220,8 +220,8 @@ export default {
                       .attr('name', name)
                       .style('fill', color)
                       .style('opacity', 1)
-                      .style('cursor', 'pointer')
-                      .on('click', this.handleClick.bind(this))
+                      // .style('cursor', 'pointer')
+                      // .on('click', this.handleClick.bind(this))
                 }
               })
               .catch(error => {
@@ -229,9 +229,51 @@ export default {
               });
         }
 
+        let rect = null;
+        let x1, y1, x2, y2;
+        let that = this;  // 作用域
+
+        // 鼠标拖动事件
+        svg.on("mousedown", function() {
+          // 清除上一次的矩形
+          if (rect) rect.remove();
+
+          [x1, y1] = d3.pointer(event);
+          rect = svg.append("rect")
+              .attr("x", x1)
+              .attr("y", y1)
+              .attr("width", 0)
+              .attr("height", 0)
+              .attr("stroke", "black")
+              .attr("stroke-width", 2)
+              .attr("fill", "none");
+
+          svg.on("mousemove", function() {
+            [x2, y2] = d3.pointer(event);
+            rect.attr("x", Math.min(x1, x2))
+                .attr("y", Math.min(y1, y2))
+                .attr("width", Math.abs(x2 - x1))
+                .attr("height", Math.abs(y2 - y1));
+          });
+
+          svg.on("mouseup", function() {
+            svg.on("mousemove", null);
+            svg.on("mouseup", null);
+
+            // 换算经纬度
+            let [lon1, lat1] = imgxy2lonlat(x1 + that.startX, y1 + that.startY, that.imageWidth, that.imageHeight)
+            let [lon2, lat2] = imgxy2lonlat(x2 + that.startX, y2 + that.startY, that.imageWidth, that.imageHeight)
+
+            eventBus.$emit('rectCreated', {
+              lon1: lon1,
+              lat1: lat1,
+              lon2: lon2,
+              lat2: lat2,
+            });
+          });
 
 
-
+        });
       })
     };
 
