@@ -15,7 +15,7 @@ export default {
     return {
       container_w: 0,
       container_h: 0,
-      originImage: require('@/assets/bg-30.png'),
+      originImage: require('@/assets/bg-blackwhite-1051.png'),
       croppedImageUrl: '', // 裁剪后图片的路径
       imageWidth: 0, // 原始图片的宽度
       imageHeight: 0, // 原始图片的高度
@@ -26,7 +26,7 @@ export default {
       startX: 400,  // 裁剪区域左上角 x 坐标
       startY: 200,  // 裁剪区域左上角 y 坐标
       ratio: 0, // 原始图片宽高比例
-      case: 0,
+      case: 1,
     };
   },
 
@@ -101,7 +101,7 @@ export default {
 
                   // 映射 + 偏移修正
                   let [x, y] = lonlat2imgxy(lon, lat, this.imageWidth, this.imageHeight);
-                  x = x - this.startX;
+                  x = x - this.startX + 5;
                   y = y - this.startY;
 
                   // 显示图形
@@ -112,7 +112,7 @@ export default {
                       .attr('id', id)
                       .attr('name', name)
                       .style('fill', color)
-                      .style('opacity', 0.3)
+                      .style('opacity', 0.5)
                       .style('cursor', 'pointer')
                       .on('click', this.handleClick.bind(this))
 
@@ -122,7 +122,7 @@ export default {
                       .attr("y", y + radian / 3)
                       .attr("text-anchor", "middle")
                       .attr('font-size', '14px')
-                      .style('fill', 'white')
+                      .style('fill', 'black')
                       .style('pointer-events','none')
                       .text(display_name);
                 }
@@ -160,7 +160,8 @@ export default {
                 svg.append('path')
                     .attr('d', arrowPath)
                     .attr('marker-end', 'url(#arrow)')
-                    .attr('stroke', 'cyan')
+                    .attr('stroke', '#FFA500')
+                    .attr('stroke-width', 2)
                 ;
 
                 // 在 SVG 中添加箭头定义
@@ -175,7 +176,7 @@ export default {
                     .attr('orient', 'auto-start-reverse')
                     .append('path')
                     .attr('d', 'M 0 0 L 10 5 L 0 10 z')
-                    .style('fill', 'white');
+                    .style('fill', '#FFA500');
               }
 
             }).catch(error => {
@@ -219,6 +220,7 @@ export default {
                       .attr('name', name)
                       .style('fill', color)
                       .style('opacity', 1)
+                      .style('cursor', 'pointer')
                       .on('click', this.handleClick.bind(this))
                 }
               })

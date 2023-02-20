@@ -1,9 +1,7 @@
 <template>
   <el-form style="height: 100%; background-color: #42b983;display:flex;" :model="form3">
-    <el-col :span="15" style="flex-grow:1">
-      <div class="background-image-module" :style="{ backgroundImage: `url(${backgroundImage})`}"></div>
-    </el-col>
-    <el-col class="flex_column" :span="9" style="flex-grow:1;height: 100%">
+
+    <el-col class="flex_column" :span="8" style="flex-grow:1;height: 100%">
       <el-row class="flex_column" style="flex-grow:1; background-color: blueviolet;">
         <el-row class="height_adjust_equal content_center">
           <el-radio v-model="form3.dateType" label="Year">Year</el-radio>
@@ -34,6 +32,9 @@
         </el-row>
       </el-row>
 
+    </el-col>
+    <el-col :span="16" style="flex-grow:1">
+      <div class="background-image-module" :style="{ backgroundImage: `url(${backgroundImage})`}"></div>
     </el-col>
   </el-form>
 </template>

@@ -3,7 +3,7 @@
     <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 45%">
       <el-row class="flex_row" style="background-color: #42b983">
         <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
-          <el-radio-group v-model="form.operation_type">
+          <el-radio-group v-model="form.operationType">
             <el-row class="content_center">
               <el-form-item id="case_label" class="custom-form-item content_center" :label="`${case_label}`" style="width:100%"></el-form-item>
             </el-row>
@@ -106,7 +106,7 @@ export default {
       case_label: " ",  // 默认一个空格
       form: {
         name: '',
-        operation_type: '',
+        operationType: '',
         lifetime: '',
         number: '',
         depth: '',
