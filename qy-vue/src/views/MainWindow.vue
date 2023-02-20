@@ -38,8 +38,8 @@
               </div>
             </el-row>
             <el-row>
-              <div :style="{backgroundColor: 'brown', height: middleTwoHeight + 'vh', marginBottom: 10 +'px'}">
-
+              <div :style="{height: middleTwoHeight + 'vh', marginBottom: 10 +'px'}">
+                <middle-two/>
               </div>
 
             </el-row>
@@ -77,10 +77,11 @@ import OceanMap from "@/components/OceanMap.vue";
 import OceanRecord from "@/components/OceanRecord.vue";
 import MiddleOne from "@/components/MiddleOne.vue";
 import MiddleThree from "@/components/MiddleThree.vue";
+import MiddleTwo from "@/components/MiddleTwo.vue";
 
 export default {
   name: "MainWindow.vue",
-  components: {MiddleThree, MiddleOne, OceanRecord, OceanMap},
+  components: {MiddleTwo, MiddleThree, MiddleOne, OceanRecord, OceanMap},
 
   data() {
     return {
@@ -103,10 +104,10 @@ export default {
       return this.cardContentHeight * 8 / 16;
     },
     middleTwoHeight() {
-      return this.cardContentHeight * 1.5 / 16;
+      return this.cardContentHeight * 2 / 16;
     },
     middleThreeHeight() {
-      return this.cardContentHeight * 6 / 16;
+      return this.cardContentHeight * 5.5 / 16;
     },
   }
 }

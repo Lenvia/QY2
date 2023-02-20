@@ -207,7 +207,7 @@ export default {
 
                   // 映射 + 偏移修正
                   let [x, y] = lonlat2imgxy(lon, lat, this.imageWidth, this.imageHeight);
-                  x = x - this.startX;
+                  x = x - this.startX + 10;
                   y = y - this.startY;
 
 
