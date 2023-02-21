@@ -5,7 +5,8 @@
         <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
           <el-radio-group v-model="form.operationType">
             <el-row class="content_center">
-              <el-form-item id="case_label" class="custom-form-item" :label="`${case_label}`" style="width:95%; margin-left:5% ;display: flex;align-items: center;"></el-form-item>
+              <el-form-item id="case_label" class="custom-form-item" :label="`${case_label}`"
+                            style="width:95%; margin-left:5% ;display: flex;align-items: center;"></el-form-item>
             </el-row>
             <el-divider class="bold-divider"></el-divider>
 
@@ -128,7 +129,10 @@ export default {
     // })
     let digit = 2;
     eventBus.$on('rectCreated', ({lon1, lat1, lon2, lat2}) => {
-      this.case_label = `(${lon1.toFixed(digit)}, ${lat1.toFixed(digit)}) -> (${lon2.toFixed(digit)}, ${lat2.toFixed(digit)})`
+      console.log(lon1, lat1, lon2, lat2);
+      if (isNaN(lon1) || isNaN(lat1) || isNaN(lon2) || isNaN(lat2)) this.case_label = " ";
+      else
+        this.case_label = `(${lon1.toFixed(digit)}, ${lat1.toFixed(digit)}) -> (${lon2.toFixed(digit)}, ${lat2.toFixed(digit)})`
     });
   },
 

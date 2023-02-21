@@ -7,7 +7,8 @@
 import * as d3 from 'd3';
 import axios from 'axios';
 import {lonlat2imgxy, imgxy2lonlat} from '@/utils/utils';
-import { eventBus } from '@/plugin/event-bus'
+import {eventBus} from '@/plugin/event-bus'
+
 export default {
   name: "OceanMap",
 
@@ -26,7 +27,7 @@ export default {
       startX: 400,  // 裁剪区域左上角 x 坐标
       startY: 200,  // 裁剪区域左上角 y 坐标
       ratio: 0, // 原始图片宽高比例
-      case: 0,
+      case: 1,
       // rect: null,
     };
   },
@@ -80,7 +81,7 @@ export default {
             .attr('width', this.container_w)
             .attr('height', this.container_h);
 
-        if(this.case === 0) {
+        if (this.case === 0) {
           axios.get('/geneFlowNode.json')
               .then(response => {
                 const json_data = response.data;
@@ -113,8 +114,8 @@ export default {
                       .attr('name', name)
                       .style('fill', color)
                       .style('opacity', 0.5)
-                      // .style('cursor', 'pointer')
-                      // .on('click', this.handleClick.bind(this))
+                  // .style('cursor', 'pointer')
+                  // .on('click', this.handleClick.bind(this))
 
                   // 显示文字
                   svg.append("text")
@@ -123,7 +124,7 @@ export default {
                       .attr("text-anchor", "middle")
                       .attr('font-size', '14px')
                       .style('fill', 'black')
-                      .style('pointer-events','none')
+                      .style('pointer-events', 'none')
                       .text(display_name);
                 }
               })
@@ -183,8 +184,7 @@ export default {
               console.log(error);
             })
           });
-        }
-        else{
+        } else {
           axios.get('/habitatNode.json')
               .then(response => {
                 const json_data = response.data;
@@ -220,8 +220,8 @@ export default {
                       .attr('name', name)
                       .style('fill', color)
                       .style('opacity', 1)
-                      // .style('cursor', 'pointer')
-                      // .on('click', this.handleClick.bind(this))
+                  // .style('cursor', 'pointer')
+                  // .on('click', this.handleClick.bind(this))
                 }
               })
               .catch(error => {
@@ -234,7 +234,7 @@ export default {
         let that = this;  // 作用域
 
         // 鼠标拖动事件
-        svg.on("mousedown", function() {
+        svg.on("mousedown", function () {
           // 清除上一次的矩形
           if (rect) rect.remove();
 
@@ -248,7 +248,7 @@ export default {
               .attr("stroke-width", 2)
               .attr("fill", "none");
 
-          svg.on("mousemove", function() {
+          svg.on("mousemove", function () {
             [x2, y2] = d3.pointer(event);
             rect.attr("x", Math.min(x1, x2))
                 .attr("y", Math.min(y1, y2))
@@ -256,28 +256,39 @@ export default {
                 .attr("height", Math.abs(y2 - y1));
           });
 
-          svg.on("mouseup", function() {
+          svg.on("mouseup", function () {
             svg.on("mousemove", null);
             svg.on("mouseup", null);
 
-            // 换算经纬度
-            let [lon1, lat1] = imgxy2lonlat(x1 + that.startX, y1 + that.startY, that.imageWidth, that.imageHeight)
-            let [lon2, lat2] = imgxy2lonlat(x2 + that.startX, y2 + that.startY, that.imageWidth, that.imageHeight)
+            if ([x1, y1, x2, y2].every((value) => value !== undefined)) {  // 否定单点事件
+              // 换算经纬度
+              let [lon1, lat1] = imgxy2lonlat(x1 + that.startX, y1 + that.startY, that.imageWidth, that.imageHeight)
+              let [lon2, lat2] = imgxy2lonlat(x2 + that.startX, y2 + that.startY, that.imageWidth, that.imageHeight)
 
-            eventBus.$emit('rectCreated', {
-              lon1: lon1,
-              lat1: lat1,
-              lon2: lon2,
-              lat2: lat2,
-            });
+              eventBus.$emit('rectCreated', {
+                lon1: lon1,
+                lat1: lat1,
+                lon2: lon2,
+                lat2: lat2,
+              });
+
+              x1 = y1 = x2 = y2 = undefined;  // 清除
+
+            }
+            else{
+              eventBus.$emit('rectCreated', {
+                lon1: NaN,
+                lat1: NaN,
+                lon2: NaN,
+                lat2: NaN,
+              });
+            }
           });
 
 
         });
       })
     };
-
-
 
 
   }
