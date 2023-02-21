@@ -28,8 +28,26 @@ export default {
       startY: 200,  // 裁剪区域左上角 y 坐标
       ratio: 0, // 原始图片宽高比例
       case: 1,
-      // rect: null,
+      rect: null,
+      rectStrokeColor: 'black',
     };
+  },
+
+  created() {
+    eventBus.$on('operationTypeChange', value => {
+      // 修改变量
+      if (this.rect) {
+        if (value === 'Start Region'){
+          this.rectStrokeColor = 'red';
+        }
+        else {
+          this.rectStrokeColor = 'blue';
+        }
+        this.rect.attr("stroke", this.rectStrokeColor);
+      }
+    })
+
+
   },
 
   methods: {
@@ -229,28 +247,27 @@ export default {
               });
         }
 
-        let rect = null;
         let x1, y1, x2, y2;
         let that = this;  // 作用域
 
         // 鼠标拖动事件
         svg.on("mousedown", function () {
           // 清除上一次的矩形
-          if (rect) rect.remove();
+          if (that.rect) that.rect.remove();
 
           [x1, y1] = d3.pointer(event);
-          rect = svg.append("rect")
+          that.rect = svg.append("rect")
               .attr("x", x1)
               .attr("y", y1)
               .attr("width", 0)
               .attr("height", 0)
-              .attr("stroke", "black")
+              .attr("stroke", that.rectStrokeColor)
               .attr("stroke-width", 2)
               .attr("fill", "none");
 
           svg.on("mousemove", function () {
             [x2, y2] = d3.pointer(event);
-            rect.attr("x", Math.min(x1, x2))
+            that.rect.attr("x", Math.min(x1, x2))
                 .attr("y", Math.min(y1, y2))
                 .attr("width", Math.abs(x2 - x1))
                 .attr("height", Math.abs(y2 - y1));
@@ -274,8 +291,7 @@ export default {
 
               x1 = y1 = x2 = y2 = undefined;  // 清除
 
-            }
-            else{
+            } else {
               eventBus.$emit('rectCreated', {
                 lon1: NaN,
                 lat1: NaN,

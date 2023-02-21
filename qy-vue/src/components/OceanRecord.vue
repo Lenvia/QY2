@@ -3,7 +3,7 @@
     <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 45%">
       <el-row class="flex_row" style="background-color: #42b983">
         <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
-          <el-radio-group v-model="form.operationType">
+          <el-radio-group v-model="form.operationType" @change="handleChange">
             <el-row class="content_center">
               <el-form-item id="case_label" class="custom-form-item" :label="`${case_label}`"
                             style="width:95%; margin-left:5% ;display: flex;align-items: center;"></el-form-item>
@@ -48,7 +48,9 @@
         </el-col>
         <el-col :span="10" class="height_adjust_equal flex_column" style="height: 100%">
           <el-row class="content_center" style="flex-grow: 8">
-            <div style="background-color: blueviolet; height: 90%; width: 80%">123</div>
+            <div style="background-color: blueviolet; height: 90%; width: 80%">
+              <textarea ref="inner" style="width: 100%; height: 100%; resize: none; border: none;" readonly></textarea>
+            </div>
           </el-row>
           <el-row class="content_center" style="flex-grow: 1">
             <el-button class="content_center" @click="onRecord" style="height: 50%; width: 80%">Record</el-button>
@@ -129,7 +131,7 @@ export default {
     // })
     let digit = 2;
     eventBus.$on('rectCreated', ({lon1, lat1, lon2, lat2}) => {
-      console.log(lon1, lat1, lon2, lat2);
+      // console.log(lon1, lat1, lon2, lat2);
       if (isNaN(lon1) || isNaN(lat1) || isNaN(lon2) || isNaN(lat2)) this.case_label = " ";
       else
         this.case_label = `(${lon1.toFixed(digit)}, ${lat1.toFixed(digit)}) -> (${lon2.toFixed(digit)}, ${lat2.toFixed(digit)})`
@@ -143,6 +145,9 @@ export default {
         message: JSON.stringify(this.form),
         type: 'success'
       });
+      this.$refs.inner.value += JSON.stringify(this.form)
+      this.$refs.inner.value += '\n\n'
+      this.$refs.inner.scrollTop = this.$refs.inner.scrollHeight;
     },
     onCreateTask() {
       console.log(this.form2);
@@ -150,12 +155,17 @@ export default {
         message: JSON.stringify(this.form2),
         type: 'success'
       });
-    }
+    },
+
+    handleChange(value) {
+      // console.log('当前选项的值是：', value);
+      eventBus.$emit('operationTypeChange', value);
+    },
   },
 
   mounted() {
     this.$nextTick(function () {
-
+      this.$refs.inner.value = ''; // 初始值
     });
   },
 
