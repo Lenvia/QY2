@@ -1,10 +1,10 @@
 <template>
-  <el-form style="height: 100%; background-color: #42b983;display:flex;" :model="form3">
+  <el-form style="height: 100%; background-color: #d2d2d2;display:flex;" :model="form3">
 
     <!--左侧输入框-->
     <el-col class="flex_column" :span="8" style="flex-grow:1;height: 100%">
       <!--左侧上框-->
-      <el-row class="flex_column" style="flex-grow:1; background-color: beige;">
+      <el-row class="flex_column" style="flex-grow:1; background-color: beige;height: 50%">
         <!--ymd-->
         <el-row class="height_adjust_equal content_center">
           <el-radio v-model="form3.dateType" label="Year">Year</el-radio>
@@ -69,7 +69,10 @@
       </el-row>
 
       <!--左侧下框-->
-      <el-row class="flex_column" style="flex-grow:2;">
+      <el-row class="flex_column" style="flex-grow:1;height: 50%">
+        <div ref="chartContainer" style="height: 100%; width: 100%">
+          <div ref="pieChart" class="content_center"></div>
+        </div>
 
 
       </el-row>
@@ -83,6 +86,7 @@
 </template>
 
 <script>
+import * as d3 from "d3";
 export default {
   name: "MiddleOne",
   data() {
@@ -95,7 +99,15 @@ export default {
         stayDays: '',
         entranceDay1: '',
         entranceDay2: '',
-      }
+      },
+      chartData: [
+        { label: 'A', value: 20 },
+        { label: 'B', value: 30 },
+        { label: 'C', value: 50 },
+      ],
+      chartSize: 0,
+      chartRadius: 0,
+      chartColors: d3.scaleOrdinal(d3.schemeCategory10),
     };
   },
 
@@ -105,7 +117,48 @@ export default {
         message: JSON.stringify(this.form3),
         type: 'success'
       });
-    }
+    },
+
+    drawChart() {
+    this.chartSize = Math.min(this.$refs.chartContainer.clientWidth, this.$refs.chartContainer.clientHeight);
+    console.log(this.$refs.chartContainer.clientWidth, this.$refs.chartContainer.clientHeight);
+    this.chartRadius = this.chartSize* 0.4;
+
+      const svg = d3.select(this.$refs.pieChart)
+          .append('svg')
+          .attr('width', this.chartSize)
+          .attr('height', this.chartSize);
+
+      const g = svg.append('g')
+          .attr('transform', `translate(${this.chartSize / 2}, ${this.chartSize / 2})`);
+
+      const pie = d3.pie()
+          .sort(null)
+          .value(d => d.value);
+
+      const path = d3.arc()
+          .outerRadius(this.chartRadius)
+          .innerRadius(0);
+
+      const arc = g.selectAll('.arc')
+          .data(pie(this.chartData))
+          .enter()
+          .append('g')
+          .attr('class', 'arc');
+
+      arc.append('path')
+          .attr('d', path)
+          .attr('fill', (d, i) => this.chartColors(i));
+
+      arc.append('text')
+          .attr('transform', d => `translate(${path.centroid(d)})`)
+          .attr('dy', '0.35em')
+          .text(d => d.data.label);
+    },
+  },
+
+  mounted() {
+    this.drawChart();
   }
 }
 </script>
