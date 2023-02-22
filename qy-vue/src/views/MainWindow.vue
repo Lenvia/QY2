@@ -120,6 +120,7 @@ export default {
 /*  background-color: transparent !important;*/
 /*}*/
 
+/*输入（日期）框*/
 .el-input__inner {
   height: 30px;
   line-height: 30px;
@@ -147,6 +148,19 @@ export default {
   justify-content: center;
   align-items: center;
 }
+/* 内容仅垂直居中 */
+.content_vertical_center {
+  display: flex;
+  align-items: center;
+}
+
+
+/*不会随着空格换行*/
+.el-form-item__label {
+  white-space: nowrap;
+  font-size: 14px;
+}
+
 
 /*清除日期输入框前面的icon*/
 .el-input__icon{
@@ -154,6 +168,10 @@ export default {
 }
 .el-input--prefix .el-input__inner{
   padding-left: 5px;
+}
+
+.el-input--suffix .el-input__inner{
+  padding-right: 5px;
 }
 
 
@@ -175,10 +193,5 @@ export default {
   margin-right: 15px;
 }
 
-/*已在钩子函数中自适应*/
-/*#OceanMap {*/
-/*  width: 0;*/
-/*  height: 0;*/
-/*}*/
 
 </style>

@@ -195,10 +195,6 @@ export default {
 }
 
 
-/deep/ .el-form-item__label {
-  white-space: nowrap
-}
-
 /deep/ .custom-form-item .el-form-item__label {
   height: 25px;
   margin-bottom: 0;
