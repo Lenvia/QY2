@@ -1,7 +1,9 @@
 <template>
   <el-row class="flex_column" style="height: 100%">
-    <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 45%">
+    <!--Record-->
+    <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 50%">
       <el-row class="flex_row" style="background-color: #42b983">
+        <!--Record左侧框-->
         <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
           <el-radio-group v-model="form.operationType" @change="handleChange">
             <el-row class="content_center">
@@ -20,32 +22,39 @@
               </el-form-item>
             </el-row>
             <el-row class="input-content-right">
-              <el-form-item class="custom-form" label="number" style="padding: 0">
+              <el-form-item class="custom-form" label="number">
                 <input class="input-box" v-model="form.number"/>
               </el-form-item>
             </el-row>
             <el-row class="input-content-right">
-              <el-form-item class="custom-form" style="margin-bottom: 10px" label="depth">
+              <el-form-item class="custom-form" label="depth">
                 <input class="input-box" v-model="form.depth"/>
               </el-form-item>
             </el-row>
+            <el-row class="input-content-right">
+              <el-form-item class="custom-form" label="interval">
+                <input class="input-box" v-model="form.interval"/>
+              </el-form-item>
+            </el-row>
+            <el-row class="input-content-right">
+              <el-form-item class="custom-form" style="margin-bottom: 10px" label="extend">
+                <input class="input-box" v-model="form.extend"/>
+              </el-form-item>
+            </el-row>
+
 
 
             <el-row class="ratio-content-left">
               <el-radio label="Analysis Region"></el-radio>
             </el-row>
-
             <el-row class="input-content-right">
-              <el-checkbox label="necessary" v-model="form.necessary" name="type"></el-checkbox>
-            </el-row>
-
-            <el-row class="input-content-right">
-              <el-form-item class="custom-form" label="stay">
-                <input class="input-box" v-model="form.stay"/>
+              <el-form-item class="custom-form"  label="extend">
+                <input class="input-box" v-model="form.extend"/>
               </el-form-item>
             </el-row>
           </el-radio-group>
         </el-col>
+        <!--Record右侧框-->
         <el-col :span="10" class="height_adjust_equal flex_column" style="height: 100%">
           <el-row class="content_center" style="flex-grow: 8">
             <div style="background-color: blueviolet; height: 90%; width: 80%">
@@ -57,42 +66,44 @@
           </el-row>
         </el-col>
       </el-row>
-
     </el-form>
-    <el-divider></el-divider>
-    <el-form class="flex_column" ref="form2" :model="form2" label-width="80px" style="height: 50%">
 
-      <el-row style="background-color: darkkhaki">
-        <el-row class="">
+    <el-divider></el-divider>
+    <!--Task-->
+    <el-form class="flex_column" ref="form2" :model="form2" label-width="80px" style="height: 45%">
+
+      <el-row style="background-color: darkkhaki; flex-grow: 0">
+        <!--TaskName-->
+        <el-row>
           <el-form-item class="custom-form" label="Task Name">
             <input class="input-box" v-model="form2.taskName"/>
           </el-form-item>
         </el-row>
-
+        <!--TimeRange-->
         <el-row>
           <el-form-item class="custom-form" label="Time Range">
-            <el-col :span="11" class="content_center">
-              <el-date-picker class="date-picker" type="date" icon="none" value-format="yyyy-MM-dd"
+            <el-col :span="10" class="content_center">
+              <el-date-picker type="month" value-format="yyyy-MM"
                               v-model="form2.timeStart" style="width: 100%;"></el-date-picker>
             </el-col>
 
             <el-col class="line" :span="2" style="display:flex; justify-content: center;">-</el-col>
 
-            <el-col :span="11" class="content_center">
-              <el-date-picker class="date-picker" type="date" icon="none" value-format="yyyy-MM-dd"
+            <el-col :span="10" class="content_center">
+              <el-date-picker type="month" value-format="yyyy-MM"
                               v-model="form2.timeEnd" style="width: 100%;"></el-date-picker>
             </el-col>
           </el-form-item>
         </el-row>
         <el-row class="input-content-right">
-          <el-button class="content_center" style="height: 30px; width: 40%; margin-bottom: 10px" @click="onCreateTask">
+          <el-button class="content_center" style="height: 25px; width: 40%; margin-bottom: 10px" @click="onCreateTask">
             Create Task
           </el-button>
         </el-row>
       </el-row>
 
       <el-row class="content_center" style="flex-grow: 3">
-        <div style="background-color: blueviolet; height: 90%; width: 95%">123</div>
+        <div style="background-color: blueviolet; height: 95%; width: 95%">123</div>
       </el-row>
 
     </el-form>
@@ -111,11 +122,11 @@ export default {
       form: {
         name: '',
         operationType: '',
-        lifetime: '',
+        lifetime: 360,
         number: '',
         depth: '',
-        necessary: '',
-        stay: ''
+        interval: '',
+        extend: '',
       },
       form2: {
         taskName: '',
@@ -215,14 +226,14 @@ export default {
 
 .custom-form {
   height: 25px;
-  margin-bottom: 5px;
+  margin-bottom: 1px;
 }
 
 .date-picker {
   justify-content: center;
   align-items: center;
   height: 10px !important;
-  font-size: 10px !important;
+  font-size: 18px !important;
 }
 
 /*分割线*/
