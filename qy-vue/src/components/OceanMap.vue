@@ -37,10 +37,9 @@ export default {
     eventBus.$on('operationTypeChange', value => {
       // 修改变量
       if (this.rect) {
-        if (value === 'Start Region'){
+        if (value === 'Start Region') {
           this.rectStrokeColor = 'red';
-        }
-        else {
+        } else {
           this.rectStrokeColor = 'blue';
         }
         this.rect.attr("stroke", this.rectStrokeColor);
@@ -71,6 +70,31 @@ export default {
     // selectNode(nodeName){  // 发送到 Record界面显示
     //   eventBus.$emit('nodeSelected', nodeName);
     // },
+
+    getEndpointCoordinates(x1, y1, x2, y2, bias, bias2) {
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      const cosTheta = Math.cos(angle);
+      const sinTheta = Math.sin(angle);
+
+      const biasX = bias * cosTheta;
+      const biasY = bias * sinTheta;
+
+
+      const bias2X = bias2 * sinTheta;  // 注意是 sin
+      const bias2Y = bias2 * cosTheta;
+
+
+
+      // 注意 point1 和 point2 应该保持相同的 bias2 偏移，因为它是线段的两端，线段是平移的！
+      // 至于为什么 x 需要 + bias2X 而 y 需要 -bias2Y，结合图来看
+      let [point1, point2] = [[x1 + biasX + bias2X, y1 + biasY - bias2Y],
+        [x2 - biasX + bias2X, y2 - biasY - bias2Y],
+      ];
+
+      return [point1, point2];
+    },
+
+
 
   },
 
@@ -163,17 +187,11 @@ export default {
                 let p2_x = parseFloat(d3.select("#node" + node2).attr('cx'));
                 let p2_y = parseFloat(d3.select("#node" + node2).attr('cy'));
 
-                let bias = 10
-                if (p1_x < p2_x) {
-                  p1_x += bias;
-                  p2_x -= bias;
-                } else if (p1_x > p2_x) {
-                  p1_x -= bias;
-                  p2_x += bias;
-                }
+                let bias = 15, bias2 = 5;
+                // let [point1, point2] = this.getEndpointCoordinates(p1_x, p1_y, p2_x, p2_y, bias);
+                let [point1, point2] = this.getEndpointCoordinates(p1_x, p1_y, p2_x, p2_y, bias, bias2);
 
-
-                const arrowPath = `M${p1_x},${p1_y} L${p2_x},${p2_y}`;
+                const arrowPath = `M${point1[0]},${point1[1]} L${point2[0]},${point2[1]}`;
 
                 // 在 SVG 中添加箭头
                 svg.append('path')
@@ -190,8 +208,8 @@ export default {
                     .attr('viewBox', '0 0 10 10')
                     .attr('refX', 8)
                     .attr('refY', 5)
-                    .attr('markerWidth', 6)
-                    .attr('markerHeight', 6)
+                    .attr('markerWidth', 4)
+                    .attr('markerHeight', 4)
                     .attr('orient', 'auto-start-reverse')
                     .append('path')
                     .attr('d', 'M 0 0 L 10 5 L 0 10 z')
