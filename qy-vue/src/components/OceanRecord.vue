@@ -56,9 +56,10 @@
         </el-col>
         <!--Record右侧框-->
         <el-col :span="10" class="height_adjust_equal flex_column" style="height: 100%">
+          <!--记录框-->
           <el-row class="content_center" style="flex-grow: 8">
             <div style="background-color: blueviolet; height: 90%; width: 80%">
-              <textarea ref="inner" style="width: 100%; height: 100%; resize: none; border: none;" readonly></textarea>
+              <textarea ref="recordBox" style="width: 100%; height: 100%; resize: none; border-width: 2px" readonly></textarea>
             </div>
           </el-row>
           <el-row class="content_center" style="flex-grow: 1">
@@ -103,7 +104,9 @@
       </el-row>
 
       <el-row class="content_center" style="flex-grow: 3">
-        <div style="background-color: blueviolet; height: 95%; width: 95%">123</div>
+        <div style="background-color: blueviolet; height: 95%; width: 95%">
+          <textarea ref="taskBox" style="width: 100%; height: 95%; resize: none; border-width: 2px" readonly></textarea>
+        </div>
       </el-row>
 
     </el-form>
@@ -112,6 +115,7 @@
 
 <script>
 import {eventBus} from '@/plugin/event-bus'
+import {task} from "@vue/cli-plugin-eslint/ui/taskDescriptor";
 
 export default {
   name: "OceanRecord",
@@ -120,7 +124,7 @@ export default {
     return {
       case_label: " ",  // 默认一个空格
       form: {
-        name: '',
+        region: [],
         operationType: '',
         lifetime: 360,
         number: '',
@@ -143,9 +147,14 @@ export default {
     let digit = 2;
     eventBus.$on('rectCreated', ({lon1, lat1, lon2, lat2}) => {
       // console.log(lon1, lat1, lon2, lat2);
-      if (isNaN(lon1) || isNaN(lat1) || isNaN(lon2) || isNaN(lat2)) this.case_label = " ";
-      else
-        this.case_label = `(${lon1.toFixed(digit)}, ${lat1.toFixed(digit)}) -> (${lon2.toFixed(digit)}, ${lat2.toFixed(digit)})`
+      if (isNaN(lon1) || isNaN(lat1) || isNaN(lon2) || isNaN(lat2)){
+        this.case_label = " ";
+        this.form.region = [];
+      }
+      else {
+        this.case_label = `(${lon1.toFixed(digit)}, ${lat1.toFixed(digit)}) -> (${lon2.toFixed(digit)}, ${lat2.toFixed(digit)})`;
+        this.form.region = [lon1.toFixed(digit), lat1.toFixed(digit), lon2.toFixed(digit), lat2.toFixed(digit)];
+      }
     });
   },
 
@@ -156,9 +165,9 @@ export default {
         message: JSON.stringify(this.form),
         type: 'success'
       });
-      this.$refs.inner.value += JSON.stringify(this.form)
-      this.$refs.inner.value += '\n\n'
-      this.$refs.inner.scrollTop = this.$refs.inner.scrollHeight;
+      this.$refs.recordBox.value += JSON.stringify(this.form);
+      this.$refs.recordBox.value += '\n\n';
+      this.$refs.recordBox.scrollTop = this.$refs.recordBox.scrollHeight;
     },
     onCreateTask() {
       console.log(this.form2);
@@ -166,6 +175,15 @@ export default {
         message: JSON.stringify(this.form2),
         type: 'success'
       });
+
+      this.$refs.taskBox.value = "";  // 清空上一个task的内容
+      this.$refs.taskBox.value = this.$refs.taskBox.value + "Creating task: " + `${this.form2.taskName}` + " ......\n";
+      // 进行一些操作
+      // 把task和recordBox 的内容发送给后端
+      console.log(this.$refs.recordBox.value, JSON.stringify(this.form2));
+      // ...
+      this.$refs.taskBox.value += "The task is created!";
+
     },
 
     handleChange(value) {
@@ -176,7 +194,7 @@ export default {
 
   mounted() {
     this.$nextTick(function () {
-      this.$refs.inner.value = ''; // 初始值
+      this.$refs.recordBox.value = ''; // 初始值
     });
   },
 

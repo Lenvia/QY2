@@ -27,7 +27,7 @@ export default {
       startX: 400,  // 裁剪区域左上角 x 坐标
       startY: 200,  // 裁剪区域左上角 y 坐标
       ratio: 0, // 原始图片宽高比例
-      case: 1,
+      case: 0,
       rect: null,
       rectStrokeColor: 'black',
     };

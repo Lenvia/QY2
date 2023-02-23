@@ -102,8 +102,7 @@ export default {
       },
       chartData: [
         { label: 'A', value: 20 },
-        { label: 'B', value: 30 },
-        { label: 'C', value: 50 },
+        { label: 'B', value: 80 },
       ],
       chartSize: 0,
       chartRadius: 0,
