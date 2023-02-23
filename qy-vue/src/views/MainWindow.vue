@@ -5,7 +5,7 @@
       <el-col :span="5" class="col-window" style="background-color: aquamarine">
         <el-card class="box-card">
           <div slot="header">
-            <span>LeftWindow</span>
+            <span>Task View</span>
           </div>
           <div :style="{height: cardContentHeight + 'vh'}">
             <el-row ref="container" style="background-color: blueviolet; height: 35vh">
@@ -28,7 +28,7 @@
       <el-col :span="12" class="col-window" style="background-color: darkkhaki">
         <el-card class="box-card">
           <div slot="header">
-            <span>MiddleWindow</span>
+            <span>Statistic View</span>
           </div>
 
           <div :style="{height: cardContentHeight + 'vh'}">
@@ -55,7 +55,7 @@
       <el-col :span="6" class="col-window" style="background-color: aliceblue ">
         <el-card class="box-card">
           <div slot="header">
-            <span>RightWindow</span>
+            <span>Path View</span>
           </div>
 
           <el-row>
@@ -116,9 +116,9 @@ export default {
 
 <style>
 /*去除开发中所有的颜色背景*/
-* {
-  background-color: transparent !important;
-}
+/** {*/
+/*  background-color: transparent !important;*/
+/*}*/
 
 /*输入（日期）框*/
 .el-input__inner {

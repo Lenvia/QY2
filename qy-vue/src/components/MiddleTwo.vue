@@ -25,23 +25,28 @@ export default {
         {x: 12, y: 15},
 
       ],
-      margin: {top: 10, right: 10, bottom: 20, left: 20},
-      chartWidth: 880,
-      chartHeight: 90,
+      chartMargin: {top: 10, right: 10, bottom: 20, left: 20},
+      chartWidth: 0,
+      chartHeight: 0,
       color: 'blue',
     };
   },
   mounted() {
-    this.drawChart();
+    this.$nextTick(() => {
+      this.chartWidth = this.$parent.$el.offsetWidth - this.chartMargin.left - this.chartMargin.right;
+      this.chartHeight = this.$parent.$el.offsetHeight - this.chartMargin.top - this.chartMargin.bottom;
+      this.drawChart();
+    });
+
   },
   methods: {
     drawChart() {
       const svg = d3.select(this.$refs.chart)
           .append('svg')
-          .attr('width', this.chartWidth + this.margin.left + this.margin.right)
-          .attr('height', this.chartHeight + this.margin.top + this.margin.bottom)
+          .attr('width', this.chartWidth + this.chartMargin.left + this.chartMargin.right)
+          .attr('height', this.chartHeight + this.chartMargin.top + this.chartMargin.bottom)
           .append('g')
-          .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+          .attr('transform', `translate(${this.chartMargin.left},${this.chartMargin.top})`);
 
       const x = d3.scaleLinear()
           .domain([0, this.chartData.length - 1])
@@ -55,9 +60,13 @@ export default {
       const yAxisCall = d3.axisLeft(y);
 
       const area = d3.area()
-          .x(function(d) { return x(d.x); })
+          .x(function (d) {
+            return x(d.x);
+          })
           .y0(y(0))
-          .y1(function(d) { return y(d.y); });
+          .y1(function (d) {
+            return y(d.y);
+          });
 
       svg.append('path')
           .datum(this.chartData)

@@ -68,7 +68,7 @@
         </el-row>
       </el-row>
 
-      <!--左侧下框-->
+      <!--左侧饼图-->
       <el-row class="flex_column" style="flex-grow:1;height: 50%">
         <div ref="chartContainer" style="height: 100%; width: 100%">
           <div ref="pieChart" class="content_center"></div>
@@ -87,6 +87,8 @@
 
 <script>
 import * as d3 from "d3";
+import axios from "axios";
+
 export default {
   name: "MiddleOne",
   data() {
@@ -101,8 +103,9 @@ export default {
         entranceDay2: '',
       },
       chartData: [
-        { label: 'A', value: 20 },
-        { label: 'B', value: 80 },
+        // 示例
+        // {label: 'A', value: 20},
+        // {label: 'B', value: 80},
       ],
       chartSize: 0,
       chartRadius: 0,
@@ -119,9 +122,9 @@ export default {
     },
 
     drawChart() {
-    this.chartSize = Math.min(this.$refs.chartContainer.clientWidth, this.$refs.chartContainer.clientHeight);
-    console.log(this.$refs.chartContainer.clientWidth, this.$refs.chartContainer.clientHeight);
-    this.chartRadius = this.chartSize* 0.4;
+      this.chartSize = Math.min(this.$refs.chartContainer.clientWidth, this.$refs.chartContainer.clientHeight);
+      // console.log(this.$refs.chartContainer.clientWidth, this.$refs.chartContainer.clientHeight);
+      this.chartRadius = this.chartSize * 0.4;
 
       const svg = d3.select(this.$refs.pieChart)
           .append('svg')
@@ -151,13 +154,32 @@ export default {
 
       arc.append('text')
           .attr('transform', d => `translate(${path.centroid(d)})`)
-          .attr('dy', '0.35em')
+          .attr('dy', '0.1em')
+          .attr('font-size', '16px')
           .text(d => d.data.label);
     },
   },
 
   mounted() {
-    this.drawChart();
+    this.$nextTick(function (){
+      axios.get('/json_total.json')
+          .then(response => {
+            const json_data = response.data;
+            // console.log(json_data);
+            this.chartData = [];
+
+            for (let key in json_data) {
+              this.chartData.push({label: key, value: json_data[key]});
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          }).then(() =>{
+        this.drawChart();
+      });
+
+    });
+
   }
 }
 </script>
@@ -190,7 +212,7 @@ export default {
   margin-bottom: 1px;
 }
 
-.label{
+.label {
   padding-left: 10px;
   font-size: 14px;
 }
