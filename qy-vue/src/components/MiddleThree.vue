@@ -55,7 +55,7 @@ export default {
         margin: {top: 10, right: 10, bottom: 20, left: 30},
         width: 0,
         height: 0,
-        color: 'steelblue',
+        color: '#836FFF',
       },
       chart3: {
         labels: [],

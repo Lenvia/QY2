@@ -7,22 +7,14 @@
       <el-row class="flex_column" style="flex-grow:1; background-color: beige;height: 50%">
         <!--ymd-->
         <el-row class="height_adjust_equal content_center">
-          <el-radio v-model="form3.dateType" label="Year">Year</el-radio>
-          <el-radio v-model="form3.dateType" label="Month">Month</el-radio>
-          <el-radio v-model="form3.dateType" label="Day">Day</el-radio>
+          <el-radio-group v-model="form3.dateType">
+            <el-radio label="Year">Year</el-radio>
+            <el-radio label="Month">Month</el-radio>
+            <el-radio label="Day">Day</el-radio>
+          </el-radio-group>
         </el-row>
-        <!--time range-->
-        <!--        <el-row class="height_adjust_equal content_center">-->
-        <!--          <el-col :span="8">-->
-        <!--            <el-input v-model="form3.date1" style="width: 100%;"></el-input>-->
-        <!--          </el-col>-->
-        <!--          <el-col class="line" :span="2"></el-col>-->
-        <!--          <el-col :span="8">-->
-        <!--            <el-input v-model="form3.date2" style="width: 100%;"></el-input>-->
-        <!--          </el-col>-->
-        <!--        </el-row>-->
-        <el-row class="height_adjust_equal content_vertical_center">
 
+        <el-row class="height_adjust_equal content_vertical_center">
           <el-col :span="8">
             <label class="label">Time Range</label>
           </el-col>
@@ -95,18 +87,14 @@ export default {
     return {
       backgroundImage: require('@/assets/bg2.jpg'),
       form3: {
-        dateType: '',
+        dateType: 'Year',
         date1: '',
         date2: '',
         stayDays: '',
         entranceDay1: '',
         entranceDay2: '',
       },
-      chartData: [
-        // 示例
-        // {label: 'A', value: 20},
-        // {label: 'B', value: 80},
-      ],
+      chartData: [],
       chartSize: 0,
       chartRadius: 0,
       chartColors: d3.scaleOrdinal(d3.schemeCategory10),
@@ -161,7 +149,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function (){
+    this.$nextTick(function () {
       axios.get('/json_total.json')
           .then(response => {
             const json_data = response.data;
@@ -174,7 +162,7 @@ export default {
           })
           .catch(error => {
             console.log(error);
-          }).then(() =>{
+          }).then(() => {
         this.drawChart();
       });
 
