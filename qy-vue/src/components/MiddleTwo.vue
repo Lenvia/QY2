@@ -65,8 +65,8 @@ export default {
         this.chartData1.push({x: this.chartLabels[i], y: json_data["data"][i][0]});
         this.chartData2.push({x: this.chartLabels[i], y: json_data["data"][i][1]});
       }
-      console.log(this.chartData1)
-      console.log(this.chartData2)
+      // console.log(this.chartData1)
+      // console.log(this.chartData2)
     },
 
 

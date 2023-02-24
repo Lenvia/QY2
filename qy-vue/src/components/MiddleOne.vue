@@ -70,7 +70,7 @@
 
       <!--左侧饼图-->
       <el-row class="flex_column" style="flex-grow:1;height: 50%">
-        <div ref="chartContainer" style="height: 100%; width: 100%">
+        <div ref="chartContainer" style="height: 100%; width: 95%; border: 2px solid black;">
           <div ref="pieChart" class="content_center"></div>
         </div>
 
