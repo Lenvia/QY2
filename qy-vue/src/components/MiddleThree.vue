@@ -36,8 +36,9 @@ export default {
 
   data() {
     return {
-      labels: [],
+      
       chart1: {
+        labels: [],
         data1: [],
         data2: [],
         margin: {top: 10, right: 10, bottom: 20, left: 30},
@@ -58,17 +59,17 @@ export default {
       axios.get('/json_statistics.json')
           .then(response => {
             const json_data = response.data;
-            console.log(json_data)
+            // console.log(json_data)
 
-            this.labels = json_data["label"];
+            this.chart1.labels = json_data["label"];
 
             // chart1的数据
             this.chart1.data1 = []
             this.chart1.data2 = []
 
-            for (let i = 0; i < this.labels.length; i++) {
-              this.chart1.data1.push({x: this.labels[i], y: json_data["data1"][0][i]});
-              this.chart1.data2.push({x: this.labels[i], y: json_data["data1"][1][i]});
+            for (let i = 0; i < this.chart1.labels.length; i++) {
+              this.chart1.data1.push({x: this.chart1.labels[i], y: json_data["data1"][0][i]});
+              this.chart1.data2.push({x: this.chart1.labels[i], y: json_data["data1"][1][i]});
             }
 
 
@@ -97,12 +98,12 @@ export default {
 
       // 计算x和y轴的比例尺
       const xScale = d3.scaleLinear()
-          .domain([d3.min(this.labels), d3.max(this.labels)])  // 定义数据范围
+          .domain([d3.min(this.chart1.labels), d3.max(this.chart1.labels)])  // 定义数据范围
           .range([0, this.chart1.width]);  // 定义输出范围
 
       // 创建x轴对象
       const xAxis = d3.axisBottom(xScale)
-          .tickValues(this.labels);  // 自定义刻度值
+          .tickValues(this.chart1.labels);  // 自定义刻度值
 
       const yScale = d3.scaleLinear()
           .domain([0, d3.max(this.chart1.data1.concat(this.chart1.data2), d => d.y)])
