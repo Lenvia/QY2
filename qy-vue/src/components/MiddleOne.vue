@@ -24,7 +24,7 @@
 
         <!--ymd-->
         <el-row class="height_adjust_equal content_center">
-          <el-radio-group v-model="form3.dateType">
+          <el-radio-group v-model="form3.dateType" @change="onDateTypeChange">
             <el-radio label="Year">Year</el-radio>
             <el-radio label="Month">Month</el-radio>
             <el-radio label="Day">Day</el-radio>
@@ -37,7 +37,7 @@
           </el-col>
 
           <el-col :span="12" class="content_center">
-            <el-date-picker type="month" value-format="yyyy-MM"
+            <el-date-picker id="timeRangePicker" :type=dateType :value-format=dateFormat :disabled=dateDisable
                             v-model="form3.timeRange" style="width: 100%;"></el-date-picker>
           </el-col>
         </el-row>
@@ -103,6 +103,9 @@ export default {
         entranceDay2: '',
         value: '',
       },
+      dateType:'month',
+      dateFormat: 'yyyy-MM',
+      dateDisable: false,
       chartData: [],
       chartSize: 0,
       chartRadius: 0,
@@ -116,6 +119,32 @@ export default {
         message: JSON.stringify(this.form3),
         type: 'success'
       });
+    },
+
+    onDateTypeChange(){
+      this.updateDatePicker();
+    },
+
+    updateDatePicker(){
+      let datePicker = this.$el.querySelector('#timeRangePicker');
+      switch (this.form3.dateType){
+        case "Year":
+          datePicker.readOnly = true;
+          this.dateDisable = true;
+          break;
+        case "Month":
+          this.dateType = "year";
+          this.dateFormat = "yyyy";
+          datePicker.readOnly = false;
+          this.dateDisable = false;
+          break;
+        case "Day":
+          this.dateType = "month";
+          this.dateFormat = "yyyy-MM";
+          datePicker.readOnly = false;
+          this.dateDisable = false;
+          break;
+      }
     },
 
     drawChart() {
@@ -158,6 +187,8 @@ export default {
   },
 
   mounted() {
+    this.updateDatePicker();
+
     this.$nextTick(function () {
       axios.get('/json_total.json')
           .then(response => {
