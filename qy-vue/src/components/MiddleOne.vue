@@ -4,7 +4,18 @@
     <!--左侧输入框-->
     <el-col class="flex_column" :span="8" style="flex-grow:1;height: 100%">
       <!--左侧上框-->
-      <el-row class="flex_column" style="flex-grow:1; background-color: beige;height: 50%">
+      <el-row class="flex_column" style="flex-grow:1; background-color: beige;height: 50%; width: 95%;">
+        <el-row class="height_adjust_equal content_center">
+          <el-select v-model="form3.value" placeholder="">
+<!--            <el-option-->
+<!--                v-for="item in options"-->
+<!--                :key="item.value"-->
+<!--                :label="item.label"-->
+<!--                :value="item.value">-->
+<!--            </el-option>-->
+          </el-select>
+        </el-row>
+
         <!--ymd-->
         <el-row class="height_adjust_equal content_center">
           <el-radio-group v-model="form3.dateType">
@@ -93,6 +104,7 @@ export default {
         stayDays: '',
         entranceDay1: '',
         entranceDay2: '',
+        value: '',
       },
       chartData: [],
       chartSize: 0,

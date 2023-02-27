@@ -84,7 +84,6 @@ export default {
       const bias2Y = bias2 * cosTheta;
 
 
-
       // 注意 point1 和 point2 应该保持相同的 bias2 偏移，因为它是线段的两端，线段是平移的！
       // 至于为什么 x 需要 + bias2X 而 y 需要 -bias2Y，结合图来看
       let [point1, point2] = [[x1 + biasX + bias2X, y1 + biasY - bias2Y],
@@ -93,7 +92,6 @@ export default {
 
       return [point1, point2];
     },
-
 
 
   },
@@ -194,12 +192,12 @@ export default {
                 const arrowPath = `M${point1[0]},${point1[1]} L${point2[0]},${point2[1]}`;
 
                 // 在 SVG 中添加箭头
-                svg.append('path')
+                const arrow = svg.append('path')
                     .attr('d', arrowPath)
                     .attr('marker-end', 'url(#arrow)')
                     .attr('stroke', '#FFA500')
                     .attr('stroke-width', 2)
-                ;
+                    .attr("id", "arrow-path");
 
                 // 在 SVG 中添加箭头定义
                 svg.append('defs')
@@ -214,6 +212,25 @@ export default {
                     .append('path')
                     .attr('d', 'M 0 0 L 10 5 L 0 10 z')
                     .style('fill', '#FFA500');
+
+                // 要求文本方向平行于箭头的指向
+                const textPath = svg.append('defs')
+                    .append('path')
+                    .attr('id', 'text-path'+i)
+                    .attr('d', arrowPath);
+
+                // 创建一个text元素，并将其嵌套在textPath元素中。然后，我们将xlink:href属性设置为箭头路径元素的id属性
+                const text = svg.append('text')
+                    .append('textPath')
+                    .attr('xlink:href', '#text-path'+i)
+                    .text(value)
+                    .attr('startOffset', '50%')
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '12px');
+
+                // 根据箭头路径的方向调整文本的旋转角度，以使其方向与箭头指向一致
+                const angle = Math.atan2(point2[1] - point1[1], point2[0] - point1[0]) * 180 / Math.PI;
+                text.attr('transform', `rotate(${angle} ${point1[0]} ${point1[1]})`);
               }
 
             }).catch(error => {

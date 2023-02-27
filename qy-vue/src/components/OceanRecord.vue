@@ -125,7 +125,7 @@ export default {
       case_label: " ",  // 默认一个空格
       form: {
         region: [],
-        operationType: '',
+        operationType: 'Start Region',
         lifetime: 360,
         number: '',
         depth: '',
