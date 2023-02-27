@@ -8,7 +8,7 @@
             <span>Task View</span>
           </div>
           <div :style="{height: cardContentHeight + 'vh'}">
-            <el-row ref="container" style="background-color: blueviolet; height: 35vh">
+            <el-row ref="oceanMapContainer" style="background-color: blueviolet; height: 35vh">
               <div
                   class="content_center" style="margin-bottom: 20px; background-color: cadetblue;">
                 <OceanMap id="OceanMap"
@@ -25,7 +25,7 @@
 
       </el-col>
       <!--中间视图-->
-      <el-col :span="12" class="col-window" style="background-color: darkkhaki">
+      <el-col :span="13" class="col-window" style="background-color: darkkhaki">
         <el-card class="box-card">
           <div slot="header">
             <span>Statistic View</span>
@@ -41,7 +41,6 @@
               <div :style="{height: middleTwoHeight + 'vh', marginBottom: 10 +'px'}">
                 <middle-two/>
               </div>
-
             </el-row>
             <el-row>
               <div :style="{backgroundColor: 'brown', height: middleThreeHeight + 'vh'}">
@@ -52,17 +51,21 @@
         </el-card>
       </el-col>
 
-      <el-col :span="6" class="col-window" style="background-color: aliceblue ">
+      <!--右侧视图-->
+      <el-col :span="5" class="col-window" style="background-color: aliceblue ">
         <el-card class="box-card">
           <div slot="header">
             <span>Path View</span>
           </div>
 
-          <el-row>
-            <div style="background-color: brown; height: 800px;">
+          <div :style="{height: cardContentHeight + 'vh'}">
+            <el-row style="background-color: blueviolet; height: 30vh">
+                <right-one/>
+            </el-row>
+            <el-row style=" background-color: gold ">
 
-            </div>
-          </el-row>
+            </el-row>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -78,10 +81,11 @@ import OceanRecord from "@/components/OceanRecord.vue";
 import MiddleOne from "@/components/MiddleOne.vue";
 import MiddleThree from "@/components/MiddleThree.vue";
 import MiddleTwo from "@/components/MiddleTwo.vue";
+import RightOne from "@/components/RightOne.vue";
 
 export default {
   name: "MainWindow.vue",
-  components: {MiddleTwo, MiddleThree, MiddleOne, OceanRecord, OceanMap},
+  components: {MiddleTwo, MiddleThree, MiddleOne, OceanRecord, OceanMap, RightOne},
 
   data() {
     return {
@@ -92,8 +96,8 @@ export default {
   },
   mounted() {
     // 动态挂载
-    let containerWidth = this.$refs.container.$el.offsetWidth;
-    let containerHeight = this.$refs.container.$el.offsetHeight;
+    let containerWidth = this.$refs.oceanMapContainer.$el.offsetWidth;
+    let containerHeight = this.$refs.oceanMapContainer.$el.offsetHeight;
     let minSize = Math.min(containerWidth, containerHeight);
     this.oceanMapWidth = minSize;
     this.oceanMapHeight = minSize;

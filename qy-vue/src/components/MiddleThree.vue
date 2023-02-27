@@ -1,8 +1,5 @@
 <template>
   <el-row class="flex_row" style="height: 100%;">
-    <!--    <el-col :span="10" class="height_adjust_equal content_center" >-->
-    <!--      <div style="height: 80%; width: 90%; background-color: #42b983"></div>-->
-    <!--    </el-col>-->
     <el-col class="height_adjust_equal flex_column" style="height: 100%">
       <el-row class="height_adjust_equal flex_row" style="background-color: blueviolet; display: flex">
         <el-col :span="8" class="height_adjust_equal content_center">
@@ -47,7 +44,6 @@ export default {
         width: 0,
         height: 0,
         color: ["#9400D3", "#009999"],
-
       },
       chart2: {
         labels: [],
@@ -141,13 +137,16 @@ export default {
           .domain([0, d3.max(chart.data1.concat(chart.data2), d => d.y)])
           .range([chart.height, 0]);  // 由于在Web中像素坐标的原点是左上角，所以yScale输出值的范围是反向的
 
+      const yAxis = d3.axisLeft(yScale)
+          .tickValues([0, d3.max(chart.data1.concat(chart.data2), d => d.y)]);
+
       // 绘制x和y轴
       svg.append('g')
           .attr('transform', `translate(0, ${chart.height})`)
           .call(xAxis);  // 如果没有自定义x轴，那么这里应该填 d3.axisBottom(xScale)
 
       svg.append('g')
-          .call(d3.axisLeft(yScale));
+          .call(yAxis);
 
 
       // 绘制柱状图。两个并列
@@ -206,9 +205,10 @@ export default {
           .domain([0, d3.max(chart.data, d => d.y)])
           .range([chart.height, 0]);  // 由于在Web中像素坐标的原点是左上角，所以yScale输出值的范围是反向的
 
+      const yAxis = d3.axisLeft(yScale)
+          .tickValues([0, d3.max(chart.data, d => d.y)]);
 
       const area = d3.area()
-
           .x(d => xScale(d.x))
           .y0(yScale(0))
           .y1(d => yScale(d.y));
@@ -220,7 +220,7 @@ export default {
           .call(xAxis);  // 如果没有自定义x轴，那么这里应该填 d3.axisBottom(xScale)
 
       svg.append('g')
-          .call(d3.axisLeft(yScale));
+          .call(yAxis);
 
       // 绘制面积图
       svg.append('path')

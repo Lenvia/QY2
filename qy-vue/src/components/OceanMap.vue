@@ -164,8 +164,10 @@ export default {
                       .attr("text-anchor", "middle")
                       .attr('font-size', '14px')
                       .style('fill', 'black')
-                      .style('pointer-events', 'none')
-                      .text(display_name);
+                      .text(display_name)
+                      .style('user-select', 'none')
+                      .style("pointer-events", "none")
+                      .style("-webkit-user-select", "none");
                 }
               })
               .catch(error => {
@@ -226,7 +228,11 @@ export default {
                     .text(value)
                     .attr('startOffset', '50%')
                     .attr('text-anchor', 'middle')
-                    .attr('font-size', '12px');
+                    .attr('font-size', '12px')
+                    // 禁止文本选中
+                    .style('user-select', 'none')
+                    .style("pointer-events", "none")
+                    .style("-webkit-user-select", "none");
 
                 // 根据箭头路径的方向调整文本的旋转角度，以使其方向与箭头指向一致
                 const angle = Math.atan2(point2[1] - point1[1], point2[0] - point1[0]) * 180 / Math.PI;

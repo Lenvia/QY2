@@ -4,7 +4,7 @@
     <!--左侧输入框-->
     <el-col class="flex_column" :span="8" style="flex-grow:1;height: 100%">
       <!--左侧上框-->
-      <el-row class="flex_column" style="flex-grow:1; background-color: beige;height: 50%; width: 95%;">
+      <el-row class="flex_column" style="flex-grow:1; background-color: beige;height: 50%; width: 95%; ">
         <el-row class="height_adjust_equal content_center">
           <el-select v-model="form3.value" placeholder="">
 <!--            <el-option-->

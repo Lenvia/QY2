@@ -88,7 +88,7 @@ export default {
 
       const tickFormat = d3.format(".0f");  // 禁用千位分隔符并保留整数部分
       const xAxisCall = d3.axisBottom(xScale).tickValues(this.chartLabels).tickFormat(tickFormat);  // 自定义刻度值
-      const yAxisCall = d3.axisLeft(yScale).tickFormat(tickFormat);
+      const yAxisCall = d3.axisLeft(yScale).tickValues([0, d3.max(this.chartData1.concat(this.chartData2), d => d.y)]).tickFormat(tickFormat);
 
       const area1 = d3.area()
           .x(d => xScale(d.x))
