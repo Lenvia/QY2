@@ -197,7 +197,7 @@ export default {
                 const arrow = svg.append('path')
                     .attr('d', arrowPath)
                     .attr('marker-end', 'url(#arrow)')
-                    .attr('stroke', '#FFA500')
+                    .attr('stroke', '#000000')
                     .attr('stroke-width', 2)
                     .attr("id", "arrow-path");
 
@@ -213,7 +213,7 @@ export default {
                     .attr('orient', 'auto-start-reverse')
                     .append('path')
                     .attr('d', 'M 0 0 L 10 5 L 0 10 z')
-                    .style('fill', '#FFA500');
+                    .style('fill', '#000000');
 
                 // 要求文本方向平行于箭头的指向
                 const textPath = svg.append('defs')

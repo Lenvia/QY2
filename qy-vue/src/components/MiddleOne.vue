@@ -5,15 +5,21 @@
     <el-col class="flex_column" :span="8" style="flex-grow:1;height: 100%">
       <!--左侧上框-->
       <el-row class="flex_column" style="flex-grow:1; background-color: beige;height: 50%; width: 95%; ">
-        <el-row class="height_adjust_equal content_center">
-          <el-select v-model="form3.value" placeholder="">
-<!--            <el-option-->
-<!--                v-for="item in options"-->
-<!--                :key="item.value"-->
-<!--                :label="item.label"-->
-<!--                :value="item.value">-->
-<!--            </el-option>-->
-          </el-select>
+
+        <el-row class="height_adjust_equal content_vertical_center">
+          <el-col :span="9">
+            <label class="label">Analysis Region</label>
+          </el-col>
+          <el-col :span="12">
+            <el-select v-model="form3.value" placeholder="">
+              <!--            <el-option-->
+              <!--                v-for="item in options"-->
+              <!--                :key="item.value"-->
+              <!--                :label="item.label"-->
+              <!--                :value="item.value">-->
+              <!--            </el-option>-->
+            </el-select>
+          </el-col>
         </el-row>
 
         <!--ymd-->
@@ -26,26 +32,18 @@
         </el-row>
 
         <el-row class="height_adjust_equal content_vertical_center">
-          <el-col :span="8">
+          <el-col :span="9">
             <label class="label">Time Range</label>
           </el-col>
 
-          <el-col :span="6" class="content_center">
+          <el-col :span="12" class="content_center">
             <el-date-picker type="month" value-format="yyyy-MM"
-                            v-model="form3.timeStart" style="width: 100%;"></el-date-picker>
+                            v-model="form3.timeRange" style="width: 100%;"></el-date-picker>
           </el-col>
-
-          <el-col class="line" :span="2" style="display:flex; justify-content: center;">-</el-col>
-
-          <el-col :span="6" class="content_center">
-            <el-date-picker type="month" value-format="yyyy-MM"
-                            v-model="form3.timeEnd" style="width: 100%;"></el-date-picker>
-          </el-col>
-
         </el-row>
         <!--stay days-->
         <el-row class="height_adjust_equal content_vertical_center">
-          <el-col :span="8">
+          <el-col :span="9">
             <label class="label">Stay Days</label>
           </el-col>
           <el-col :span="6">
@@ -54,7 +52,7 @@
         </el-row>
         <!--entrance day-->
         <el-row class="height_adjust_equal content_vertical_center">
-          <el-col :span="8">
+          <el-col :span="9">
             <label class="label">Entrance day</label>
           </el-col>
           <el-col :span="6">
@@ -99,8 +97,7 @@ export default {
       backgroundImage: require('@/assets/bg2.jpg'),
       form3: {
         dateType: 'Year',
-        date1: '',
-        date2: '',
+        timeRange: '',
         stayDays: '',
         entranceDay1: '',
         entranceDay2: '',

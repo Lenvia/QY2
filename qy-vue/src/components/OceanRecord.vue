@@ -37,8 +37,8 @@
               </el-form-item>
             </el-row>
             <el-row class="input-content-right">
-              <el-form-item class="custom-form" style="margin-bottom: 10px" label="extend">
-                <input class="input-box" v-model="form.extend"/>
+              <el-form-item class="custom-form" style="margin-bottom: 10px" label="expand">
+                <input class="input-box" v-model="form.expand"/>
               </el-form-item>
             </el-row>
 
@@ -48,8 +48,8 @@
               <el-radio label="Analysis Region"></el-radio>
             </el-row>
             <el-row class="input-content-right">
-              <el-form-item class="custom-form"  label="extend">
-                <input class="input-box" v-model="form.extend"/>
+              <el-form-item class="custom-form"  label="expand">
+                <input class="input-box" v-model="form.expand"/>
               </el-form-item>
             </el-row>
           </el-radio-group>
@@ -127,10 +127,10 @@ export default {
         region: [],
         operationType: 'Start Region',
         lifetime: 360,
-        number: '',
-        depth: '',
-        interval: '',
-        extend: '',
+        number: 3000,
+        depth: 0,
+        interval: '',  // 下拉框
+        expand: 1,
       },
       form2: {
         taskName: '',
