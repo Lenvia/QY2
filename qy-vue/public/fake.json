@@ -1,0 +1,19 @@
+{
+  "nodes":[
+    {
+      "x":,
+      "y":
+    },
+  ],
+
+  "links": [
+    {
+      "source":,
+      "target": ,
+      "color": ,
+      "width": ,
+    }
+  ]
+
+
+}

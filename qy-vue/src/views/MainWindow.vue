@@ -25,7 +25,7 @@
 
       </el-col>
       <!--中间视图-->
-      <el-col :span="13" class="col-window" style="background-color: darkkhaki">
+      <el-col :span="12" class="col-window" style="background-color: darkkhaki">
         <el-card class="box-card">
           <div slot="header">
             <span>Statistic View</span>
@@ -52,15 +52,15 @@
       </el-col>
 
       <!--右侧视图-->
-      <el-col :span="5" class="col-window" style="background-color: aliceblue ">
+      <el-col :span="6" class="col-window" style="background-color: aliceblue ">
         <el-card class="box-card">
           <div slot="header">
             <span>Path View</span>
           </div>
 
           <div :style="{height: cardContentHeight + 'vh'}">
-            <el-row style="background-color: blueviolet; height: 30vh">
-                <right-one/>
+            <el-row style="background-color: blueviolet; height: 50vh">
+                <right-one-b-p/>
             </el-row>
             <el-row style=" background-color: gold ">
 
@@ -82,10 +82,11 @@ import MiddleOne from "@/components/MiddleOne.vue";
 import MiddleThree from "@/components/MiddleThree.vue";
 import MiddleTwo from "@/components/MiddleTwo.vue";
 import RightOne from "@/components/RightOne.vue";
+import RightOneBP from "@/components/RightOneBP.vue";
 
 export default {
   name: "MainWindow.vue",
-  components: {MiddleTwo, MiddleThree, MiddleOne, OceanRecord, OceanMap, RightOne},
+  components: {RightOneBP, MiddleTwo, MiddleThree, MiddleOne, OceanRecord, OceanMap, RightOne},
 
   data() {
     return {

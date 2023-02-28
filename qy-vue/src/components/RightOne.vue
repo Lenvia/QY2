@@ -1,6 +1,6 @@
 <template>
-  <div ref="scatterChartContainer" style="height: 100%; width: 100%; background-color: #42b983">
-    <div ref="scatterChart" class="content_center"></div>
+  <div ref="chartContainer" style="height: 100%; width: 100%; background-color: #42b983">
+    <div ref="scatterChart" class="content_center" style="height: 100%; width: 100%;"></div>
   </div>
 </template>
 
@@ -28,8 +28,8 @@ export default {
     this.$nextTick(() => {
 
       // 初始化 svg
-      this.chart.width = this.$refs.scatterChartContainer.offsetWidth - this.chart.margin.left - this.chart.margin.right;
-      this.chart.height = this.$refs.scatterChartContainer.offsetHeight - this.chart.margin.top - this.chart.margin.bottom;
+      this.chart.width = this.$refs.chartContainer.offsetWidth - this.chart.margin.left - this.chart.margin.right;
+      this.chart.height = this.$refs.chartContainer.offsetHeight - this.chart.margin.top - this.chart.margin.bottom;
 
       this.svg = d3.select(this.$refs.scatterChart)
           .append('svg')
@@ -53,7 +53,11 @@ export default {
           }).then(() => {  // 绘制
         this.drawScatterChart(this.svg, this.chart);
       });
+
+
+
     });
+
   },
 
   methods:{
