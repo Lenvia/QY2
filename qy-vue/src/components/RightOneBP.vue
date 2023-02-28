@@ -16,13 +16,13 @@ export default {
       chart: null,
       chartData: {
         nodes: [
-          {id: '1', name: 'Node 1', x: 100, y: 100},
-          {id: '2', name: 'Node 2', x: 200, y: 50},
-          {id: '3', name: 'Node 3', x: 300, y: 250}
+          {id: 1, name: 'Node 1', x: 100, y: 100},
+          {id: 2, name: 'Node 2', x: 200, y: 50},
+          {id: 3, name: 'Node 3', x: 300, y: 250}
         ],
         links: [
-          {source: '1', target: '2'},
-          {source: '2', target: '3'}
+          {source: 1, target: 2},
+          {source: 2, target: 3}
         ]
       },
       chartOption: {
@@ -31,7 +31,7 @@ export default {
         },
         tooltip: {},
         xAxis: {
-          type:'value'
+          type: 'value'
         },
         yAxis: {
           type: 'value'
@@ -60,11 +60,22 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      
+
       this.chart = echarts.init(this.$refs.scatterChart)
-      this.chartOption.series[0].data = this.chartData.nodes.map(function (node){
-        return [node.x, node.y]
-      });
+      /*
+        series[0].data 需要传入一个数组，该数组中的每一项都是一个对象，该对象包含了一组数据，其中包括：
+        value：表示数据值，可以是数字或字符串；
+        name：表示数据项的名称，可以是数字或字符串；
+        itemStyle：表示数据项的样式，可以是对象或函数；
+        label：表示数据项的标签，可以是对象或函数；
+        emphasis：表示数据项的高亮状态，可以是对象或函数。
+       */
+      this.chartOption.series[0].data = this.chartData.nodes.map(node => ({
+          "value": [node.x, node.y],
+          "name": node.name,
+      }));
+
+
       this.chartOption.series[0].links = this.chartData.links.map(link => ({
         source: link.source,
         target: link.target,
@@ -79,9 +90,7 @@ export default {
 
   },
 
-  methods: {
-
-  }
+  methods: {}
 
 }
 </script>
