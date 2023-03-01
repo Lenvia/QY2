@@ -1,22 +1,62 @@
 {
-  "nodes":[
+  "nodes": [
     {
-      "x":,
-      "y":,
-      "size": ,
-      "color": ,
+      "name": "node0",
+      "x": 0,
+      "y": 0,
+      "size": 50,
+      "color": "#ff0000"
     },
+    {
+      "name": "node1",
+      "x": 30,
+      "y": 10,
+      "size": 5,
+      "color": "#00ff00"
+    },
+    {
+      "name": "node2",
+      "x": 20,
+      "y": 50,
+      "size": 15,
+      "color": "#0000ff"
+    },
+    {
+      "name": "node3",
+      "x": 100,
+      "y": 100,
+      "size": 50,
+      "color": "#000000"
+    },
+    {
+      "name": "node4",
+      "x": 60,
+      "y": 80,
+      "size": 10,
+      "color": "#123456"
+    }
   ],
-
   "links": [
     {
-      "source":,
-      "target": ,
-      "color": ,
-      "width": ,
-      "curve": ,
+      "source": 0,
+      "target": 1,
+      "color": "#423456",
+      "width": 1,
+      "curveness": 0.5
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "color": "#a52324",
+      "width": 8,
+      "curveness": 0
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "color": "#111111",
+      "width": 4,
+      "curveness": 0.1
     }
   ]
-
-
 }
