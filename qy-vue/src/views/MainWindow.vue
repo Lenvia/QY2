@@ -10,13 +10,14 @@
           <div :style="{height: cardContentHeight + 'vh'}">
             <el-row ref="oceanMapContainer" style="background-color: blueviolet; height: 35vh">
               <div
-                  class="content_center" style="margin-bottom: 20px; background-color: cadetblue;">
+                  class="content_center" style="background-color: cadetblue;">
                 <OceanMap id="OceanMap"
                           :style="{width: oceanMapWidth + 'px', height: oceanMapHeight + 'px'}"/>
               </div>
             </el-row>
+            <el-divider></el-divider>
             <el-row style=" background-color: gold ">
-              <div style="background-color: aliceblue; margin-top: 20px; height: 50vh">
+              <div style="background-color: aliceblue;height: 50vh">
                 <OceanRecord id="OceanRecord"/>
               </div>
             </el-row>
@@ -130,6 +131,14 @@ export default {
   height: 30px;
   line-height: 30px;
   font-size: 12px;
+}
+
+/*分割线*/
+.el-divider--horizontal {
+  /*默认 width:100%*/
+  margin: 8px 0;
+  background: 0 0;
+  border-top: 1px solid #d2d2d2;
 }
 
 /* 父类标签如此设置，子标签可以通过 flex-grow 进行 高度划分*/

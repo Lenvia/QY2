@@ -297,13 +297,7 @@ export default {
   font-size: 18px !important;
 }
 
-/*分割线*/
-.el-divider--horizontal {
-  /*默认 width:100%*/
-  margin: 8px 0;
-  background: 0 0;
-  border-top: 1px solid #d2d2d2;
-}
+
 
 .bold-divider {
   border-top-width: 3px;
