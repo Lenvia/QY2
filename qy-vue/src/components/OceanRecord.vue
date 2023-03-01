@@ -74,7 +74,7 @@
     <el-form class="flex_column" ref="form2" :model="form2" label-width="80px" style="height: 50%">
 
       <!--Task item-->
-      <el-row style="background-color: darkkhaki; height: 45%">
+      <el-row style="background-color: darkkhaki; height: 50%">
         <!--TaskName-->
         <el-row>
           <el-form-item class="custom-form" label="Task Name">
@@ -105,20 +105,25 @@
       </el-row>
 
       <!--Task view-->
-      <el-row class="content_center" style="height: 55%;">
-          <el-col :span="8" style="background-color: aliceblue; height: 100%">
-            <div class="taskContainer " style="width: 100%; height: 100%; background-color: darkgoldenrod; ">
-              <el-table :data="tableData" border   style="width: 100%; height: 100%; background-color: deeppink" >
-                <el-table-column
-                    prop="name"
-                    label="Task Name"
-                    highlight-current-row>
-                </el-table-column>
-              </el-table>
-            </div>
-          </el-col>
+      <el-row class="content_center" style="height: 50%;">
+        <el-col :span="8" style="background-color: aliceblue; height: 100%">
+          <div class="taskContainer " style="width: 100%; height: 100%; background-color: darkgoldenrod; ">
+            <el-table
+                ref="singleTable"
+                :data="tableData"
+                border
+                style="width: 100%; height: 100%;"
+                highlight-current-row
+                @current-change="handleCurrentChange">
+              <el-table-column
+                  prop="name"
+                  label="Task Name">
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-col>
 
-<!--        <el-col :span="4" class="flex_row" style=" height: 100%"></el-col>-->
+        <!--        <el-col :span="4" class="flex_row" style=" height: 100%"></el-col>-->
         <el-col :span="16" class="flex_row" style="background-color: aliceblue; height: 100%">
           <textarea ref="taskBox" style="width: 100%; height: 95%; resize: none; border-width: 2px" readonly></textarea>
         </el-col>
@@ -128,7 +133,6 @@
     </el-form>
   </el-row>
 </template>
-
 
 
 <script>
@@ -156,17 +160,11 @@ export default {
         timeEnd: '',
       },
       tableData: [
-        {name: "task1"},
-        {name: "task2"},
-        {name: "task3"},
-        {name: "task4"},
-        {name: "task5"},
-        {name: "task6"},
-        {name: "task7"},
-        {name: "task8"},
-        {name: "task9"},
-
+        // {name: "task1"},
+        // {name: "task2"},
       ],
+      currentRow: null,  // table当前行
+      taskLogMap: new Map(),
     }
   },
 
@@ -199,26 +197,36 @@ export default {
       this.$refs.recordBox.scrollTop = this.$refs.recordBox.scrollHeight;
     },
     onCreateTask() {
-      console.log(this.form2);
+      // console.log(this.form2);
       this.$message({
         message: JSON.stringify(this.form2),
         type: 'success'
       });
 
-      this.$refs.taskBox.value = "";  // 清空上一个task的内容
-      this.$refs.taskBox.value = this.$refs.taskBox.value + "Creating task: " + `${this.form2.taskName}` + " ......\n";
-      // 进行一些操作
-      // 把task和recordBox 的内容发送给后端
-      console.log(this.$refs.recordBox.value, JSON.stringify(this.form2));
-      // ...
-      this.$refs.taskBox.value += "The task is created!";
+      // TODO: 把task和recordBox 的内容发送给后端
+      // console.log(this.$refs.recordBox.value, JSON.stringify(this.form2));
 
+      // 添加到日志列表
+      this.tableData.push({name: this.form2.taskName});
+      // 为task name建立一个hash表，存放日志
+      this.taskLogMap.set(this.form2.taskName, "This is: " + this.form2.taskName);
     },
 
     handleChange(value) {
       // console.log('当前选项的值是：', value);
       eventBus.$emit('operationTypeChange', value);
     },
+
+    handleCurrentChange(val) {
+      this.currentRow = val;
+      console.log(val);
+
+      this.$refs.taskBox.value = "";  // 清空上一个task的内容
+      this.$refs.taskBox.value = this.taskLogMap.get(val.name);  // 从log表里取出内容
+
+      // TODO 进行一些操作
+
+    }
   },
 
   mounted() {
