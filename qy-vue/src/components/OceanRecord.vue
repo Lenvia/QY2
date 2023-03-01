@@ -26,14 +26,20 @@
                 <input class="input-box" v-model="form.number"/>
               </el-form-item>
             </el-row>
+
             <el-row class="input-content-right">
               <el-form-item class="custom-form" label="depth">
                 <input class="input-box" v-model="form.depth"/>
               </el-form-item>
             </el-row>
+
             <el-row class="input-content-right">
               <el-form-item class="custom-form" label="interval">
-                <input class="input-box" v-model="form.interval"/>
+                <el-select class="interval-input" v-model="form.interval" placeholder="">
+                  <el-option label="Year" value="Year"></el-option>
+                  <el-option label="Month" value="Month"></el-option>
+                  <el-option label="Day" value="Day"></el-option>
+                </el-select>
               </el-form-item>
             </el-row>
             <el-row class="input-content-right">
@@ -151,7 +157,7 @@ export default {
         lifetime: 360,
         number: 3000,
         depth: 0,
-        interval: '',  // 下拉框
+        interval: 'Year',  // 下拉框
         expand: 1,
       },
       form2: {
@@ -240,6 +246,9 @@ export default {
 
 
 <style scoped>
+
+
+
 /deep/ .el-form {
   margin-bottom: 0;
   /*height: 100%;*/
@@ -305,5 +314,17 @@ export default {
   width: 90%;
   margin-left: 5%;
 }
+
+/*record interval下拉框*/
+/deep/ .interval-input .el-input__inner {
+  height: 20px;
+  width: 86px;  /*这里应该是 width = input-box 的width + 自己的 padding + border 才能对齐*/
+  line-height: 20px;
+  font-size: 12px;
+  padding: 0 2px;
+  border-width: 1px;
+
+}
+
 
 </style>
