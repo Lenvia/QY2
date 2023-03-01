@@ -1,7 +1,7 @@
 <template>
   <el-row class="flex_column" style="height: 100%">
     <!--Record-->
-    <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 50%">
+    <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 46%">
       <el-row class="flex_row" style="background-color: #42b983">
         <!--Record左侧框-->
         <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
@@ -43,12 +43,11 @@
             </el-row>
 
 
-
             <el-row class="ratio-content-left">
               <el-radio label="Analysis Region"></el-radio>
             </el-row>
             <el-row class="input-content-right">
-              <el-form-item class="custom-form"  label="expand">
+              <el-form-item class="custom-form" label="expand">
                 <input class="input-box" v-model="form.expand"/>
               </el-form-item>
             </el-row>
@@ -59,7 +58,8 @@
           <!--记录框-->
           <el-row class="content_center" style="flex-grow: 8">
             <div style="background-color: blueviolet; height: 90%; width: 80%">
-              <textarea ref="recordBox" style="width: 100%; height: 100%; resize: none; border-width: 2px" readonly></textarea>
+              <textarea ref="recordBox" style="width: 100%; height: 100%; resize: none; border-width: 2px"
+                        readonly></textarea>
             </div>
           </el-row>
           <el-row class="content_center" style="flex-grow: 1">
@@ -71,9 +71,10 @@
 
     <el-divider></el-divider>
     <!--Task-->
-    <el-form class="flex_column" ref="form2" :model="form2" label-width="80px" style="height: 45%">
+    <el-form class="flex_column" ref="form2" :model="form2" label-width="80px" style="height: 50%">
 
-      <el-row style="background-color: darkkhaki; flex-grow: 0">
+      <!--Task item-->
+      <el-row style="background-color: darkkhaki; height: 45%">
         <!--TaskName-->
         <el-row>
           <el-form-item class="custom-form" label="Task Name">
@@ -103,15 +104,32 @@
         </el-row>
       </el-row>
 
-      <el-row class="content_center" style="flex-grow: 3">
-        <div style="background-color: blueviolet; height: 95%; width: 95%">
+      <!--Task view-->
+      <el-row class="content_center" style="height: 55%;">
+          <el-col :span="8" style="background-color: aliceblue; height: 100%">
+            <div class="taskContainer " style="width: 100%; height: 100%; background-color: darkgoldenrod; ">
+              <el-table :data="tableData" border   style="width: 100%; height: 100%; background-color: deeppink" >
+                <el-table-column
+                    prop="name"
+                    label="Task Name"
+                    highlight-current-row>
+                </el-table-column>
+              </el-table>
+            </div>
+          </el-col>
+
+<!--        <el-col :span="4" class="flex_row" style=" height: 100%"></el-col>-->
+        <el-col :span="16" class="flex_row" style="background-color: aliceblue; height: 100%">
           <textarea ref="taskBox" style="width: 100%; height: 95%; resize: none; border-width: 2px" readonly></textarea>
-        </div>
+        </el-col>
+
       </el-row>
 
     </el-form>
   </el-row>
 </template>
+
+
 
 <script>
 import {eventBus} from '@/plugin/event-bus'
@@ -136,7 +154,19 @@ export default {
         taskName: '',
         timeStart: '',
         timeEnd: '',
-      }
+      },
+      tableData: [
+        {name: "task1"},
+        {name: "task2"},
+        {name: "task3"},
+        {name: "task4"},
+        {name: "task5"},
+        {name: "task6"},
+        {name: "task7"},
+        {name: "task8"},
+        {name: "task9"},
+
+      ],
     }
   },
 
@@ -147,11 +177,10 @@ export default {
     let digit = 2;
     eventBus.$on('rectCreated', ({lon1, lat1, lon2, lat2}) => {
       // console.log(lon1, lat1, lon2, lat2);
-      if (isNaN(lon1) || isNaN(lat1) || isNaN(lon2) || isNaN(lat2)){
+      if (isNaN(lon1) || isNaN(lat1) || isNaN(lon2) || isNaN(lat2)) {
         this.case_label = " ";
         this.form.region = [];
-      }
-      else {
+      } else {
         this.case_label = `(${lon1.toFixed(digit)}, ${lat1.toFixed(digit)}) -> (${lon2.toFixed(digit)}, ${lat2.toFixed(digit)})`;
         this.form.region = [lon1.toFixed(digit), lat1.toFixed(digit), lon2.toFixed(digit), lat2.toFixed(digit)];
       }
@@ -208,6 +237,16 @@ export default {
   /*height: 100%;*/
 }
 
+
+/deep/ .el-table .el-table__cell {
+  padding: 0;
+}
+
+/deep/ .el-table__body-wrapper {
+  max-height: calc(100% - 20px); /* 20px是表头的高度，需要减去 */
+  overflow-y: auto;
+}
+
 .el-form-item {
   margin-bottom: 0;
 }
@@ -239,7 +278,7 @@ export default {
 }
 
 .custom-form {
-  height: 25px;
+  height: 22px;
   margin-bottom: 1px;
 }
 

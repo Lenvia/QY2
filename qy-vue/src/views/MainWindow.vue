@@ -121,9 +121,9 @@ export default {
 
 <style>
 /*去除开发中所有的颜色背景*/
-* {
-  background-color: transparent !important;
-}
+/** {*/
+/*  background-color: transparent !important;*/
+/*}*/
 
 /*输入（日期）框*/
 .el-input__inner {
