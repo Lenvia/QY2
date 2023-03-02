@@ -14,20 +14,24 @@ export default {
       year_json_data: null,
       month_json_data: null,
       day_json_data: null,
+      focusLine: null,
+      tooltip: null,
 
-      chartLabels: [],
-      chartData1: [],
-      chartData2: [],
-      chartMargin: {top: 10, right: 20, bottom: 20, left: 40},
-      chartWidth: 0,
-      chartHeight: 0,
-      color: 'blue',
+      chart: {
+        labels: [],
+        data1: [],
+        data2: [],
+        margin: {top: 10, right: 20, bottom: 20, left: 40},
+        width: 0,
+        height: 0,
+        color: 'blue',
+      },
     };
   },
   mounted() {
     this.$nextTick(() => {
-      this.chartWidth = this.$parent.$el.offsetWidth - this.chartMargin.left - this.chartMargin.right;
-      this.chartHeight = this.$parent.$el.offsetHeight - this.chartMargin.top - this.chartMargin.bottom;
+      this.chart.width = this.$parent.$el.offsetWidth - this.chart.margin.left - this.chart.margin.right;
+      this.chart.height = this.$parent.$el.offsetHeight - this.chart.margin.top - this.chart.margin.bottom;
 
       const url1 = 'json_area_year.json';
       const url2 = 'json_area_month.json';
@@ -57,54 +61,53 @@ export default {
   },
   methods: {
     parseJson(json_data) {
-      this.chartLabels = json_data["label"];
-      this.chartData1 = []
-      this.chartData2 = []
+      this.chart.labels = json_data["label"];
+      this.chart.data1 = []
+      this.chart.data2 = []
 
-      for (let i = 0; i < this.chartLabels.length; i++) {
-        this.chartData1.push({x: this.chartLabels[i], y: json_data["data"][i][0]});
-        this.chartData2.push({x: this.chartLabels[i], y: json_data["data"][i][1]});
+      for (let i = 0; i < this.chart.labels.length; i++) {
+        this.chart.data1.push({x: this.chart.labels[i], y: json_data["data"][i][0]});
+        this.chart.data2.push({x: this.chart.labels[i], y: json_data["data"][i][1]});
       }
-      // console.log(this.chartData1)
-      // console.log(this.chartData2)
+      // console.log(this.chart.data1)
+      // console.log(this.chart.data2)
     },
 
 
     drawChart() {
       const svg = d3.select(this.$refs.chart)
           .append('svg')
-          .attr('width', this.chartWidth + this.chartMargin.left + this.chartMargin.right)
-          .attr('height', this.chartHeight + this.chartMargin.top + this.chartMargin.bottom)
+          .attr('width', this.chart.width + this.chart.margin.left + this.chart.margin.right)
+          .attr('height', this.chart.height + this.chart.margin.top + this.chart.margin.bottom)
           .append('g')
-          .attr('transform', `translate(${this.chartMargin.left},${this.chartMargin.top})`);
+          .attr('transform', `translate(${this.chart.margin.left},${this.chart.margin.top})`);
 
       const xScale = d3.scaleLinear()
-          .domain([d3.min(this.chartLabels), d3.max(this.chartLabels)])
-          .range([0, this.chartWidth]);
+          .domain([d3.min(this.chart.labels), d3.max(this.chart.labels)])
+          .range([0, this.chart.width]);
 
       const yScale = d3.scaleLinear()
-          .domain([0, d3.max(this.chartData1.concat(this.chartData2), d => d.y)])
-          .range([this.chartHeight, 0]);
+          .domain([0, d3.max(this.chart.data1.concat(this.chart.data2), d => d.y)])
+          .range([this.chart.height, 0]);
 
       const tickFormat = d3.format(".0f");  // 禁用千位分隔符并保留整数部分
-      const xAxisCall = d3.axisBottom(xScale).tickValues(this.chartLabels).tickFormat(tickFormat);  // 自定义刻度值
-      const yAxisCall = d3.axisLeft(yScale).tickValues([0, d3.max(this.chartData1.concat(this.chartData2), d => d.y)]).tickFormat(tickFormat);
+      const xAxisCall = d3.axisBottom(xScale).tickValues(this.chart.labels).tickFormat(tickFormat);  // 自定义刻度值
+      const yAxisCall = d3.axisLeft(yScale).tickValues([0, d3.max(this.chart.data1.concat(this.chart.data2), d => d.y)]).tickFormat(tickFormat);
 
       const area1 = d3.area()
           .x(d => xScale(d.x))
           .y0(yScale(0))
-          .y1(d => yScale(d.y))(this.chartData1);
+          .y1(d => yScale(d.y))(this.chart.data1);
 
       const area2 = d3.area()
           .x(d => xScale(d.x))
           .y0(yScale(0))
-          .y1(d => yScale(d.y))(this.chartData2);
-
+          .y1(d => yScale(d.y))(this.chart.data2);
 
       // 绘制x和y轴
       svg.append('g')
           .attr('class', 'x axis')
-          .attr('transform', `translate(0, ${this.chartHeight})`)
+          .attr('transform', `translate(0, ${this.chart.height})`)
           .call(xAxisCall);  // 如果没有自定义x轴，那么这里应该填 d3.axisBottom(xScale)
       svg.append('g')
           .attr('class', 'y axis')
@@ -120,6 +123,71 @@ export default {
           .attr('d', area2)
           .attr('fill', '#AAAAAA')
           .attr("opacity", 0.7);
+
+
+      this.focusLine = svg.append('line')
+          .attr('class', 'focus-line')
+          .style('display', 'none')
+          .style('stroke', 'black')
+          .style('stroke-dasharray', '5 5')
+          .style('pointer-events', 'none');
+
+      this.tooltip = d3.select(this.$refs.chart)
+          .append('div')
+          .attr('class', 'tooltip')
+          .style('display', 'none')
+          .style('position', 'absolute')
+          .style('background-color', 'white')
+          .style('border', '1px solid black')
+          .style('padding', '5px')
+          .style('pointer-events', 'none');
+
+      var that = this
+      // 添加鼠标事件
+      svg.on('mousemove', function (event) {
+        // 获取鼠标相对于svg的位置
+        const [x, y] = d3.pointer(event);
+        const xPos = x;  // 由于在建立svg时，已经把margin和图表width单独计算了，所以不用在这里减margin
+        const yPos = y;
+
+        // 更新虚线位置
+        that.focusLine.style('display', null)
+            .attr('x1', xPos)
+            .attr('y1', 0)
+            .attr('x2', xPos)
+            .attr('y2', that.chart.height);
+
+        // 查找最近的数据点
+        const bisect = d3.bisector(d => d).left;
+        const map_x = xScale.invert(xPos);  // 当前位置反映射到x轴上的数值
+        const index = bisect(that.chart.labels, map_x);  // 根据数值在x轴上二分查找
+
+        const d0 = that.chart.labels[index - 1];
+        const d1 = that.chart.labels[index];
+        const d = map_x - d0 > d1 - map_x ? d1 : d0;
+
+        that.focusLine.style('display', null)
+            .attr('x1', xScale(d))  // 根据数值再映射回位置
+            .attr('y1', 0)
+            .attr('x2', xScale(d))
+            .attr('y2', that.chart.height);
+
+        // 更新提示框内容和位置
+        that.tooltip.transition()
+            .duration(200)
+            .style('opacity', .9);
+        that.tooltip.html(`x: ${d.x}, y: ${d.y}`)
+            .style('left', `${xPos}px`)
+            .style('top', `${yPos - 20}px`);
+      })
+          .on('mouseout', function () {
+            // 隐藏虚线和提示框
+            that.focusLine.style('display', 'none');
+            that.tooltip.transition()
+                .duration(200)
+                .style('opacity', 0);
+          });
+
     },
   },
 }
