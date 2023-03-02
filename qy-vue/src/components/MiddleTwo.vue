@@ -137,9 +137,8 @@ export default {
           .attr('class', 'tooltip')
           .style('display', 'none')
           .style('position', 'absolute')
-          .style('background-color', 'white')
           .style('border', '1px solid black')
-          .style('padding', '5px')
+          .style('padding', '3px')
           .style('pointer-events', 'none');
 
       var that = this
@@ -150,42 +149,41 @@ export default {
         const xPos = x;  // 由于在建立svg时，已经把margin和图表width单独计算了，所以不用在这里减margin
         const yPos = y;
 
-        // 更新虚线位置
-        that.focusLine.style('display', null)
-            .attr('x1', xPos)
-            .attr('y1', 0)
-            .attr('x2', xPos)
-            .attr('y2', that.chart.height);
+
 
         // 查找最近的数据点
-        const bisect = d3.bisector(d => d).left;
+        const bisect = d3.bisector(d => d.x).left;
         const map_x = xScale.invert(xPos);  // 当前位置反映射到x轴上的数值
-        const index = bisect(that.chart.labels, map_x);  // 根据数值在x轴上二分查找
+        const index = bisect(that.chart.data1, map_x);  // 根据数值在x轴上二分查找
 
-        const d0 = that.chart.labels[index - 1];
-        const d1 = that.chart.labels[index];
-        const d = map_x - d0 > d1 - map_x ? d1 : d0;
+        const d0 = that.chart.data1[index - 1];
+        const d1 = that.chart.data1[index];
+        const d = map_x - d0.x > d1.x - map_x ? d1 : d0;
+        // console.log(d)
 
+        // 更新虚线位置
         that.focusLine.style('display', null)
-            .attr('x1', xScale(d))  // 根据数值再映射回位置
+            .attr('x1', xScale(d.x))  // 根据数值再映射回位置
             .attr('y1', 0)
-            .attr('x2', xScale(d))
+            .attr('x2', xScale(d.x))
             .attr('y2', that.chart.height);
 
         // 更新提示框内容和位置
         that.tooltip.transition()
-            .duration(200)
-            .style('opacity', .9);
+            .duration(100)
+            .style('display', null)
+            .style('opacity', 1);
         that.tooltip.html(`x: ${d.x}, y: ${d.y}`)
             .style('left', `${xPos}px`)
-            .style('top', `${yPos - 20}px`);
+            .style('top', `${yPos - 30}px`);
       })
           .on('mouseout', function () {
             // 隐藏虚线和提示框
             that.focusLine.style('display', 'none');
             that.tooltip.transition()
                 .duration(200)
-                .style('opacity', 0);
+                .style('opacity', 0)
+                .style('display', 'none');
           });
 
     },

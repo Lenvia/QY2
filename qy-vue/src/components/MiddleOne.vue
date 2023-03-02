@@ -25,9 +25,9 @@
         <!--ymd-->
         <el-row class="height_adjust_equal content_center">
           <el-radio-group v-model="form3.dateType" @change="onDateTypeChange">
-            <el-radio label="Year">Year</el-radio>
-            <el-radio label="Month">Month</el-radio>
-            <el-radio label="Day">Day</el-radio>
+            <el-radio label="Y">Year</el-radio>
+            <el-radio label="M">Month</el-radio>
+            <el-radio label="D">Day</el-radio>
           </el-radio-group>
         </el-row>
 
@@ -37,7 +37,7 @@
           </el-col>
 
           <el-col :span="12" class="content_center">
-            <el-date-picker id="timeRangePicker" :type=dateType :value-format=dateFormat :disabled=dateDisable
+            <el-date-picker id="timeRangePicker" :type=dateType :format=dateFormat :value-format=dateFormat :disabled=dateDisable
                             v-model="form3.timeRange" style="width: 100%;"></el-date-picker>
           </el-col>
         </el-row>
@@ -96,15 +96,15 @@ export default {
     return {
       backgroundImage: require('@/assets/bg2.jpg'),
       form3: {
-        dateType: 'Year',
-        timeRange: '',
+        dateType: 'Y',
+        timeRange: null,
         stayDays: '',
         entranceDay1: '',
         entranceDay2: '',
         value: '',
       },
-      dateType:'month',
-      dateFormat: 'yyyy-MM',
+      dateType:'',
+      dateFormat: '',
       dateDisable: false,
       chartData: [],
       chartSize: 0,
@@ -127,18 +127,22 @@ export default {
 
     updateDatePicker(){
       let datePicker = this.$el.querySelector('#timeRangePicker');
+      // 清空当前里的日期
+      this.form3.timeRange = null;
       switch (this.form3.dateType){
-        case "Year":
+        case "Y":
+          this.dateType = "";
+          this.dateFormat = "";
           datePicker.readOnly = true;
           this.dateDisable = true;
           break;
-        case "Month":
+        case "M":
           this.dateType = "year";
           this.dateFormat = "yyyy";
           datePicker.readOnly = false;
           this.dateDisable = false;
           break;
-        case "Day":
+        case "D":
           this.dateType = "month";
           this.dateFormat = "yyyy-MM";
           datePicker.readOnly = false;
