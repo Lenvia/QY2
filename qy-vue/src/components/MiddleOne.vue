@@ -89,6 +89,7 @@
 <script>
 import * as d3 from "d3";
 import axios from "axios";
+import {eventBus} from "@/plugin/event-bus";
 
 export default {
   name: "MiddleOne",
@@ -119,6 +120,12 @@ export default {
         message: JSON.stringify(this.form3),
         type: 'success'
       });
+
+      eventBus.$emit('showArea', {
+        dateType: this.form3.dateType,
+        timeRange: this.form3.timeRange
+      });
+
     },
 
     onDateTypeChange(){

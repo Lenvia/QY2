@@ -6,6 +6,8 @@
 import * as d3 from 'd3';
 import axios from "axios";
 import async from "async";
+import {eventBus} from "@/plugin/event-bus";
+
 
 export default {
   name: "MiddleTwo",
@@ -14,8 +16,11 @@ export default {
       year_json_data: null,
       month_json_data: null,
       day_json_data: null,
+
       focusLine: null,
       tooltip: null,
+
+      svg: null,
 
       chart: {
         labels: [],
@@ -28,31 +33,59 @@ export default {
       },
     };
   },
+
+  created() {
+    eventBus.$on('showArea', ({dateType, timeRange}) => {
+      let url;
+      if (dateType === 'Y') {  // 显示年份图
+        url = 'json_area_year.json';
+
+      } else if (dateType === 'M') {
+        url = 'json_area_month.json';
+
+      } else {
+        url = 'json_area_year.json';
+      }
+
+      // 获取数据并redraw
+      axios.get(url)
+          .then((response) => {
+            this.parseJson(response.data);
+          })
+          .catch(error => {
+            // 处理错误
+            console.error(error);
+          }).then(() => {
+        this.removeChartContent(this.svg);
+        this.drawChart(this.svg);
+      });
+    })
+  },
   mounted() {
     this.$nextTick(() => {
       this.chart.width = this.$parent.$el.offsetWidth - this.chart.margin.left - this.chart.margin.right;
       this.chart.height = this.$parent.$el.offsetHeight - this.chart.margin.top - this.chart.margin.bottom;
 
-      const url1 = 'json_area_year.json';
-      const url2 = 'json_area_month.json';
-      const url3 = 'json_area_day.json';
-      axios.all([
-        axios.get(url1),
-        axios.get(url2),
-        axios.get(url3)
-      ])
-          .then(axios.spread((response1, response2, response3) => {
+      this.svg = d3.select(this.$refs.chart)
+          .append('svg')
+          .attr('width', this.chart.width + this.chart.margin.left + this.chart.margin.right)
+          .attr('height', this.chart.height + this.chart.margin.top + this.chart.margin.bottom)
+          .append('g')
+          .attr('transform', `translate(${this.chart.margin.left},${this.chart.margin.top})`);
+
+
+      const url = 'json_area_year.json';  // 默认全年数据
+
+      axios.get(url)
+          .then((response) => {
             // 处理响应
-            this.year_json_data = response1.data;
-            this.month_json_data = response2.data;
-            this.day_json_data = response3.data;
-          }))
+            this.parseJson(response.data);
+          })
           .catch(error => {
             // 处理错误
-            // console.error(error);
+            console.error(error);
           }).then(() => {
-        this.parseJson(this.year_json_data);
-        this.drawChart();
+        this.drawChart(this.svg);
       });
 
 
@@ -69,19 +102,15 @@ export default {
         this.chart.data1.push({x: this.chart.labels[i], y: json_data["data"][i][0]});
         this.chart.data2.push({x: this.chart.labels[i], y: json_data["data"][i][1]});
       }
-      // console.log(this.chart.data1)
-      // console.log(this.chart.data2)
+    },
+    removeChartContent(svg){
+      svg.selectAll('path').remove();
+      svg.selectAll('g').remove();
+      this.focusLine.remove();
+      this.tooltip.remove();
     },
 
-
-    drawChart() {
-      const svg = d3.select(this.$refs.chart)
-          .append('svg')
-          .attr('width', this.chart.width + this.chart.margin.left + this.chart.margin.right)
-          .attr('height', this.chart.height + this.chart.margin.top + this.chart.margin.bottom)
-          .append('g')
-          .attr('transform', `translate(${this.chart.margin.left},${this.chart.margin.top})`);
-
+    drawChart(svg) {
       const xScale = d3.scaleLinear()
           .domain([d3.min(this.chart.labels), d3.max(this.chart.labels)])
           .range([0, this.chart.width]);
@@ -150,7 +179,6 @@ export default {
         const yPos = y;
 
 
-
         // 查找最近的数据点
         const bisect = d3.bisector(d => d.x).left;
         const map_x = xScale.invert(xPos);  // 当前位置反映射到x轴上的数值
@@ -188,6 +216,9 @@ export default {
 
     },
   },
+  watch: {
+
+  }
 }
 </script>
 
