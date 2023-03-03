@@ -1,8 +1,8 @@
 <template>
   <el-row class="flex_column" style="height: 100%">
     <!--Record-->
-    <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 46%">
-      <el-row class="flex_row" style="background-color: #42b983">
+    <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 45%">
+      <el-row class="flex_row" style="background-color: #42b983; height: 100%">
         <!--Record左侧框-->
         <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
           <el-radio-group v-model="form.operationType" @change="handleChange">
@@ -63,7 +63,7 @@
         <el-col :span="10" class="height_adjust_equal flex_column" style="height: 100%">
           <!--记录框-->
           <el-row class="content_center" style="flex-grow: 8">
-            <div style="background-color: blueviolet; height: 90%; width: 80%">
+            <div style="background-color: beige; height: 90%; width: 80%">
               <textarea ref="recordBox" style="width: 100%; height: 100%; resize: none; border-width: 2px"
                         readonly></textarea>
             </div>
@@ -77,18 +77,17 @@
 
     <el-divider></el-divider>
     <!--Task-->
-    <el-form class="flex_column" ref="form2" :model="form2" label-width="80px" style="height: 50%">
-
+    <el-form class="flex_column" ref="form2" :model="form2" label-width="80px" style="height: 60%">
       <!--Task item-->
-      <el-row style="background-color: darkkhaki; height: 50%">
+      <el-row class="flex_column" style="background-color: beige; height: 45%">
         <!--TaskName-->
-        <el-row>
+        <el-row class="height_adjust_equal">
           <el-form-item class="custom-form" label="Task Name">
             <input class="input-box" v-model="form2.taskName"/>
           </el-form-item>
         </el-row>
         <!--TimeRange-->
-        <el-row>
+        <el-row class="height_adjust_equal">
           <el-form-item class="custom-form" label="Time Range">
             <el-col :span="10" class="content_center">
               <el-date-picker type="month" value-format="yyyy-MM"
@@ -103,7 +102,7 @@
             </el-col>
           </el-form-item>
         </el-row>
-        <el-row class="input-content-right">
+        <el-row class="input-content-right height_adjust_equal">
           <el-button class="content_center" style="height: 25px; width: 40%; margin-bottom: 10px" @click="onCreateTask">
             Create Task
           </el-button>
@@ -113,7 +112,7 @@
       <!--Task view-->
       <el-row class="content_center" style="height: 50%;">
         <el-col :span="8" style="background-color: aliceblue; height: 100%">
-          <div class="taskContainer " style="width: 100%; height: 100%; background-color: darkgoldenrod; ">
+          <div class="taskContainer " style="width: 100%; height: 100%; background-color: aliceblue; ">
             <el-table
                 ref="singleTable"
                 :data="tableData"
@@ -165,9 +164,13 @@ export default {
         timeStart: '',
         timeEnd: '',
       },
+
+      recordList: [],
+      taskRecordMap: new Map(),
+
+      // log
       tableData: [
-        // {name: "task1"},
-        // {name: "task2"},
+
       ],
       currentRow: null,  // table当前行
       taskLogMap: new Map(),
@@ -198,16 +201,29 @@ export default {
         message: JSON.stringify(this.form),
         type: 'success'
       });
+      this.recordList.push(this.form);
+
       this.$refs.recordBox.value += JSON.stringify(this.form);
       this.$refs.recordBox.value += '\n\n';
       this.$refs.recordBox.scrollTop = this.$refs.recordBox.scrollHeight;
     },
     onCreateTask() {
-      // console.log(this.form2);
+      if(this.checkTaskDuplicated(this.form2.taskName)){
+        this.$message({
+          message: 'Task name conflict!',
+          type: 'error'
+        });
+        return ;
+      }
+
       this.$message({
         message: JSON.stringify(this.form2),
         type: 'success'
       });
+
+      // 添加到map，并清空recordBox
+      this.taskRecordMap.set(this.form2.taskName, this.recordList);
+      this.$refs.recordBox.value = ""
 
       // TODO: 把task和recordBox 的内容发送给后端
       // console.log(this.$refs.recordBox.value, JSON.stringify(this.form2));
@@ -232,6 +248,10 @@ export default {
 
       // TODO 进行一些操作
 
+    },
+
+    checkTaskDuplicated(taskName){
+      return this.taskRecordMap.has(taskName);
     }
   },
 
@@ -246,7 +266,9 @@ export default {
 
 
 <style scoped>
-
+* {
+  background-color: transparent !important;
+}
 
 
 /deep/ .el-form {

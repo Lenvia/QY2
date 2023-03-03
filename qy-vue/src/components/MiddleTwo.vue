@@ -87,8 +87,6 @@ export default {
           }).then(() => {
         this.drawChart(this.svg);
       });
-
-
     });
 
   },
@@ -196,7 +194,9 @@ export default {
             .attr('x1', xScale(d.x))  // 根据数值再映射回位置
             .attr('y1', 0)
             .attr('x2', xScale(d.x))
-            .attr('y2', that.chart.height);
+            .attr('y2', that.chart.height)
+            .style('stroke', 'black')
+            .style('stroke-dasharray', '5 5');
 
         // 更新提示框内容和位置
         that.tooltip.transition()
@@ -216,43 +216,27 @@ export default {
                 .style('display', 'none');
           })
           .on('click', function (event) {
-            if(that.lock === false){
-              that.lock = true;  // 上锁，并禁用move
-              const [x, y] = d3.pointer(event);
-              const xPos = x;
-              // 查找最近的数据点
-              const bisect = d3.bisector(d => d).left;
-              const map_x = xScale.invert(xPos);  // 当前位置反映射到x轴上的数值
-              const index = bisect(that.chart.labels, map_x);  // 根据数值在x轴上二分查找
+            const [x, y] = d3.pointer(event);
+            const xPos = x;
+            // 查找最近的数据点
+            const bisect = d3.bisector(d => d).left;
+            const map_x = xScale.invert(xPos);  // 当前位置反映射到x轴上的数值
+            const index = bisect(that.chart.labels, map_x);  // 根据数值在x轴上二分查找
 
-              const lower = that.chart.labels[index - 1];
-              const upper = that.chart.labels[index];
-              const d = map_x - lower > upper - map_x ? upper : lower;
+            const lower = that.chart.labels[index - 1];
+            const upper = that.chart.labels[index];
+            const d = map_x - lower > upper - map_x ? upper : lower;
 
-              // 传递日期给子图
-              let date;
-              if(that.timeRange === null) date = d.toString();
-              else date = [that.timeRange, d.toString()].join('-')
+            // 传递日期给子图
+            let date;
+            if (that.timeRange === null) date = d.toString();
+            else date = [that.timeRange, d.toString()].join('-')
 
-              eventBus.$emit('showMultiCharts', {
-                date: date,
-              });
+            eventBus.$emit('showMultiCharts', {
+              date: date,
+            });
 
-              // 固定focusLine
-              // 更新虚线位置，隐藏提示框
-              // svg.on("mouseout", null);
-              // that.tooltip.transition()
-              //     .duration(200)
-              //     .style('opacity', 0)
-              //     .style('display', 'none');
-              // svg.on('mousemove', null);
-
-            }
-            else{  // 关锁，打开move
-              that.lock = false;
-            }
-
-
+            that.focusLine.style('stroke', 'red');
           });
     },
   },

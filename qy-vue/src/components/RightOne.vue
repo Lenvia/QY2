@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartContainer" style="height: 100%; width: 100%; background-color: #42b983">
+  <div ref="chartContainer" style="height: 100%; width: 100%; background-color: aliceblue">
     <div ref="scatterChart" class="content_center" style="height: 100%; width: 100%;"></div>
   </div>
 </template>
@@ -7,93 +7,152 @@
 <script>
 import * as d3 from "d3";
 import axios from "axios";
+import * as echarts from 'echarts'
 
 export default {
   name: "RightOne.vue",
   data() {
     return {
-      svg: null,
-      chart: {
-        labels: [],
-        data: [],
-        margin: {top: 10, right: 10, bottom: 20, left: 30},
-        width: 0,
-        height: 0,
-        color: ["#9400D3", "#009999"],
+      chart: null,
+      chartData: {
+        nodes: [
+          // {id: 1, name: 'Node 1', x: 100, y: 100},
+          // {id: 2, name: 'Node 2', x: 200, y: 50},
+          // {id: 3, name: 'Node 3', x: 300, y: 250}
+        ],
+        links: [
+          // {source: 1, target: 2},
+          // {source: 2, target: 3}
+        ]
       },
+      chartOption: {
+        title: {
+          // text: 'Graph on Cartesian'
+        },
+        tooltip: {},
+        xAxis: {
+          type: 'value',
+          splitLine: {
+            show: false
+          },
+          axisLabel:{
+            show: false
+          },
+          axisTick:{
+            show: false
+          }
+        },
+        yAxis: {
+          type: 'value',
+          splitLine: {
+            show: false
+          },
+          axisLabel:{
+            show: false
+          },
+          axisTick:{
+            show: false
+          }
+        },
+        // grid: {
+        //   show: false
+        // },
+        series: [
+          {
+            type: 'graph',
+            layout: 'none',
+            coordinateSystem: 'cartesian2d',
+            symbolSize: 40,
+            label: {
+              show: true
+            },
+            edgeSymbol: ['circle', 'arrow'],
+            edgeSymbolSize: [4, 10],
+            data: [],
+            links: [],
+            lineStyle: {
+              color: '#2f4554'
+            }
+          }
+        ]
+      }
     }
   },
 
   mounted() {
     this.$nextTick(() => {
+      // 初始化画布
+      this.chart = echarts.init(this.$refs.scatterChart)
 
-      // 初始化 svg
-      this.chart.width = this.$refs.chartContainer.offsetWidth - this.chart.margin.left - this.chart.margin.right;
-      this.chart.height = this.$refs.chartContainer.offsetHeight - this.chart.margin.top - this.chart.margin.bottom;
-
-      this.svg = d3.select(this.$refs.scatterChart)
-          .append('svg')
-          .attr('width', this.chart.width + this.chart.margin.left + this.chart.margin.right)
-          .attr('height', this.chart.height + this.chart.margin.top + this.chart.margin.bottom)
-          .append('g')
-          .attr('transform', `translate(${this.chart.margin.left},${this.chart.margin.top})`);
-
-
-      // 获取数据
-      axios.get('/json_statistics.json')
+      axios.get('/fake.json')
           .then(response => {
             const json_data = response.data;
 
             // 解析json
-            this.chart.labels = json_data["label"];
-            this.chart.data = this.chart.labels.map((label, i) => ({ x: label, y: json_data.data3[i] }));
+            this.chartData.nodes = json_data["nodes"];
+            this.chartData.links = json_data["links"];
           })
           .catch(error => {
             console.log(error);
           }).then(() => {  // 绘制
-        this.drawScatterChart(this.svg, this.chart);
-      });
 
+            /*
+              series[0].data 需要传入一个数组，该数组中的每一项都是一个对象，该对象包含了一组数据，其中包括：
+              value：表示数据值，可以是数字或字符串；
+              name：表示数据项的名称，可以是数字或字符串；
+              itemStyle：表示数据项的样式，可以是对象或函数；
+              label：表示数据项的标签，可以是对象或函数；
+              emphasis：表示数据项的高亮状态，可以是对象或函数。
+             */
+            this.chartOption.series[0].data = this.chartData.nodes.map(node => ({
+              value: [node.x, node.y],
+              name: node.name,
+              symbolSize: Math.sqrt(node.size) * 10,
+              itemStyle:{
+                color: node.color,
+              }
+            }));
+
+
+            this.chartOption.series[0].links = this.chartData.links.map(link => ({
+              source: link.source,
+              target: link.target,
+              lineStyle: {
+                color: link.color,
+                width: link.width,
+                curveness: link.curveness,
+              },
+            }));
+
+            this.chart.setOption(this.chartOption)
+          });
 
 
     });
 
   },
 
-  methods:{
-    drawScatterChart(svg, chart) {
-      // 设置 SVG 尺寸和 margin
+  watch: {
+    chartData() {
+      this.chartOption.series[0].data = this.chartData.nodes.map(node => ({
+        "value": [node.x, node.y],
+        "name": node.name,
+      }));
 
-      // 创建 X 轴比例尺
-      const xScale = d3.scaleLinear()
-          .domain([0, d3.max(chart.data, d => d.x)])
-          .range([0, chart.width]);
 
-      // 创建 Y 轴比例尺
-      const yScale = d3.scaleLinear()
-          .domain([0, d3.max(chart.data, d => d.y)])
-          .range([chart.height, 0]);
+      this.chartOption.series[0].links = this.chartData.links.map(link => ({
+        source: link.source,
+        target: link.target,
+        lineStyle: {
+          color: '#0000ff',
+        },
+      }));
 
-      // 添加 X 轴
-      svg.append('g')
-          .attr('transform', `translate(0,${chart.height})`)
-          .call(d3.axisBottom(xScale));
-
-      // 添加 Y 轴
-      svg.append('g')
-          .call(d3.axisLeft(yScale));
-
-      // 添加散点
-      svg.selectAll('circle')
-          .data(chart.data)
-          .enter()
-          .append('circle')
-          .attr('cx', d => xScale(d.x))
-          .attr('cy', d => yScale(d.y))
-          .attr('r', 5)
-          .attr('fill', 'steelblue');
+      this.chart.setOption(this.chartOption)
     },
-  }
+  },
+
+  methods: {}
 
 }
 </script>

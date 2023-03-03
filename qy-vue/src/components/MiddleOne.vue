@@ -1,10 +1,10 @@
 <template>
-  <el-form style="height: 100%; background-color: #d2d2d2;display:flex;" :model="form3">
+  <el-form style="height: 100%;display:flex;" :model="form3">
 
     <!--左侧输入框-->
     <el-col class="flex_column" :span="8" style="flex-grow:1;height: 100%">
       <!--左侧上框-->
-      <el-row class="flex_column" style="flex-grow:1; background-color: beige;height: 50%; width: 95%; ">
+      <el-row class="flex_column" style="flex-grow:1; height: 50%; width: 95%; ">
 
         <el-row class="height_adjust_equal content_vertical_center">
           <el-col :span="9">
@@ -110,7 +110,7 @@ export default {
       chartData: [],
       chartSize: 0,
       chartRadius: 0,
-      chartColors: d3.scaleOrdinal(d3.schemeCategory10),
+      chartColors: d3.scaleOrdinal(d3.schemePastel2),
     };
   },
 

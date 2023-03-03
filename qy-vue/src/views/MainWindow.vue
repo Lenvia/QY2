@@ -2,7 +2,7 @@
   <div style="height: 100%; width: 100%">
     <el-row type="flex" class="row-box" justify="space-around">
       <!--左侧视图-->
-      <el-col :span="5" class="col-window" style="background-color: aquamarine">
+      <el-col :span="5" class="col-window" style="background-color: aliceblue ">
         <el-card class="box-card">
           <div slot="header">
             <span>Task View</span>
@@ -16,8 +16,8 @@
               </div>
             </el-row>
             <el-divider></el-divider>
-            <el-row style=" background-color: gold ">
-              <div style="background-color: aliceblue;height: 50vh">
+            <el-row>
+              <div style="height: 55vh">
                 <OceanRecord id="OceanRecord"/>
               </div>
             </el-row>
@@ -26,7 +26,7 @@
 
       </el-col>
       <!--中间视图-->
-      <el-col :span="12" class="col-window" style="background-color: darkkhaki">
+      <el-col :span="12" class="col-window" style="background-color: aliceblue">
         <el-card class="box-card">
           <div slot="header">
             <span>Statistic View</span>
@@ -34,7 +34,7 @@
 
           <div :style="{height: cardContentHeight + 'vh'}">
             <el-row>
-              <div :style="{backgroundColor: 'brown', height: middleOneHeight + 'vh', marginBottom: 10 +'px'}">
+              <div :style="{height: middleOneHeight + 'vh', marginBottom: 10 +'px'}">
                 <middle-one/>
               </div>
             </el-row>
@@ -44,7 +44,7 @@
               </div>
             </el-row>
             <el-row>
-              <div :style="{backgroundColor: 'brown', height: middleThreeHeight + 'vh'}">
+              <div :style="{height: middleThreeHeight + 'vh'}">
                 <middle-three/>
               </div>
             </el-row>
@@ -61,7 +61,7 @@
 
           <div :style="{height: cardContentHeight + 'vh'}">
             <el-row style="background-color: blueviolet; height: 50vh">
-                <right-one-b-p/>
+              <right-one/>
             </el-row>
             <el-row style=" background-color: gold ">
 
@@ -83,17 +83,16 @@ import MiddleOne from "@/components/MiddleOne.vue";
 import MiddleThree from "@/components/MiddleThree.vue";
 import MiddleTwo from "@/components/MiddleTwo.vue";
 import RightOne from "@/components/RightOne.vue";
-import RightOneBP from "@/components/RightOneBP.vue";
 
 export default {
   name: "MainWindow.vue",
-  components: {RightOneBP, MiddleTwo, MiddleThree, MiddleOne, OceanRecord, OceanMap, RightOne},
+  components: {MiddleTwo, MiddleThree, MiddleOne, OceanRecord, OceanMap, RightOne},
 
   data() {
     return {
       oceanMapWidth: 500,  // 初始化
       oceanMapHeight: 500,
-      cardContentHeight: 85,  // 单位vh
+      cardContentHeight: 90,  // 单位vh
     }
   },
   mounted() {
@@ -162,6 +161,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 /* 内容仅垂直居中 */
 .content_vertical_center {
   display: flex;
@@ -177,17 +177,17 @@ export default {
 
 
 /*清除日期输入框前面的icon*/
-.el-input__icon{
+.el-input__icon {
   display: none;
 }
-.el-input--prefix .el-input__inner{
+
+.el-input--prefix .el-input__inner {
   padding-left: 5px;
 }
 
-.el-input--suffix .el-input__inner{
+.el-input--suffix .el-input__inner {
   padding-right: 5px;
 }
-
 
 
 </style>
@@ -205,6 +205,16 @@ export default {
 .box-card {
   margin-left: 15px;
   margin-right: 15px;
+}
+
+/deep/ .box-card .el-card__header {
+  background-color: #f0f0f0;
+  /*color: #333;*/
+  height: 2vh;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-weight: bold;
 }
 
 

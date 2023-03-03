@@ -1,7 +1,7 @@
 <template>
   <el-row class="flex_row" style="height: 100%;">
     <el-col class="height_adjust_equal flex_column" style="height: 100%">
-      <el-row class="height_adjust_equal flex_row" style="background-color: blueviolet; display: flex">
+      <el-row class="height_adjust_equal flex_row" style="background-color: aliceblue; display: flex">
         <el-col :span="8" class="height_adjust_equal content_center">
           <div ref="chartContainer1" class="small-view">
             <div ref="chart1" class="content_center"></div>
@@ -42,7 +42,7 @@ export default {
         margin: {top: 10, right: 10, bottom: 20, left: 30},
         width: 0,
         height: 0,
-        color: ["#9400D3", "#009999"],
+        color: ["#1E90FF", "#3CB371"],
       },
       chart2: {
         labels: [],
@@ -50,7 +50,7 @@ export default {
         margin: {top: 10, right: 10, bottom: 20, left: 30},
         width: 0,
         height: 0,
-        color: '#836FFF',
+        color: '#9370DB',
       },
       chart3: {
         labels: [],
@@ -243,6 +243,6 @@ export default {
 .small-view {
   height: 80%;
   width: 95%;
-  background-color: limegreen;
+  /*background-color: beige;*/
 }
 </style>
