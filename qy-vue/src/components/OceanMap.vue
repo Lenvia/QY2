@@ -1,5 +1,5 @@
 <template>
-  <div ref="ocean_map" class="background-image-module" :style="{ backgroundImage: `url(${croppedImageUrl})`}"></div>
+  <div ref="ocean_map" class="background-image-module div-border" :style="{ backgroundImage: `url(${croppedImageUrl})`}"></div>
 
 </template>
 

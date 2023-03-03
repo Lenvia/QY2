@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartContainer" style="height: 100%; width: 100%; background-color: aliceblue">
+  <div class="div-border" ref="chartContainer" style="height: 100%; width: 100%; background-color: aliceblue">
     <div ref="scatterChart" class="content_center" style="height: 100%; width: 100%;"></div>
   </div>
 </template>
@@ -32,6 +32,7 @@ export default {
         tooltip: {},
         xAxis: {
           type: 'value',
+          show: false,
           splitLine: {
             show: false
           },
@@ -44,6 +45,7 @@ export default {
         },
         yAxis: {
           type: 'value',
+          show: false,
           splitLine: {
             show: false
           },

@@ -10,7 +10,7 @@
           <div :style="{height: cardContentHeight + 'vh'}">
             <el-row ref="oceanMapContainer" style="background-color: blueviolet; height: 35vh">
               <div
-                  class="content_center" style="background-color: cadetblue;">
+                   class="content_center" style="background-color: cadetblue;">
                 <OceanMap id="OceanMap"
                           :style="{width: oceanMapWidth + 'px', height: oceanMapHeight + 'px'}"/>
               </div>
@@ -33,20 +33,25 @@
           </div>
 
           <div :style="{height: cardContentHeight + 'vh'}">
-            <el-row>
-              <div :style="{height: middleOneHeight + 'vh', marginBottom: 10 +'px'}">
+            <el-row style="height: 60%">
+              <div :style="{height:100+'%', marginBottom: 10 +'px'}">
                 <middle-one/>
               </div>
             </el-row>
-            <el-row>
-              <div :style="{height: middleTwoHeight + 'vh', marginBottom: 10 +'px'}">
-                <middle-two/>
-              </div>
-            </el-row>
-            <el-row>
-              <div :style="{height: middleThreeHeight + 'vh'}">
-                <middle-three/>
-              </div>
+            <!-- 间隙 -->
+            <el-row style="height: 1%"></el-row>
+
+            <el-row class="div-border" style="height: 40%">
+              <el-row style="height: 33%">
+                <div :style="{height:100+'%', marginTop:10 + 'px', marginBottom: 10 +'px'}">
+                  <middle-two/>
+                </div>
+              </el-row>
+              <el-row style="height: 66%">
+                <div :style="{height:100+'%'}">
+                  <middle-three/>
+                </div>
+              </el-row>
             </el-row>
           </div>
         </el-card>
@@ -187,6 +192,10 @@ export default {
 
 .el-input--suffix .el-input__inner {
   padding-right: 5px;
+}
+
+.div-border {
+  border: 1px solid black;
 }
 
 

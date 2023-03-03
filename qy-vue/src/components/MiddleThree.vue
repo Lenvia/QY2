@@ -1,7 +1,8 @@
 <template>
   <el-row class="flex_row" style="height: 100%;">
     <el-col class="height_adjust_equal flex_column" style="height: 100%">
-      <el-row class="height_adjust_equal flex_row" style="background-color: aliceblue; display: flex">
+      <!--      -->
+      <el-row class="height_adjust_equal flex_row" style=" display: flex">
         <el-col :span="8" class="height_adjust_equal content_center">
           <div ref="chartContainer1" class="small-view">
             <div ref="chart1" class="content_center"></div>

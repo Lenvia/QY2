@@ -64,7 +64,7 @@
           <!--记录框-->
           <el-row class="content_center" style="flex-grow: 8">
             <div style="background-color: beige; height: 90%; width: 80%">
-              <textarea ref="recordBox" style="width: 100%; height: 100%; resize: none; border-width: 2px"
+              <textarea class="div-border" ref="recordBox" style="width: 100%; height: 100%; resize: none;"
                         readonly></textarea>
             </div>
           </el-row>

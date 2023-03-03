@@ -42,7 +42,7 @@
       "target": 1,
       "color": "#423456",
       "width": 1,
-      "curveness": 0.5
+      "curveness": -0.5
     },
     {
       "source": 0,
