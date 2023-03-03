@@ -25,6 +25,7 @@
 <script>
 import * as d3 from "d3";
 import axios from "axios";
+import {eventBus} from "@/plugin/event-bus";
 
 export default {
   name: "MiddleThree",
@@ -60,6 +61,12 @@ export default {
         color: 'steelblue',
       },
     };
+  },
+
+  created() {
+    eventBus.$on('showMultiCharts', ({date}) =>{
+      console.log(date);
+    })
   },
 
   mounted() {

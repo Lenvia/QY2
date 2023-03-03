@@ -13,14 +13,13 @@ export default {
   name: "MiddleTwo",
   data() {
     return {
-      year_json_data: null,
-      month_json_data: null,
-      day_json_data: null,
 
       focusLine: null,
       tooltip: null,
+      timeRange: null,
 
       svg: null,
+      lock: false,  // 面积图锁
 
       chart: {
         labels: [],
@@ -36,6 +35,7 @@ export default {
 
   created() {
     eventBus.$on('showArea', ({dateType, timeRange}) => {
+      this.timeRange = timeRange;
       let url;
       if (dateType === 'Y') {  // 显示年份图
         url = 'json_area_year.json';
@@ -44,7 +44,7 @@ export default {
         url = 'json_area_month.json';
 
       } else {
-        url = 'json_area_year.json';
+        url = 'json_area_day.json';
       }
 
       // 获取数据并redraw
@@ -103,7 +103,7 @@ export default {
         this.chart.data2.push({x: this.chart.labels[i], y: json_data["data"][i][1]});
       }
     },
-    removeChartContent(svg){
+    removeChartContent(svg) {
       svg.selectAll('path').remove();
       svg.selectAll('g').remove();
       this.focusLine.remove();
@@ -167,6 +167,8 @@ export default {
           .style('display', 'none')
           .style('position', 'absolute')
           .style('border', '1px solid black')
+          // .style('background-color', 'white')
+          .style('font-size', '14px')
           .style('padding', '3px')
           .style('pointer-events', 'none');
 
@@ -184,10 +186,10 @@ export default {
         const map_x = xScale.invert(xPos);  // 当前位置反映射到x轴上的数值
         const index = bisect(that.chart.data1, map_x);  // 根据数值在x轴上二分查找
 
-        const d0 = that.chart.data1[index - 1];
-        const d1 = that.chart.data1[index];
-        const d = map_x - d0.x > d1.x - map_x ? d1 : d0;
-        // console.log(d)
+        const lower = that.chart.data1[index - 1];
+        const upper = that.chart.data1[index];
+        const d = map_x - lower.x > upper.x - map_x ? upper : lower;
+        const d2 = d === lower ? that.chart.data2[index - 1] : that.chart.data2[index];
 
         // 更新虚线位置
         that.focusLine.style('display', null)
@@ -201,9 +203,9 @@ export default {
             .duration(100)
             .style('display', null)
             .style('opacity', 1);
-        that.tooltip.html(`x: ${d.x}, y: ${d.y}`)
+        that.tooltip.html(`time: ${d.x} <br> data1: ${d.y}, data2: ${d2.y}`)
             .style('left', `${xPos}px`)
-            .style('top', `${yPos - 30}px`);
+            .style('top', `${yPos - 40}px`);
       })
           .on('mouseout', function () {
             // 隐藏虚线和提示框
@@ -212,13 +214,49 @@ export default {
                 .duration(200)
                 .style('opacity', 0)
                 .style('display', 'none');
-          });
+          })
+          .on('click', function (event) {
+            if(that.lock === false){
+              that.lock = true;  // 上锁，并禁用move
+              const [x, y] = d3.pointer(event);
+              const xPos = x;
+              // 查找最近的数据点
+              const bisect = d3.bisector(d => d).left;
+              const map_x = xScale.invert(xPos);  // 当前位置反映射到x轴上的数值
+              const index = bisect(that.chart.labels, map_x);  // 根据数值在x轴上二分查找
 
+              const lower = that.chart.labels[index - 1];
+              const upper = that.chart.labels[index];
+              const d = map_x - lower > upper - map_x ? upper : lower;
+
+              // 传递日期给子图
+              let date;
+              if(that.timeRange === null) date = d.toString();
+              else date = [that.timeRange, d.toString()].join('-')
+
+              eventBus.$emit('showMultiCharts', {
+                date: date,
+              });
+
+              // 固定focusLine
+              // 更新虚线位置，隐藏提示框
+              // svg.on("mouseout", null);
+              // that.tooltip.transition()
+              //     .duration(200)
+              //     .style('opacity', 0)
+              //     .style('display', 'none');
+              // svg.on('mousemove', null);
+
+            }
+            else{  // 关锁，打开move
+              that.lock = false;
+            }
+
+
+          });
     },
   },
-  watch: {
-
-  }
+  watch: {}
 }
 </script>
 
