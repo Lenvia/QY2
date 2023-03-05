@@ -1121,6 +1121,15 @@
     "@nodelib/fs.scandir" "2.1.5"
     "fastq" "^1.6.0"
 
+"@nuxt/opencollective@^0.3.2":
+  "integrity" "sha512-6IKCd+gP0HliixqZT/p8nW3tucD6Sv/u/eR2A9X4rxT/6hXlMzA4GZQzq4d2qnBAwSwGpmKyzkyTjNjrhaA25A=="
+  "resolved" "https://registry.npmmirror.com/@nuxt/opencollective/-/opencollective-0.3.3.tgz"
+  "version" "0.3.3"
+  dependencies:
+    "chalk" "^4.1.0"
+    "consola" "^2.15.0"
+    "node-fetch" "^2.6.7"
+
 "@polka/url@^1.0.0-next.20":
   "integrity" "sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g=="
   "resolved" "https://registry.npmmirror.com/@polka/url/-/url-1.0.0-next.21.tgz"
@@ -2108,6 +2117,27 @@
   "resolved" "https://registry.npmmirror.com/boolbase/-/boolbase-1.0.0.tgz"
   "version" "1.0.0"
 
+"bootstrap-vue@^2.23.1":
+  "integrity" "sha512-SEWkG4LzmMuWjQdSYmAQk1G/oOKm37dtNfjB5kxq0YafnL2W6qUAmeDTcIZVbPiQd2OQlIkWOMPBRGySk/zGsg=="
+  "resolved" "https://registry.npmmirror.com/bootstrap-vue/-/bootstrap-vue-2.23.1.tgz"
+  "version" "2.23.1"
+  dependencies:
+    "@nuxt/opencollective" "^0.3.2"
+    "bootstrap" "^4.6.1"
+    "popper.js" "^1.16.1"
+    "portal-vue" "^2.1.7"
+    "vue-functional-data-merge" "^3.1.0"
+
+"bootstrap@^4.6.1":
+  "integrity" "sha512-51Bbp/Uxr9aTuy6ca/8FbFloBUJZLHwnhTcnjIeRn2suQWsWzcuJhGjKDB5eppVte/8oCdOL3VuwxvZDUggwGQ=="
+  "resolved" "https://registry.npmmirror.com/bootstrap/-/bootstrap-4.6.2.tgz"
+  "version" "4.6.2"
+
+"bootstrap@^5.2.3":
+  "integrity" "sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ=="
+  "resolved" "https://registry.npmmirror.com/bootstrap/-/bootstrap-5.2.3.tgz"
+  "version" "5.2.3"
+
 "brace-expansion@^1.1.7":
   "integrity" "sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA=="
   "resolved" "https://registry.npmmirror.com/brace-expansion/-/brace-expansion-1.1.11.tgz"
@@ -2438,6 +2468,11 @@
   "integrity" "sha512-U73+6lQFmfiNPrYbXqr6kZ1i1wiRqXnp2nhMsINseWXO8lDau0LGEffJ8kQi4EjLZympVgRdvqjAgiZ1tgzDDA=="
   "resolved" "https://registry.npmmirror.com/connect-history-api-fallback/-/connect-history-api-fallback-2.0.0.tgz"
   "version" "2.0.0"
+
+"consola@^2.15.0":
+  "integrity" "sha512-9vAdYbHj6x2fLKC4+oPH0kFzY/orMZyG2Aj+kNylHxKGJ/Ed4dpNyAQYwJOdqO4zdM7XpVHmyejQDcQHrnuXbw=="
+  "resolved" "https://registry.npmmirror.com/consola/-/consola-2.15.3.tgz"
+  "version" "2.15.3"
 
 "consolidate@^0.15.1":
   "integrity" "sha512-DW46nrsMJgy9kqAbPt5rKaCr7uFtpo4mSUvLHIUbJEjm0vo+aY5QLwBUq3FK4tRnJr/X0Psc0C4jf/h+HtXSMw=="
@@ -4956,6 +4991,16 @@
   dependencies:
     "find-up" "^4.0.0"
 
+"popper.js@^1.16.1":
+  "integrity" "sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ=="
+  "resolved" "https://registry.npmmirror.com/popper.js/-/popper.js-1.16.1.tgz"
+  "version" "1.16.1"
+
+"portal-vue@^2.1.7":
+  "integrity" "sha512-+yCno2oB3xA7irTt0EU5Ezw22L2J51uKAacE/6hMPMoO/mx3h4rXFkkBkT4GFsMDv/vEe8TNKC3ujJJ0PTwb6g=="
+  "resolved" "https://registry.npmmirror.com/portal-vue/-/portal-vue-2.1.7.tgz"
+  "version" "2.1.7"
+
 "portfinder@^1.0.26":
   "integrity" "sha512-on2ZJVVDXRADWE6jnQaX0ioEylzgBpQk8r55NE4wjXW1ZxO+BgDlY6DXwj20i0V8eB4SenDQ00WEaxfiIQPcxg=="
   "resolved" "https://registry.npmmirror.com/portfinder/-/portfinder-1.0.32.tgz"
@@ -6257,6 +6302,11 @@
     "esquery" "^1.4.0"
     "lodash" "^4.17.21"
     "semver" "^7.3.5"
+
+"vue-functional-data-merge@^3.1.0":
+  "integrity" "sha512-leT4kdJVQyeZNY1kmnS1xiUlQ9z1B/kdBFCILIjYYQDqZgLqCLa0UhjSSeRX6c3mUe6U5qYeM8LrEqkHJ1B4LA=="
+  "resolved" "https://registry.npmmirror.com/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz"
+  "version" "3.1.0"
 
 "vue-hot-reload-api@^2.3.0":
   "integrity" "sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog=="

@@ -290,18 +290,24 @@ export default {
   margin-bottom: 0;
 }
 
-
+/*record坐标*/
 /deep/ .custom-form-item .el-form-item__label {
   height: 25px;
   margin-bottom: 0;
   margin-top: 0;
   text-align: left;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 
 .input-box {
   width: 80px;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+/deep/ .el-radio__label{
+  font-size: 13px;
 }
 
 .input-content-right {
@@ -320,6 +326,10 @@ export default {
   height: 22px;
   margin-bottom: 1px;
 }
+/deep/ .custom-form .el-form-item__label{
+  font-size: 12px;
+}
+
 
 .date-picker {
   justify-content: center;
@@ -345,7 +355,6 @@ export default {
   font-size: 12px;
   padding: 0 2px;
   border-width: 1px;
-
 }
 
 

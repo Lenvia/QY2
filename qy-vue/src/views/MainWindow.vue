@@ -9,9 +9,9 @@
           </div>
           <div :style="{height: cardContentHeight + 'vh'}">
             <el-row ref="oceanMapContainer" style="background-color: blueviolet; height: 35vh">
-              <div
-                   class="content_center" style="background-color: cadetblue;">
-                <OceanMap id="OceanMap"
+              <div class="content_center" style="background-color: cadetblue; height: 100%; width: 100%">
+                <!-- v-if="hasSize" 子组件延迟加载，只有计算出了 minSize后才会挂载子组件-->
+                <OceanMap id="OceanMap" v-if="hasSize" :minSize="oceanMapHeight"
                           :style="{width: oceanMapWidth + 'px', height: oceanMapHeight + 'px'}"/>
               </div>
             </el-row>
@@ -95,18 +95,26 @@ export default {
 
   data() {
     return {
-      oceanMapWidth: 500,  // 初始化
-      oceanMapHeight: 500,
+      oceanMapWidth: 0,  // 初始化
+      oceanMapHeight: 0,
       cardContentHeight: 90,  // 单位vh
     }
   },
+
+  created() {
+
+  },
+
   mounted() {
-    // 动态挂载
-    let containerWidth = this.$refs.oceanMapContainer.$el.offsetWidth;
-    let containerHeight = this.$refs.oceanMapContainer.$el.offsetHeight;
-    let minSize = Math.min(containerWidth, containerHeight);
-    this.oceanMapWidth = minSize;
-    this.oceanMapHeight = minSize;
+    this.$nextTick(()=>{
+      // 动态挂载
+      let containerWidth = this.$refs.oceanMapContainer.$el.clientWidth;
+      let containerHeight = this.$refs.oceanMapContainer.$el.clientHeight;
+      let minSize = Math.min(containerWidth, containerHeight);
+      this.oceanMapWidth = minSize;
+      this.oceanMapHeight = minSize;
+    })
+
   },
 
   computed: {
@@ -119,6 +127,10 @@ export default {
     middleThreeHeight() {
       return this.cardContentHeight * 4 / 16;
     },
+
+    hasSize() {
+      return this.oceanMapWidth;
+    },
   }
 }
 
@@ -129,6 +141,10 @@ export default {
 /** {*/
 /*  background-color: transparent !important;*/
 /*}*/
+
+*, *::before, *::after{
+  box-sizing: unset;
+}
 
 /*输入（日期）框*/
 .el-input__inner {
@@ -177,7 +193,11 @@ export default {
 /*不会随着空格换行*/
 .el-form-item__label {
   white-space: nowrap;
-  font-size: 14px;
+  font-size: 12px;
+}
+
+.label{
+  white-space: nowrap;
 }
 
 

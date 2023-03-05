@@ -7,7 +7,7 @@
       <el-row class="flex_column" style="flex-grow:1; height: 50%; width: 95%; ">
 
         <el-row class="height_adjust_equal content_vertical_center">
-          <el-col :span="9">
+          <el-col :span="10">
             <label class="label">Analysis Region</label>
           </el-col>
           <el-col :span="12">
@@ -32,7 +32,7 @@
         </el-row>
 
         <el-row class="height_adjust_equal content_vertical_center">
-          <el-col :span="9">
+          <el-col :span="10">
             <label class="label">Time Range</label>
           </el-col>
 
@@ -43,7 +43,7 @@
         </el-row>
         <!--stay days-->
         <el-row class="height_adjust_equal content_vertical_center">
-          <el-col :span="9">
+          <el-col :span="10">
             <label class="label">Stay Days</label>
           </el-col>
           <el-col :span="6">
@@ -52,13 +52,13 @@
         </el-row>
         <!--entrance day-->
         <el-row class="height_adjust_equal content_vertical_center">
-          <el-col :span="9">
+          <el-col :span="10">
             <label class="label">Entrance day</label>
           </el-col>
           <el-col :span="6">
             <el-input v-model="form3.entranceDay1" class="underline-input"></el-input>
           </el-col>
-          <el-col class="line" :span="2" style="display:flex; justify-content: center;">-</el-col>
+          <el-col class="line" :span="1" style="display:flex; justify-content: center;">-</el-col>
           <el-col :span="6">
             <el-input v-model="form3.entranceDay2" class="underline-input"></el-input>
           </el-col>
