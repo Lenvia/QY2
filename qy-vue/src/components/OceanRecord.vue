@@ -1,10 +1,10 @@
 <template>
   <el-row class="flex_column" style="height: 100%">
     <!--Record-->
-    <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 45%">
-      <el-row class="flex_row" style="background-color: #42b983; height: 100%">
+    <el-form class="flex_column" ref="form" :model="form" label-width="80px" style="height: 50%">
+      <el-row class="flex_row" style="height: 100%">
         <!--Record左侧框-->
-        <el-col :span="14" class="flex_column height_adjust_equal" style="background-color: aliceblue; height: 100%">
+        <el-col :span="14" class="flex_column height_adjust_equal" style=" height: 100%">
           <el-radio-group v-model="form.operationType" @change="handleChange">
             <el-row class="content_center">
               <el-form-item id="case_label" class="custom-form-item" :label="`${case_label}`"
@@ -43,7 +43,7 @@
               </el-form-item>
             </el-row>
             <el-row class="input-content-right">
-              <el-form-item class="custom-form" style="margin-bottom: 10px" label="expand">
+              <el-form-item class="custom-form" style="margin-bottom: 15px" label="expand">
                 <input class="input-box" v-model="form.expand"/>
               </el-form-item>
             </el-row>
@@ -64,12 +64,12 @@
           <!--记录框-->
           <el-row class="content_center" style="flex-grow: 8">
             <div style="background-color: beige; height: 90%; width: 80%">
-              <textarea class="div-border" ref="recordBox" style="width: 100%; height: 100%; resize: none;"
+              <textarea class="div-border" ref="recordBox" style="width: 100%; height: 100%; resize: none; font-size: 11px"
                         readonly></textarea>
             </div>
           </el-row>
           <el-row class="content_center" style="flex-grow: 1">
-            <el-button class="content_center" @click="onRecord" style="height: 50%; width: 80%">Record</el-button>
+            <el-button class="content_center btn btn-outline-success" @click="onRecord" style="height: 50%; width: 80%">Record</el-button>
           </el-row>
         </el-col>
       </el-row>
@@ -79,7 +79,7 @@
     <!--Task-->
     <el-form class="flex_column" ref="form2" :model="form2" label-width="80px" style="height: 60%">
       <!--Task item-->
-      <el-row class="flex_column" style="background-color: beige; height: 45%">
+      <el-row class="flex_column" style="height: 45%">
         <!--TaskName-->
         <el-row class="height_adjust_equal">
           <el-form-item class="custom-form" label="Task Name">
@@ -103,7 +103,7 @@
           </el-form-item>
         </el-row>
         <el-row class="input-content-right height_adjust_equal">
-          <el-button class="content_center" style="height: 25px; width: 40%; margin-bottom: 10px" @click="onCreateTask">
+          <el-button class="content_center btn btn-outline-success" style="height: 25px; width: 40%; margin-bottom: 10px" @click="onCreateTask">
             Create Task
           </el-button>
         </el-row>
@@ -128,9 +128,8 @@
           </div>
         </el-col>
 
-        <!--        <el-col :span="4" class="flex_row" style=" height: 100%"></el-col>-->
-        <el-col :span="16" class="flex_row" style="background-color: aliceblue; height: 100%">
-          <textarea ref="taskBox" style="width: 100%; height: 95%; resize: none; border-width: 2px" readonly></textarea>
+        <el-col :span="16" class="flex_row content_center" style="background-color: aliceblue; height: 100%">
+          <textarea ref="taskBox" style="width: 96%; height: 95%; resize: none; font-size: 12px" readonly></textarea>
         </el-col>
 
       </el-row>
@@ -196,6 +195,14 @@ export default {
 
   methods: {
     onRecord() {
+      if(this.case_label === " "){
+        this.$message({
+          message: "Region is not selected!",
+          type: 'error'
+        });
+        return ;
+      }
+
       console.log(this.form);
       this.$message({
         message: JSON.stringify(this.form),
@@ -203,14 +210,30 @@ export default {
       });
       this.recordList.push(this.form);
 
-      this.$refs.recordBox.value += JSON.stringify(this.form);
-      this.$refs.recordBox.value += '\n\n';
+      // 新增记录文本
+      let addText = "";
+      addText = addText + "Record: " + this.recordList.length.toString()+'\n'
+      for(let key in this.form) {
+        if(key === "region")
+          addText = addText + key.toString() + ': ' + this.case_label + '\n';
+        else addText = addText + key.toString() + ': ' + this.form[key].toString() + '\n';
+      }
+      addText += '\n'
+
+      this.$refs.recordBox.value += addText;
       this.$refs.recordBox.scrollTop = this.$refs.recordBox.scrollHeight;
     },
     onCreateTask() {
       if(this.checkTaskDuplicated(this.form2.taskName)){
         this.$message({
           message: 'Task name conflict!',
+          type: 'error'
+        });
+        return ;
+      }
+      if(this.form2.taskName === ""){
+        this.$message({
+          message: 'Task name cannot be empty!',
           type: 'error'
         });
         return ;
@@ -266,9 +289,9 @@ export default {
 
 
 <style scoped>
-* {
-  background-color: transparent !important;
-}
+/** {*/
+/*  background-color: transparent !important;*/
+/*}*/
 
 
 /deep/ .el-form {
@@ -356,6 +379,7 @@ export default {
   padding: 0 2px;
   border-width: 1px;
 }
+
 
 
 </style>

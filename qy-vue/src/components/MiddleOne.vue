@@ -2,9 +2,9 @@
   <el-form style="height: 100%;display:flex;" :model="form3">
 
     <!--左侧输入框-->
-    <el-col class="flex_column" :span="8" style="flex-grow:1;height: 100%">
+    <el-col class="flex_column" :span="9" style="flex-grow:1;height: 100%">
       <!--左侧上框-->
-      <el-row class="flex_column" style="flex-grow:1; height: 50%; width: 95%; ">
+      <el-row class="flex_column div-border border  mb-2 border-opacity-50" style="flex-grow:1; height: 50%; width: 95%; ">
 
         <el-row class="height_adjust_equal content_vertical_center">
           <el-col :span="10">
@@ -65,13 +65,13 @@
         </el-row>
         <!--提交按钮-->
         <el-row style="display: flex; justify-content: end;align-items: center; flex-grow:1">
-          <el-button style="height: 60%; margin-right: 10px" @click="onEnter">Enter</el-button>
+          <el-button class="btn btn-primary content_center" style="width:30%; height: 60%; margin-right: 10px" @click="onEnter">Enter</el-button>
         </el-row>
       </el-row>
 
       <!--左侧饼图-->
       <el-row class="flex_column" style="flex-grow:1;height: 50%">
-        <div class="div-border" ref="chartContainer" style="height: 100%; width: 95%;">
+        <div class="div-border border mb-2 border-opacity-50" ref="chartContainer" style="height: 100%; width: 95%;">
           <div ref="pieChart" class="content_center"></div>
         </div>
 

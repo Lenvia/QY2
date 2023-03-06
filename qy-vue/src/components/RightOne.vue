@@ -1,5 +1,5 @@
 <template>
-  <div class="div-border" ref="chartContainer" style="height: 100%; width: 100%; background-color: aliceblue">
+  <div class="div-border" ref="chartContainer" style="height: 100%; width: 100%; background-color: #f6fafd">
     <div ref="scatterChart" class="content_center" style="height: 100%; width: 100%;"></div>
   </div>
 </template>

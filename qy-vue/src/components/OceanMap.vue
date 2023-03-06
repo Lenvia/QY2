@@ -1,5 +1,5 @@
 <template>
-  <div ref="ocean_map" class="background-image-module " :style="{ backgroundImage: `url(${croppedImageUrl})`}"></div>
+  <div ref="ocean_map" class="background-image-module div-border border mb-2 border-opacity-50" :style="{ backgroundImage: `url(${croppedImageUrl})`}"></div>
 
 </template>
 
@@ -36,7 +36,7 @@ export default {
       ratio: 0, // 原始图片宽高比例
       case: 0,
       rect: null,
-      rectStrokeColor: 'black',
+      rectStrokeColor: 'red',
     };
   },
 

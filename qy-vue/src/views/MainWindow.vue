@@ -4,12 +4,12 @@
       <!--左侧视图-->
       <el-col :span="5" class="col-window" style="background-color: aliceblue ">
         <el-card class="box-card">
-          <div slot="header">
+          <div class="card-header" slot="header">
             <span>Task View</span>
           </div>
           <div :style="{height: cardContentHeight + 'vh'}">
-            <el-row ref="oceanMapContainer" style="background-color: blueviolet; height: 35vh">
-              <div class="content_center" style="background-color: cadetblue; height: 100%; width: 100%">
+            <el-row ref="oceanMapContainer" style="height: 35vh">
+              <div class="content_center" style="height: 100%; width: 100%">
                 <!-- v-if="hasSize" 子组件延迟加载，只有计算出了 minSize后才会挂载子组件-->
                 <OceanMap id="OceanMap" v-if="hasSize" :minSize="oceanMapHeight"
                           :style="{width: oceanMapWidth + 'px', height: oceanMapHeight + 'px'}"/>
@@ -41,7 +41,7 @@
             <!-- 间隙 -->
             <el-row style="height: 1%"></el-row>
 
-            <el-row class="div-border" style="height: 40%">
+            <el-row class="div-border border border-success mb-2 border-opacity-50" style="height: 40%">
               <el-row style="height: 33%">
                 <div :style="{height:100+'%', marginTop:10 + 'px', marginBottom: 10 +'px'}">
                   <middle-two/>
@@ -236,9 +236,10 @@ export default {
   margin-right: 15px;
 }
 
+/*header*/
 /deep/ .box-card .el-card__header {
-  background-color: #f0f0f0;
-  /*color: #333;*/
+  background-color: #e9f8f6;
+  color: #123456;
   height: 2vh;
   display: flex;
   justify-content: start;
