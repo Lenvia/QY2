@@ -69,18 +69,10 @@ export default {
 
         // ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
         ctx.drawImage(img, this.startX, this.startY, this.croppedWidth, this.croppedHeight, 0, 0, this.canvasWidth, this.canvasHeight);
-        // ctx.drawImage(img, this.startX, this.startY, this.croppedWidth, this.croppedHeight, 0, 0, this.canvasWidth, this.canvasHeight);
         this.croppedImageUrl = canvas.toDataURL();
       };
     },
 
-    // handleClick(){
-    //   const target = d3.select(event.target);
-    //   this.selectNode(target.attr("name"));
-    // },
-    // selectNode(nodeName){  // 发送到 Record界面显示
-    //   eventBus.$emit('nodeSelected', nodeName);
-    // },
 
     getEndpointCoordinates(x1, y1, x2, y2, bias, bias2) {
       const angle = Math.atan2(y2 - y1, x2 - x1);
@@ -127,6 +119,7 @@ export default {
         canvas.width = this.canvasWidth;
         canvas.height = this.canvasHeight;
         this.$nextTick(this.draw(canvas, ctx));
+        // 添加节点
         this.$nextTick(function () {
           const svg = d3.select(this.$refs.ocean_map).append('svg')
               .attr('width', this.container_w)
@@ -371,7 +364,7 @@ export default {
   width: 100%;
   height: 100%;
 
-  background-size: cover;
-  background-position: center center;
+  /*background-size: cover;*/
+  /*background-position: center center;*/
 }
 </style>
