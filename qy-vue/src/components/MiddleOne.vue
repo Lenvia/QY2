@@ -72,7 +72,7 @@
       <!--左侧饼图-->
       <el-row class="flex_column" style="flex-grow:1;height: 50%">
         <div class="div-border border mb-2 border-opacity-50" ref="chartContainer" style="height: 100%; width: 95%;">
-          <div ref="pieChart" class="content_center"></div>
+          <div ref="pieChart" class="content_center" style="height: 100%; width: 100%"></div>
         </div>
 
 
@@ -87,9 +87,9 @@
 </template>
 
 <script>
-import * as d3 from "d3";
 import axios from "axios";
 import {eventBus} from "@/plugin/event-bus";
+import * as echarts from "echarts";
 
 export default {
   name: "MiddleOne",
@@ -107,10 +107,48 @@ export default {
       dateType:'',
       dateFormat: '',
       dateDisable: false,
+
+      chart: null,
       chartData: [],
-      chartSize: 0,
-      chartRadius: 0,
-      chartColors: d3.scaleOrdinal(d3.schemePastel2),
+      chartOption:{
+        tooltip: {
+          trigger: 'item'
+        },
+        legend: {
+          top: '5%',
+          left: 'center'
+        },
+        series: [
+          {
+            name: 'Access Region',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            center:['50%', '55%'],
+            avoidLabelOverlap: true,
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: '#fff',
+              borderWidth: 2
+            },
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: 32,
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: []
+          }
+        ]
+      },
+
     };
   },
 
@@ -158,67 +196,47 @@ export default {
       }
     },
 
-    drawChart() {
-      this.chartSize = Math.min(this.$refs.chartContainer.clientWidth, this.$refs.chartContainer.clientHeight);
-      // console.log(this.$refs.chartContainer.clientWidth, this.$refs.chartContainer.clientHeight);
-      this.chartRadius = this.chartSize * 0.4;
-
-      const svg = d3.select(this.$refs.pieChart)
-          .append('svg')
-          .attr('width', this.chartSize)
-          .attr('height', this.chartSize);
-
-      const g = svg.append('g')
-          .attr('transform', `translate(${this.chartSize / 2}, ${this.chartSize / 2})`);
-
-      const pie = d3.pie()
-          .sort(null)
-          .value(d => d.value);
-
-      const path = d3.arc()
-          .outerRadius(this.chartRadius)
-          .innerRadius(0);
-
-      const arc = g.selectAll('.arc')
-          .data(pie(this.chartData))
-          .enter()
-          .append('g')
-          .attr('class', 'arc');
-
-      arc.append('path')
-          .attr('d', path)
-          .attr('fill', (d, i) => this.chartColors(i));
-
-      arc.append('text')
-          .attr('transform', d => `translate(${path.centroid(d)})`)
-          .attr('dy', '0.1em')
-          .attr('font-size', '16px')
-          .text(d => d.data.label);
-    },
   },
 
   mounted() {
     this.updateDatePicker();
 
     this.$nextTick(function () {
+      this.chart = echarts.init(this.$refs.pieChart)
       axios.get('/json_total.json')
           .then(response => {
             const json_data = response.data;
-            // console.log(json_data);
             this.chartData = [];
 
             for (let key in json_data) {
-              this.chartData.push({label: key, value: json_data[key]});
+              this.chartData.push({name: key, value: json_data[key]});
             }
           })
           .catch(error => {
             console.log(error);
           }).then(() => {
-        this.drawChart();
+
+        this.chartOption.series[0].data = this.chartData.map(item => ({
+          name: item.name,
+          value: item.value,
+
+        }));
+        this.chart.setOption(this.chartOption)
       });
 
     });
 
+  },
+
+  watch:{
+    chartData() {
+      this.chartOption.series[0].data = this.chartData.map(item => ({
+        "value": item.value,
+        "name": item.name,
+      }));
+
+      this.chart.setOption(this.chartOption)
+    },
   }
 }
 </script>
