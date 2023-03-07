@@ -7,7 +7,7 @@
     </div>
 
     <div id="pathContainer" ref="pathContainer">
-      <div class="image-container">
+      <div class="image-container" ref="imageContainer">
         <div class="image border" v-for="(image, index) in imageArray" :key="index"
              @click="handleImageClick(image)"
              :style="{ backgroundImage: `url(${require('@/assets/cluster/' + image)})` }"></div>
@@ -41,12 +41,15 @@ export default {
     this.imageArray = requireImg.keys().map(key => {
       return key.slice(2); // 去掉文件名前面的'./'
     });
-    // console.log(this.imageArray)
   },
 
   mounted() {
     this.$nextTick(() => {
-
+      const element = this.$refs.imageContainer;
+      element.addEventListener("wheel", (event) => {
+        event.preventDefault();
+        element.scrollLeft += event.deltaY;
+      });
     });
 
   },
