@@ -20,7 +20,7 @@ import axios from "axios";
 export default {
   name: "RightTwo",
 
-  data(){
+  data() {
     return {
 
       chart1: null,
@@ -36,11 +36,11 @@ export default {
             type: 'pie',
             radius: '50%',
             data: [
-              { value: 1048, name: 'Search Engine' },
-              { value: 735, name: 'Direct' },
-              { value: 580, name: 'Email' },
-              { value: 484, name: 'Union Ads' },
-              { value: 300, name: 'Video Ads' }
+              {value: 1048, name: 'Search Engine'},
+              {value: 735, name: 'Direct'},
+              {value: 580, name: 'Email'},
+              {value: 484, name: 'Union Ads'},
+              {value: 300, name: 'Video Ads'}
             ],
             emphasis: {
               itemStyle: {
@@ -54,15 +54,15 @@ export default {
       },
 
       chart2: null,
-      chartData2:{
+      chartData2: {
         xAxis: [],
         data: [],
       },
-      chartOption2:{
+      chartOption2: {
         title: {
           text: 'clusters',
           // left: 'center',
-          textStyle:{
+          textStyle: {
             fontSize: 14,
           }
         },
@@ -159,7 +159,7 @@ export default {
 
   },
 
-  watch:{
+  watch: {
     chartData1() {
       this.chartOption1.series[0].data = this.chartData1.map(item => ({
         "value": item.value,
