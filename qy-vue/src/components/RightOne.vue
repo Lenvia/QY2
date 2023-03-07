@@ -1,11 +1,16 @@
 <template>
-  <div class="div-border" ref="container" style="height: 100%; width: 100%; background-color: #123456; display: flex; flex-direction: column">
-    <div ref="bgContainer" style="height: 70%; width: 100%;"
-         :style="{ backgroundImage: `url(${originImage})`, backgroundSize: `cover`}"></div>
+  <div class="div-border" ref="container" style="height: 100%; width: 100%; display: flex; flex-direction: column">
+    <div class="border-bottom" ref="bgContainer" style="height: 71%; width: 100%; position: relative">
+      <img class="full-size" :src="originImage" style="z-index: 1; position: absolute" alt="bg">
+      <img class="full-size" v-if="hasSelected" :src="require('@/assets/cluster/' + selectedImage)"
+           style="z-index: 2; position: absolute" alt="stream">
+    </div>
+
     <div id="pathContainer" ref="pathContainer">
       <div class="image-container">
-              <div class="image" v-for="(image, index) in imageArray" :key="index"
-                   @click="handleImageClick(image)" :style="{ backgroundImage: `url(${require('@/assets/' + image)})` }"></div>
+        <div class="image border" v-for="(image, index) in imageArray" :key="index"
+             @click="handleImageClick(image)"
+             :style="{ backgroundImage: `url(${require('@/assets/cluster/' + image)})` }"></div>
       </div>
     </div>
   </div>
@@ -22,27 +27,21 @@ export default {
     return {
       originImage: require('@/assets/CrossDomain/result.png'),
 
-      imageArray: [
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
-        'CrossDomain/result.png',
+      imageArray: [],
 
-        //...
-      ]
+      selectedImage: '',
 
     }
+  },
+
+  created() {
+    // 读取assets文件夹下所有图片的文件名
+    const requireImg = require.context('@/assets/cluster', false, /\.(png)$/);
+    // 将文件名保存到数组中
+    this.imageArray = requireImg.keys().map(key => {
+      return key.slice(2); // 去掉文件名前面的'./'
+    });
+    // console.log(this.imageArray)
   },
 
   mounted() {
@@ -52,10 +51,17 @@ export default {
 
   },
 
+  computed: {
+    hasSelected() {
+      return this.selectedImage !== '';
+    }
+  },
+
   methods: {
     handleImageClick(image) {
       // 处理图片点击事件
       console.log(image);
+      this.selectedImage = image;
     }
   },
 
@@ -66,8 +72,19 @@ export default {
 
 <style scoped>
 
+.full-size {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay-image {
+  position: absolute
+}
+
+
 #pathContainer {
-  height: 30%;
+  height: 29%;
   width: 100%;
   box-sizing: border-box;
 }
@@ -76,21 +93,30 @@ export default {
   display: flex;
   width: 100%;
   height: 100%;
-  background-color: #123456;
+
   overflow-x: auto;
   align-items: center;
 }
 
 #pathContainer .image {
-  flex-shrink: 0;
+  flex-shrink: 0;  /*图片不缩放，溢出部分有滚动条*/
   display: inline-block;
   width: 100px;
   height: 100px;
   margin-right: 5px;
   margin-left: 5px;
+
   background-repeat: no-repeat;
   background-size: cover;
   white-space: nowrap;
+  background-color: #fff;
+
+  cursor: pointer;
 }
+
+#pathContainer .image:hover {
+  background-color: #eee;
+}
+
 
 </style>

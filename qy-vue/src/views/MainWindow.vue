@@ -65,7 +65,7 @@
           </div>
 
           <div :style="{height: cardContentHeight + 'vh'}">
-            <el-row style="background-color: blueviolet; height: 55%">
+            <el-row style="height: 55%">
               <right-one/>
             </el-row>
             <el-row style=" background-color: gold ">
