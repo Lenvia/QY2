@@ -185,8 +185,6 @@ export default {
   background-color: #fff;
 
   cursor: pointer;
-
-
 }
 
 #pathContainer .image:hover {

@@ -68,9 +68,11 @@
             <el-row style="height: 55%">
               <right-one/>
             </el-row>
-            <el-row style=" background-color: gold ">
-
+            <el-row style="height: 1%"></el-row>
+            <el-row style="height: 20%">
+              <right-two/>
             </el-row>
+            <el-row style="background-color: aliceblue; height: 25%"></el-row>
           </div>
         </el-card>
       </el-col>
@@ -88,10 +90,11 @@ import MiddleOne from "@/components/MiddleOne.vue";
 import MiddleThree from "@/components/MiddleThree.vue";
 import MiddleTwo from "@/components/MiddleTwo.vue";
 import RightOne from "@/components/RightOne.vue";
+import RightTwo from "@/components/RightTwo.vue";
 
 export default {
   name: "MainWindow.vue",
-  components: {MiddleTwo, MiddleThree, MiddleOne, OceanRecord, OceanMap, RightOne},
+  components: {MiddleTwo, MiddleThree, MiddleOne, OceanRecord, OceanMap, RightOne, RightTwo},
 
   data() {
     return {
