@@ -17,7 +17,7 @@ export default {
 
       // focusLine: null,
       // tooltip: null,
-      // timeRange: null,
+      timeRange: null,
 
       // svg: null,
       // lock: false,  // 面积图锁
@@ -30,7 +30,7 @@ export default {
       //   height: 0,
       //   color: 'blue',
       // },
-      chartData:{
+      chartData: {
         labels: [],
         data1: [],
         data2: [],
@@ -38,7 +38,7 @@ export default {
 
 
       chart: null,
-      chartOption:{
+      chartOption: {
         grid: {
           top: '10%',
           left: '3%',
@@ -56,7 +56,7 @@ export default {
           splitLine: {
             show: false
           },
-          axisLabel:{
+          axisLabel: {
             formatter: function (value, index) {
               return '';
             }
@@ -112,6 +112,7 @@ export default {
           }).then(() => {
         // this.removeChartContent(this.svg);
         // this.drawChart(this.svg);
+        this.updateData();
       });
     })
   },
@@ -140,25 +141,53 @@ export default {
             console.error(error);
           }).then(() => {
         // this.drawChart(this.svg);
-        this.chartOption.xAxis.data = this.chartData.labels;
-
-        this.chartOption.series[0].data = this.chartData.data1;
-        this.chartOption.series[1].data = this.chartData.data2;
-        this.chart.setOption(this.chartOption)
+        this.updateData();
 
       });
     });
 
   },
   methods: {
-    parseJson(json_data){
+    parseJson(json_data) {
       this.chartData.labels = json_data["label"];
-      this.chartData.data1 = json_data["data"].map((item) =>{
+      this.chartData.data1 = json_data["data"].map((item) => {
         return item[0]
       })
-      this.chartData.data2 = json_data["data"].map((item) =>{
+      this.chartData.data2 = json_data["data"].map((item) => {
         return item[1]
       })
+    },
+
+    updateData() {
+      this.chartOption.xAxis.data = this.chartData.labels;
+      this.chartOption.series[0].data = this.chartData.data1;
+      this.chartOption.series[1].data = this.chartData.data2;
+
+      // this.chart.on('tooltip', function (params) {
+      //   // 获取x轴对应的axis对象
+      //   var xAxis = this.chart.getModel().getComponent('xAxis', params[0].componentIndex);
+      //   var axisValue = xAxis.scale.getLabel(params[0].dataIndex); // 获取该直线对应的x轴值
+      //   console.log(axisValue);
+      // });
+      //
+
+      let that = this
+      this.chart.setOption(this.chartOption);
+      this.chart.getZr().on('click', function (params) {
+
+        let [idx, _idy] = that.chart.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY]);
+        // x 轴索引
+        let xValue = that.chartData.labels[idx];
+
+        // 传递日期给子图
+        let date;
+        if (that.timeRange === null) date = xValue.toString();
+        else date = [that.timeRange, xValue.toString()].join('-')
+
+        eventBus.$emit('showMultiCharts', {
+          date: date,
+        });
+      });
     },
 
     parseJson2(json_data) {
@@ -312,10 +341,7 @@ export default {
   },
   watch: {
     chartData() {
-      this.chartOption.xAxis.data = this.chartData.labels;
-      this.chartOption.series[0].data = this.chartData.data1;
-      this.chartOption.series[1].data = this.chartData.data2;
-      this.chart.setOption(this.chartOption)
+      this.updateData();
     },
   }
 }
