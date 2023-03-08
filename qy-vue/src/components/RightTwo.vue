@@ -1,15 +1,47 @@
 <template>
-  <el-row class="flex_row" style="height: 100%">
-    <el-col :span="12" class="height_adjust_equal" style="height: 100%; ">
-      <div class="div-border border mb-2 border-opacity-50" ref="chartContainer" style="height: 100%; width: 100%;">
-        <div ref="pieChart" class="content_center" style="height: 100%; width: 100%"></div>
+  <el-row class="flex_column div-border border mb-2 border-opacity-50" style="height: 100%">
+    <el-row style="width:100%; height: 50%">
+      <el-col :span="14" class="flex-column height_adjust_equal" style="height: 100%; ">
+
+        <el-row class="flex-column border-end border-bottom mb-2 border-opacity-50"
+                style="flex-grow: 1; height: 100%; width: 100%;">
+          <el-row class="height_adjust_equal content_vertical_center" style="display: flex; height: 40%">
+            <el-col :span="8" class="content_vertical_center" style="justify-content: end">
+              <label class="label">Text</label>
+            </el-col>
+            <el-col :span="2"/>
+            <el-col :span="6" class="content_vertical_center" style="justify-content: start">
+              <el-input v-model="text" class="underline-input"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="height_adjust_equal content_center" style="display: flex; height: 25%">
+            <el-checkbox-group v-model="checkList">
+              <el-checkbox label="shape"></el-checkbox>
+              <el-checkbox label="time"></el-checkbox>
+            </el-checkbox-group>
+          </el-row>
+
+          <el-row class="height_adjust_equal content_vertical_center" style="justify-content: end; height: 35%;">
+            <el-button class="btn btn-outline-primary content_center"
+                       style="width:30%; height: 60%; margin-right: 10px">Enter
+            </el-button>
+          </el-row>
+        </el-row>
+
+
+      </el-col>
+      <el-col :span="10" class="height_adjust_equal" style="height: 100%">
+        <div class="full-size" ref="chartContainer">
+          <div ref="pieChart" class="full-size content_center"></div>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row style="width:100%; height: 50%">
+      <div class="full-size" ref="chartContainer2">
+        <div ref="areaChart" class="full-size content_center"></div>
       </div>
-    </el-col>
-    <el-col :span="12" class="height_adjust_equal" style="height: 100%">
-      <div class="div-border border mb-2 border-opacity-50" ref="chartContainer2" style="height: 100%; width: 100%;">
-        <div ref="areaChart" class="content_center" style="height: 100%; width: 100%"></div>
-      </div>
-    </el-col>
+    </el-row>
   </el-row>
 </template>
 
@@ -22,6 +54,8 @@ export default {
 
   data() {
     return {
+      text: '',
+      checkList: [],
 
       chart1: null,
       chartData1: [],
@@ -35,13 +69,7 @@ export default {
             name: 'data',
             type: 'pie',
             radius: '50%',
-            data: [
-              {value: 1048, name: 'Search Engine'},
-              {value: 735, name: 'Direct'},
-              {value: 580, name: 'Email'},
-              {value: 484, name: 'Union Ads'},
-              {value: 300, name: 'Video Ads'}
-            ],
+            data: [],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -60,7 +88,7 @@ export default {
       },
       chartOption2: {
         title: {
-          text: 'clusters',
+          text: 'Time',
           // left: 'center',
           textStyle: {
             fontSize: 14,
@@ -100,7 +128,21 @@ export default {
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              show: true
+            },
+            axisTick:{
+              show: true
+            },
+            axisLabel:{
+              formatter: function (value, index) {
+                return '';
+              }
+            }
           }
         ],
         series: [
@@ -181,5 +223,23 @@ export default {
 </script>
 
 <style scoped>
+/deep/ .underline-input {
+  border: none;
+  box-shadow: none !important;
 
+}
+
+/deep/ .underline-input .el-input__inner {
+  border: none;
+  border-bottom: 1px solid #000000;
+  border-radius: 0;
+  /*padding-left: 0;*/
+  font-size: 14px;
+  background-color: transparent;
+}
+
+.label {
+  padding-left: 10px;
+  font-size: 14px;
+}
 </style>

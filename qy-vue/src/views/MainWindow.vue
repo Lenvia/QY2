@@ -152,6 +152,11 @@ export default {
   box-sizing: unset;
 }
 
+.full-size{
+  height: 100%;
+  width: 100%;
+}
+
 /*输入（日期）框*/
 .el-input__inner {
   height: 30px;
