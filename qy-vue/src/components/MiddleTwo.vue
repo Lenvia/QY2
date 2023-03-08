@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart"></div>
+  <div ref="chart" class="full-size"></div>
 </template>
 
 <script>
@@ -7,6 +7,7 @@ import * as d3 from 'd3';
 import axios from "axios";
 import async from "async";
 import {eventBus} from "@/plugin/event-bus";
+import * as echarts from "echarts";
 
 
 export default {
@@ -14,22 +15,75 @@ export default {
   data() {
     return {
 
-      focusLine: null,
-      tooltip: null,
-      timeRange: null,
+      // focusLine: null,
+      // tooltip: null,
+      // timeRange: null,
 
-      svg: null,
-      lock: false,  // 面积图锁
-
-      chart: {
+      // svg: null,
+      // lock: false,  // 面积图锁
+      // chart: {
+      //   labels: [],
+      //   data1: [],
+      //   data2: [],
+      //   margin: {top: 10, right: 20, bottom: 20, left: 40},
+      //   width: 0,
+      //   height: 0,
+      //   color: 'blue',
+      // },
+      chartData:{
         labels: [],
         data1: [],
         data2: [],
-        margin: {top: 10, right: 20, bottom: 20, left: 40},
-        width: 0,
-        height: 0,
-        color: 'blue',
       },
+
+
+      chart: null,
+      chartOption:{
+        grid: {
+          top: '10%',
+          left: '3%',
+          right: '4%',
+          bottom: '5%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: []
+        },
+        yAxis: {
+          type: 'value',
+          splitLine: {
+            show: false
+          },
+          axisLabel:{
+            formatter: function (value, index) {
+              return '';
+            }
+          }
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+        series: [
+          {
+            data: [],
+            type: 'line',
+            areaStyle: {}
+          },
+          {
+            data: [],
+            type: 'line',
+            areaStyle: {}
+          }
+        ]
+      }
     };
   },
 
@@ -56,24 +110,24 @@ export default {
             // 处理错误
             console.error(error);
           }).then(() => {
-        this.removeChartContent(this.svg);
-        this.drawChart(this.svg);
+        // this.removeChartContent(this.svg);
+        // this.drawChart(this.svg);
       });
     })
   },
   mounted() {
     this.$nextTick(() => {
-      this.chart.width = this.$parent.$el.offsetWidth - this.chart.margin.left - this.chart.margin.right;
-      this.chart.height = this.$parent.$el.offsetHeight - this.chart.margin.top - this.chart.margin.bottom;
+      // this.chart.width = this.$parent.$el.offsetWidth - this.chart.margin.left - this.chart.margin.right;
+      // this.chart.height = this.$parent.$el.offsetHeight - this.chart.margin.top - this.chart.margin.bottom;
+      //
+      // this.svg = d3.select(this.$refs.chart)
+      //     .append('svg')
+      //     .attr('width', this.chart.width + this.chart.margin.left + this.chart.margin.right)
+      //     .attr('height', this.chart.height + this.chart.margin.top + this.chart.margin.bottom)
+      //     .append('g')
+      //     .attr('transform', `translate(${this.chart.margin.left},${this.chart.margin.top})`);
 
-      this.svg = d3.select(this.$refs.chart)
-          .append('svg')
-          .attr('width', this.chart.width + this.chart.margin.left + this.chart.margin.right)
-          .attr('height', this.chart.height + this.chart.margin.top + this.chart.margin.bottom)
-          .append('g')
-          .attr('transform', `translate(${this.chart.margin.left},${this.chart.margin.top})`);
-
-
+      this.chart = echarts.init(this.$refs.chart);
       const url = 'json_area_year.json';  // 默认全年数据
 
       axios.get(url)
@@ -85,13 +139,29 @@ export default {
             // 处理错误
             console.error(error);
           }).then(() => {
-        this.drawChart(this.svg);
+        // this.drawChart(this.svg);
+        this.chartOption.xAxis.data = this.chartData.labels;
+
+        this.chartOption.series[0].data = this.chartData.data1;
+        this.chartOption.series[1].data = this.chartData.data2;
+        this.chart.setOption(this.chartOption)
+
       });
     });
 
   },
   methods: {
-    parseJson(json_data) {
+    parseJson(json_data){
+      this.chartData.labels = json_data["label"];
+      this.chartData.data1 = json_data["data"].map((item) =>{
+        return item[0]
+      })
+      this.chartData.data2 = json_data["data"].map((item) =>{
+        return item[1]
+      })
+    },
+
+    parseJson2(json_data) {
       this.chart.labels = json_data["label"];
       this.chart.data1 = []
       this.chart.data2 = []
@@ -240,7 +310,14 @@ export default {
           });
     },
   },
-  watch: {}
+  watch: {
+    chartData() {
+      this.chartOption.xAxis.data = this.chartData.labels;
+      this.chartOption.series[0].data = this.chartData.data1;
+      this.chartOption.series[1].data = this.chartData.data2;
+      this.chart.setOption(this.chartOption)
+    },
+  }
 }
 </script>
 
