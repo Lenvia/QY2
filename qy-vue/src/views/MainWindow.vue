@@ -69,10 +69,10 @@
               <right-one/>
             </el-row>
             <el-row style="height: 1%"></el-row>
-            <el-row style="height: 20%">
+            <el-row style="height: 30%" >
               <right-two/>
             </el-row>
-            <el-row style="height: 24%">
+            <el-row style="height: 15%; background-color: #d2d2d2">
               <right-three/>
             </el-row>
           </div>

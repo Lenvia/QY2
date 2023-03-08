@@ -69,7 +69,7 @@ export default {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'cross',
+            axis: 'x',
             label: {
               backgroundColor: '#6a7985'
             }

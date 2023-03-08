@@ -28,6 +28,8 @@
 
 <script>
 
+import {eventBus} from "@/plugin/event-bus";
+
 export default {
   name: "RightOne.vue",
   data() {
@@ -95,6 +97,8 @@ export default {
       let num = temp[temp.length-1];
       this.pointImage = 'start_cluster_' + num + '.png';
 
+      // 向 step 视图发送当前聚类
+      eventBus.$emit('clusterSelected', num);
     },
 
     onClickIcon1(){
