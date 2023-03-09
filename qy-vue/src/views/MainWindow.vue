@@ -72,7 +72,7 @@
             <el-row style="height: 30%" >
               <right-two/>
             </el-row>
-            <el-row style="height: 15%; background-color: #d2d2d2">
+            <el-row style="height: 15%; ">
               <right-three/>
             </el-row>
           </div>

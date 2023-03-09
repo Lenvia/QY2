@@ -34,7 +34,7 @@ export default {
   name: "RightOne.vue",
   data() {
     return {
-      floorImage: 'result.png',  // 地图
+      floorImage: 'bg.jpg',  // 地图
       streamImageArray: [],  // 聚类流线
 
       selectedStream: '',  // 被选择的聚类流线
@@ -178,7 +178,7 @@ export default {
 #pathContainer .image {
   flex-shrink: 0; /*图片不缩放，溢出部分有滚动条*/
   display: inline-block;
-  width: 100px;
+  width: 124px;
   height: 100px;
   margin-right: 5px;
   margin-left: 5px;

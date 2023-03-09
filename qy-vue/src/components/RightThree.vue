@@ -2,7 +2,7 @@
   <div id="timeLineContainer" ref="timeLineContainer" style="height: 100%; width: 100%">
     <div class="image-container" ref="imageContainer" v-if="hasSelected">
       <div class="image border" v-for="(image, index) in timeLineImageArray" :key="index"
-           :style="{ backgroundImage: `url(${require('@/assets/cluster/line_cluster_step/' + image)})` }"></div>
+           :style="{ backgroundImage: `url(${require('@/assets/cluster/line_time/' + image)})` }"></div>
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
   },
 
   created() {
-    this.requireImg = require.context('@/assets/cluster/line_cluster_step', false, /\.(png)$/);
+    this.requireImg = require.context('@/assets/cluster/line_time', false, /\.(png)$/);
 
     eventBus.$on('clusterSelected', (num) => {
       this.selectedStream = num;
@@ -76,13 +76,14 @@ export default {
 
   overflow-x: auto;
   align-items: center;
+  background-color: #f5f5f5;
 }
 
 /*聚类流线*/
 #timeLineContainer .image {
   flex-shrink: 0; /*图片不缩放，溢出部分有滚动条*/
   display: inline-block;
-  width: 100px;
+  width: 124px;
   height: 100px;
   margin-right: 5px;
   margin-left: 5px;
