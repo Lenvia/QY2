@@ -7,17 +7,23 @@
           <div class="card-header" slot="header">
             <span>Task View</span>
           </div>
-          <div :style="{height: cardContentHeight + 'vh'}">
-            <el-row ref="oceanMapContainer" style="height: 35vh">
-              <div class="content_center" style="height: 100%; width: 100%">
+          <div class="flex-column" :style="{height: cardContentHeight + 'vh'}">
+            <el-row class="flex_column" style="height: 42%">
+              <div class="flex_row content_vertical_center" style="height: 8%; width: 100%;">
+                <button type="button" class="btn btn-info">Light</button>
+                <button type="button" class="btn btn-info">Light</button>
+              </div>
+              <div ref="oceanMapContainer" class="content_center" style="height: 90%; width: 100%">
                 <!-- v-if="hasSize" 子组件延迟加载，只有计算出了 minSize后才会挂载子组件-->
                 <OceanMap id="OceanMap" v-if="hasSize" :minSize="oceanMapHeight"
                           :style="{width: oceanMapWidth + 'px', height: oceanMapHeight + 'px'}"/>
               </div>
             </el-row>
-            <el-divider></el-divider>
-            <el-row>
-              <div style="height: 55vh">
+
+
+
+            <el-row style="height: 58%">
+              <div class="full-size">
                 <OceanRecord id="OceanRecord"/>
               </div>
             </el-row>
@@ -114,8 +120,9 @@ export default {
   mounted() {
     this.$nextTick(()=>{
       // 动态挂载
-      let containerWidth = this.$refs.oceanMapContainer.$el.clientWidth;
-      let containerHeight = this.$refs.oceanMapContainer.$el.clientHeight;
+      console.log(this.$refs.oceanMapContainer.clientWidth, this.$refs.oceanMapContainer.clientHeight)
+      let containerWidth = this.$refs.oceanMapContainer.clientWidth;
+      let containerHeight = this.$refs.oceanMapContainer.clientHeight;
       let minSize = Math.min(containerWidth, containerHeight);
       this.oceanMapWidth = minSize;
       this.oceanMapHeight = minSize;
@@ -167,7 +174,7 @@ export default {
 /*分割线*/
 .el-divider--horizontal {
   /*默认 width:100%*/
-  margin: 8px 0;
+  margin: 4px 0;
   background: 0 0;
   border-top: 1px solid #d2d2d2;
 }
