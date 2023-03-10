@@ -8,10 +8,11 @@
             <span>Task View</span>
           </div>
           <div class="flex-column" :style="{height: cardContentHeight + 'vh'}">
-            <el-row class="flex_column" style="height: 42%">
-              <div class="flex_row content_vertical_center" style="height: 8%; width: 100%;">
-                <button type="button" class="btn btn-info">Light</button>
-                <button type="button" class="btn btn-info">Light</button>
+            <el-row class="flex_column content_center" style="height: 42%">
+              <div v-if="hasSize" class="flex_row content_vertical_center" style="height: 8%;" :style="{width: oceanMapWidth+'px'}">
+                <button type="button" class="map-button btn btn-outline-secondary">Load</button>
+
+                <button type="button" class="map-button btn btn-outline-secondary">Edit</button>
               </div>
               <div ref="oceanMapContainer" class="content_center" style="height: 90%; width: 100%">
                 <!-- v-if="hasSize" 子组件延迟加载，只有计算出了 minSize后才会挂载子组件-->
@@ -179,6 +180,10 @@ export default {
   border-top: 1px solid #d2d2d2;
 }
 
+.el-card__body, .el-main{
+  padding-top: 15px;
+}
+
 /* 父类标签如此设置，子标签可以通过 flex-grow 进行 高度划分*/
 .flex_column {
   display: flex;
@@ -263,6 +268,17 @@ export default {
   justify-content: start;
   align-items: center;
   font-weight: bold;
+}
+
+.map-button{
+  padding: 0;
+  margin-right: 2px;
+  width: 15%;
+  height: 80%;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+
 }
 
 
