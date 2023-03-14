@@ -3,9 +3,7 @@
 </template>
 
 <script>
-import * as d3 from 'd3';
 import axios from "axios";
-import async from "async";
 import {eventBus} from "@/plugin/event-bus";
 import * as echarts from "echarts";
 
@@ -14,22 +12,8 @@ export default {
   name: "MiddleTwo",
   data() {
     return {
-
-      // focusLine: null,
-      // tooltip: null,
       timeRange: null,
 
-      // svg: null,
-      // lock: false,  // 面积图锁
-      // chart: {
-      //   labels: [],
-      //   data1: [],
-      //   data2: [],
-      //   margin: {top: 10, right: 20, bottom: 20, left: 40},
-      //   width: 0,
-      //   height: 0,
-      //   color: 'blue',
-      // },
       chartData: {
         labels: [],
         data1: [],
@@ -37,14 +21,17 @@ export default {
       },
 
 
-      chart: null,
+      areaChart: null,
       chartOption: {
         grid: {
-          top: '10%',
+          top: '20%',
           left: '3%',
           right: '4%',
           bottom: '5%',
           containLabel: true
+        },
+        legend: {
+          data: ["into", "out"]
         },
         xAxis: {
           type: 'category',
@@ -53,14 +40,26 @@ export default {
         },
         yAxis: {
           type: 'value',
+          min: function (value) {
+            return value.min;
+          },
+          max: function (value) {
+            return value.max;
+          },
           splitLine: {
             show: false
           },
-          axisLabel: {
-            formatter: function (value, index) {
-              return '';
-            }
-          }
+          // axisLabel:{
+          //   formatter: function(value) {
+          //     // console.log(value)
+          //     // console.log(this)
+          //     // const axisModel = this.areaChart.getModel().getComponent('yAxis', 0).axis.scale;
+          //     // const [minValue, maxValue] = axisModel.getExtent();
+          //     //
+          //     // return (value === minValue || value === maxValue) ? value : '';
+          //   }
+          // }
+
         },
         tooltip: {
           trigger: 'axis',
@@ -73,11 +72,13 @@ export default {
         },
         series: [
           {
+            name: "into",
             data: [],
             type: 'line',
             areaStyle: {}
           },
           {
+            name: "out",
             data: [],
             type: 'line',
             areaStyle: {}
@@ -110,25 +111,14 @@ export default {
             // 处理错误
             console.error(error);
           }).then(() => {
-        // this.removeChartContent(this.svg);
-        // this.drawChart(this.svg);
         this.updateData();
       });
     })
   },
   mounted() {
     this.$nextTick(() => {
-      // this.chart.width = this.$parent.$el.offsetWidth - this.chart.margin.left - this.chart.margin.right;
-      // this.chart.height = this.$parent.$el.offsetHeight - this.chart.margin.top - this.chart.margin.bottom;
-      //
-      // this.svg = d3.select(this.$refs.chart)
-      //     .append('svg')
-      //     .attr('width', this.chart.width + this.chart.margin.left + this.chart.margin.right)
-      //     .attr('height', this.chart.height + this.chart.margin.top + this.chart.margin.bottom)
-      //     .append('g')
-      //     .attr('transform', `translate(${this.chart.margin.left},${this.chart.margin.top})`);
 
-      this.chart = echarts.init(this.$refs.chart);
+      this.areaChart = echarts.init(this.$refs.chart);
       const url = 'json_area_year.json';  // 默认全年数据
 
       axios.get(url)
@@ -146,7 +136,8 @@ export default {
       });
     });
 
-  },
+  }
+  ,
   methods: {
     parseJson(json_data) {
       this.chartData.labels = json_data["label"];
@@ -156,26 +147,20 @@ export default {
       this.chartData.data2 = json_data["data"].map((item) => {
         return item[1]
       })
-    },
+    }
+    ,
 
     updateData() {
       this.chartOption.xAxis.data = this.chartData.labels;
       this.chartOption.series[0].data = this.chartData.data1;
       this.chartOption.series[1].data = this.chartData.data2;
 
-      // this.chart.on('tooltip', function (params) {
-      //   // 获取x轴对应的axis对象
-      //   var xAxis = this.chart.getModel().getComponent('xAxis', params[0].componentIndex);
-      //   var axisValue = xAxis.scale.getLabel(params[0].dataIndex); // 获取该直线对应的x轴值
-      //   console.log(axisValue);
-      // });
-      //
 
       let that = this
-      this.chart.setOption(this.chartOption);
-      this.chart.getZr().on('click', function (params) {
+      this.areaChart.setOption(this.chartOption);
+      this.areaChart.getZr().on('click', function (params) {
 
-        let [idx, _idy] = that.chart.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY]);
+        let [idx, _idy] = that.areaChart.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY]);
         // x 轴索引
         let xValue = that.chartData.labels[idx];
 
@@ -191,153 +176,15 @@ export default {
     },
 
     parseJson2(json_data) {
-      this.chart.labels = json_data["label"];
-      this.chart.data1 = []
-      this.chart.data2 = []
+      this.areaChart.labels = json_data["label"];
+      this.areaChart.data1 = []
+      this.areaChart.data2 = []
 
-      for (let i = 0; i < this.chart.labels.length; i++) {
-        this.chart.data1.push({x: this.chart.labels[i], y: json_data["data"][i][0]});
-        this.chart.data2.push({x: this.chart.labels[i], y: json_data["data"][i][1]});
+      for (let i = 0; i < this.areaChart.labels.length; i++) {
+        this.areaChart.data1.push({x: this.areaChart.labels[i], y: json_data["data"][i][0]});
+        this.areaChart.data2.push({x: this.areaChart.labels[i], y: json_data["data"][i][1]});
       }
-    },
-    removeChartContent(svg) {
-      svg.selectAll('path').remove();
-      svg.selectAll('g').remove();
-      this.focusLine.remove();
-      this.tooltip.remove();
-    },
-
-    drawChart(svg) {
-      const xScale = d3.scaleLinear()
-          .domain([d3.min(this.chart.labels), d3.max(this.chart.labels)])
-          .range([0, this.chart.width]);
-
-      const yScale = d3.scaleLinear()
-          .domain([0, d3.max(this.chart.data1.concat(this.chart.data2), d => d.y)])
-          .range([this.chart.height, 0]);
-
-      const tickFormat = d3.format(".0f");  // 禁用千位分隔符并保留整数部分
-      const xAxisCall = d3.axisBottom(xScale).tickValues(this.chart.labels).tickFormat(tickFormat);  // 自定义刻度值
-      const yAxisCall = d3.axisLeft(yScale).tickValues([0, d3.max(this.chart.data1.concat(this.chart.data2), d => d.y)]).tickFormat(tickFormat);
-
-      const area1 = d3.area()
-          .x(d => xScale(d.x))
-          .y0(yScale(0))
-          .y1(d => yScale(d.y))(this.chart.data1);
-
-      const area2 = d3.area()
-          .x(d => xScale(d.x))
-          .y0(yScale(0))
-          .y1(d => yScale(d.y))(this.chart.data2);
-
-      // 绘制x和y轴
-      svg.append('g')
-          .attr('class', 'x axis')
-          .attr('transform', `translate(0, ${this.chart.height})`)
-          .call(xAxisCall);  // 如果没有自定义x轴，那么这里应该填 d3.axisBottom(xScale)
-      svg.append('g')
-          .attr('class', 'y axis')
-          .call(yAxisCall);
-
-      // 绘制面积图
-      svg.append('path')
-          .attr('d', area1)
-          .attr('fill', '#33cc99')
-          .attr("opacity", 0.7);
-
-      svg.append('path')
-          .attr('d', area2)
-          .attr('fill', '#AAAAAA')
-          .attr("opacity", 0.7);
-
-
-      this.focusLine = svg.append('line')
-          .attr('class', 'focus-line')
-          .style('display', 'none')
-          .style('stroke', 'black')
-          .style('stroke-dasharray', '5 5')
-          .style('pointer-events', 'none');
-
-      this.tooltip = d3.select(this.$refs.chart)
-          .append('div')
-          .attr('class', 'tooltip')
-          .style('display', 'none')
-          .style('position', 'absolute')
-          .style('border', '1px solid black')
-          // .style('background-color', 'white')
-          .style('font-size', '14px')
-          .style('padding', '3px')
-          .style('pointer-events', 'none');
-
-      var that = this
-      // 添加鼠标事件
-      svg.on('mousemove', function (event) {
-        // 获取鼠标相对于svg的位置
-        const [x, y] = d3.pointer(event);
-        const xPos = x;  // 由于在建立svg时，已经把margin和图表width单独计算了，所以不用在这里减margin
-        const yPos = y;
-
-
-        // 查找最近的数据点
-        const bisect = d3.bisector(d => d.x).left;
-        const map_x = xScale.invert(xPos);  // 当前位置反映射到x轴上的数值
-        const index = bisect(that.chart.data1, map_x);  // 根据数值在x轴上二分查找
-
-        const lower = that.chart.data1[index - 1];
-        const upper = that.chart.data1[index];
-        const d = map_x - lower.x > upper.x - map_x ? upper : lower;
-        const d2 = d === lower ? that.chart.data2[index - 1] : that.chart.data2[index];
-
-        // 更新虚线位置
-        that.focusLine.style('display', null)
-            .attr('x1', xScale(d.x))  // 根据数值再映射回位置
-            .attr('y1', 0)
-            .attr('x2', xScale(d.x))
-            .attr('y2', that.chart.height)
-            .style('stroke', 'black')
-            .style('stroke-dasharray', '5 5');
-
-        // 更新提示框内容和位置
-        that.tooltip.transition()
-            .duration(100)
-            .style('display', null)
-            .style('opacity', 1);
-        that.tooltip.html(`time: ${d.x} <br> data1: ${d.y}, data2: ${d2.y}`)
-            .style('left', `${xPos}px`)
-            .style('top', `${yPos - 40}px`);
-      })
-          .on('mouseout', function () {
-            // 隐藏虚线和提示框
-            that.focusLine.style('display', 'none');
-            that.tooltip.transition()
-                .duration(200)
-                .style('opacity', 0)
-                .style('display', 'none');
-          })
-          .on('click', function (event) {
-            const [x, y] = d3.pointer(event);
-            const xPos = x;
-            // 查找最近的数据点
-            const bisect = d3.bisector(d => d).left;
-            const map_x = xScale.invert(xPos);  // 当前位置反映射到x轴上的数值
-            const index = bisect(that.chart.labels, map_x);  // 根据数值在x轴上二分查找
-
-            const lower = that.chart.labels[index - 1];
-            const upper = that.chart.labels[index];
-            const d = map_x - lower > upper - map_x ? upper : lower;
-
-            // 传递日期给子图
-            let date;
-            if (that.timeRange === null) date = d.toString();
-            else date = [that.timeRange, d.toString()].join('-')
-
-            eventBus.$emit('showMultiCharts', {
-              date: date,
-            });
-
-            that.focusLine.style('stroke', 'red');
-          });
-    },
+    }
   },
   watch: {
     chartData() {

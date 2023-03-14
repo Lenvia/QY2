@@ -1,5 +1,6 @@
 <template>
-  <div ref="ocean_map" class="background-image-module div-border border border-opacity-50" :style="{ backgroundImage: `url(${croppedImageUrl})`}"></div>
+  <div ref="ocean_map" class="background-image-module div-border border border-opacity-50"
+       :style="{ backgroundImage: `url(${croppedImageUrl})`}"></div>
 
 </template>
 
@@ -35,8 +36,12 @@ export default {
       startY: 200,  // 裁剪区域左上角 y 坐标
       ratio: 0, // 原始图片宽高比例
       case: 0,
+      svg: null,
       rect: null,
       rectStrokeColor: 'red',
+
+      clickedPoints: [],
+      clickedPointsPos: [],
     };
   },
 
@@ -54,7 +59,7 @@ export default {
     })
   },
 
-  watch:{
+  watch: {
     minSize: function (val) {
       // console.log(val);
     },
@@ -96,13 +101,59 @@ export default {
       return [point1, point2];
     },
 
+    eraseClickedPoints() {
+      // 清空
+      this.clickedPoints = []
+      this.clickedPointsPos = []
+    },
+
+    addClickHandler(shape) {
+      let that = this
+      shape.style('cursor', 'pointer')
+          .on('click', function (event) {
+            const lon = parseFloat(d3.select(this).attr('lon'));
+            const lat = parseFloat(d3.select(this).attr('lat'));
+            let [x, y] = lonlat2imgxy(lon, lat, that.imageWidth, that.imageHeight);
+            x = x - that.startX;
+            y = y - that.startY;
+
+            that.clickedPoints.push([lon, lat]);
+            that.clickedPointsPos.push([x, y]);
+
+
+            if (that.clickedPoints.length === 2) {
+              if (that.clickedPoints[0][0] === that.clickedPoints[1][0] && that.clickedPoints[0][1] === that.clickedPoints[1][1]) {
+                that.eraseClickedPoints();
+              } else {
+                eventBus.$emit('rectCreated', {
+                  lon1: that.clickedPoints[0][0],
+                  lat1: that.clickedPoints[0][1],
+                  lon2: that.clickedPoints[1][0],
+                  lat2: that.clickedPoints[1][1],
+                });
+                // 显示矩形
+                let [[x1, y1], [x2, y2]] = that.clickedPointsPos;
+                console.log(x1, y1, x2, y2)
+                that.rect = that.svg.append("rect")
+                    .attr("x", Math.min(x1, x2))
+                    .attr("y", Math.min(y1, y2))
+                    .attr("width", Math.abs(x2 - x1))
+                    .attr("height", Math.abs(y2 - y1))
+                    .attr("stroke", that.rectStrokeColor)
+                    .attr("stroke-width", 2)
+                    .attr("fill", "none");
+                that.eraseClickedPoints();
+              }
+            }
+          });
+    }
 
   },
 
   mounted() {
     this.container_w = this.container_h = this.minSize;  // 接收父组件传来的size
 
-    this.$nextTick(()=>{
+    this.$nextTick(() => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
 
@@ -121,7 +172,7 @@ export default {
         this.$nextTick(this.draw(canvas, ctx));
         // 添加节点
         this.$nextTick(function () {
-          const svg = d3.select(this.$refs.ocean_map).append('svg')
+          this.svg = d3.select(this.$refs.ocean_map).append('svg')
               .attr('width', this.container_w)
               .attr('height', this.container_h);
 
@@ -150,19 +201,21 @@ export default {
                     y = y - this.startY;
 
                     // 显示图形
-                    svg.append(shape)
+                    this.svg.append(shape)
                         .attr('cx', x)
                         .attr('cy', y)
                         .attr('r', radian)
                         .attr('id', id)
                         .attr('name', name)
+                        .attr('lon', lon)
+                        .attr('lat', lat)
                         .style('fill', color)
                         .style('opacity', 0.5)
-                    // .style('cursor', 'pointer')
-                    // .on('click', this.handleClick.bind(this))
+                        .call(this.addClickHandler);
+
 
                     // 显示文字
-                    svg.append("text")
+                    this.svg.append("text")
                         .attr("x", x)
                         .attr("y", y + radian / 3)
                         .attr("text-anchor", "middle")
@@ -198,7 +251,7 @@ export default {
                   const arrowPath = `M${point1[0]},${point1[1]} L${point2[0]},${point2[1]}`;
 
                   // 在 SVG 中添加箭头
-                  const arrow = svg.append('path')
+                  const arrow = this.svg.append('path')
                       .attr('d', arrowPath)
                       .attr('marker-end', 'url(#arrow)')
                       .attr('stroke', '#000000')
@@ -207,7 +260,7 @@ export default {
 
 
                   // 在 SVG 中添加箭头定义
-                  svg.append('defs')
+                  this.svg.append('defs')
                       .append('marker')
                       .attr('id', 'arrow')
                       .attr('viewBox', '0 0 10 10')
@@ -221,14 +274,14 @@ export default {
                       .style('fill', '#000000');
 
                   // 要求文本方向平行于箭头的指向
-                  const textPath = svg.append('defs')
+                  const textPath = this.svg.append('defs')
                       .append('path')
-                      .attr('id', 'text-path'+i)
+                      .attr('id', 'text-path' + i)
                       .attr('d', arrowPath);
                   // 创建一个text元素，并将其嵌套在textPath元素中。然后，我们将xlink:href属性设置为箭头路径元素的id属性
-                  const text = svg.append('text')
+                  const text = this.svg.append('text')
                       .append('textPath')
-                      .attr('xlink:href', '#text-path'+i)
+                      .attr('xlink:href', '#text-path' + i)
                       .text(value)
                       .attr('startOffset', '50%')
                       .attr('text-anchor', 'middle')
@@ -247,8 +300,7 @@ export default {
                 console.log(error);
               })
             });
-          }
-          else {
+          } else {
             axios.get('/habitatNode.json')
                 .then(response => {
                   const json_data = response.data;
@@ -276,7 +328,7 @@ export default {
 
 
                     // 显示图形
-                    svg.append(shape)
+                    this.svg.append(shape)
                         .attr('cx', x)
                         .attr('cy', y)
                         .attr('r', radian)
@@ -297,12 +349,12 @@ export default {
           let that = this;  // 作用域
 
           // 鼠标拖动事件
-          svg.on("mousedown", function () {
+          that.svg.on("mousedown", function () {
             // 清除上一次的矩形
             if (that.rect) that.rect.remove();
 
             [x1, y1] = d3.pointer(event);
-            that.rect = svg.append("rect")
+            that.rect = that.svg.append("rect")
                 .attr("x", x1)
                 .attr("y", y1)
                 .attr("width", 0)
@@ -311,7 +363,7 @@ export default {
                 .attr("stroke-width", 2)
                 .attr("fill", "none");
 
-            svg.on("mousemove", function () {
+            that.svg.on("mousemove", function () {
               [x2, y2] = d3.pointer(event);
               that.rect.attr("x", Math.min(x1, x2))
                   .attr("y", Math.min(y1, y2))
@@ -319,23 +371,27 @@ export default {
                   .attr("height", Math.abs(y2 - y1));
             });
 
-            svg.on("mouseup", function () {
-              svg.on("mousemove", null);
-              svg.on("mouseup", null);
+            that.svg.on("mouseup", function () {
+              that.svg.on("mousemove", null);
+              that.svg.on("mouseup", null);
 
               if ([x1, y1, x2, y2].every((value) => value !== undefined)) {  // 否定单点事件
                 // 换算经纬度
                 let [lon1, lat1] = imgxy2lonlat(x1 + that.startX, y1 + that.startY, that.imageWidth, that.imageHeight)
                 let [lon2, lat2] = imgxy2lonlat(x2 + that.startX, y2 + that.startY, that.imageWidth, that.imageHeight)
 
-                eventBus.$emit('rectCreated', {
-                  lon1: lon1,
-                  lat1: lat1,
-                  lon2: lon2,
-                  lat2: lat2,
-                });
-
+                if(Math.abs(lon1 - lon2) + Math.abs(lat1-lat2) > 1){  // 防误触
+                  eventBus.$emit('rectCreated', {
+                    lon1: lon1,
+                    lat1: lat1,
+                    lon2: lon2,
+                    lat2: lat2,
+                  });
+                }
                 x1 = y1 = x2 = y2 = undefined;  // 清除
+
+                // 清除节点点击
+                that.eraseClickedPoints();
 
               } else {
                 eventBus.$emit('rectCreated', {

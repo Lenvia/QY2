@@ -121,7 +121,7 @@ export default {
   mounted() {
     this.$nextTick(()=>{
       // 动态挂载
-      console.log(this.$refs.oceanMapContainer.clientWidth, this.$refs.oceanMapContainer.clientHeight)
+      // console.log(this.$refs.oceanMapContainer.clientWidth, this.$refs.oceanMapContainer.clientHeight)
       let containerWidth = this.$refs.oceanMapContainer.clientWidth;
       let containerHeight = this.$refs.oceanMapContainer.clientHeight;
       let minSize = Math.min(containerWidth, containerHeight);

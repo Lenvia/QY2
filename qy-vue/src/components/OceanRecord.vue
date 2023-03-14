@@ -182,7 +182,6 @@ export default {
     // })
     let digit = 2;
     eventBus.$on('rectCreated', ({lon1, lat1, lon2, lat2}) => {
-      // console.log(lon1, lat1, lon2, lat2);
       if (isNaN(lon1) || isNaN(lat1) || isNaN(lon2) || isNaN(lat2)) {
         this.case_label = " ";
         this.form.region = [];
